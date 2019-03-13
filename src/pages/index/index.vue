@@ -65,9 +65,9 @@ export default {
       // throw {message: 'custom test'}
     }
   },
-
   created () {
-    // let app = getApp()
+    let app = getApp()
+    console.log(app)
   }
 }
 </script>
