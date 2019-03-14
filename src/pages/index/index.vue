@@ -33,7 +33,7 @@
 
 <script>
 import card from '@/components/card'
-import utils from '@/utils/index'
+import u from '@/utils/index'
 
 export default {
   data () {
@@ -81,7 +81,10 @@ export default {
         url: url
       })
     },
-    clickHandle (ev) {
+    test (ev) {
+      mpvue.showLoading({
+        mask: true
+      })
       console.log('clickHandle:', ev)
       // throw {message: 'custom test'}
     }
@@ -90,7 +93,8 @@ export default {
     let app = getApp()
     console.log(app)
     console.log(this)
-    console.log(utils)
+    console.log(u)
+    u.wxLogin()
   }
 }
 </script>
