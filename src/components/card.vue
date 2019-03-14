@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div @click="test">
     <p class="card">
       {{text}}
     </p>
@@ -8,12 +8,18 @@
 
 <script>
 export default {
-  props: ['text']
+  props: ['text'],
+  methods: {
+    test (e) {
+      console.log(e)
+    }
+  }
 }
 </script>
 
-<style>
+<style scoped>
 .card {
   padding: 10px;
+  background-color: #f60;
 }
 </style>

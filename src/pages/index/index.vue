@@ -1,45 +1,58 @@
 <template>
-  <div @click="clickHandle">
+  <div>
+    <swiper v-if="imgUrls.length > 0" indidator-dots="imgUrls.length > 1" indicator-color="rgba(255,255,255,.3)" indicator-active-color="white" circular="true" autoplay="true" interval="5000" duration="300" class="swiper">
+      <block v-for="(item, index) in imgUrls" :key="index" >
+        <swiper-item>
+          <image lazy-load :src="item.src" mode="aspectFill" @click="jump(item.url)"></image>
+        </swiper-item>
+      </block>
+    </swiper>
 
-    <div class="userinfo" @click="bindViewTap">
-      <img class="userinfo-avatar" v-if="userInfo.avatarUrl" :src="userInfo.avatarUrl" background-size="cover" />
-      <img class="userinfo-avatar" src="/static/images/user.png" background-size="cover" />
-
-      <div class="userinfo-nickname">
-        <card :text="userInfo.nickName"></card>
-      </div>
+    <div class="cate">
+      <a class="cate-item" href="/pages/counter/main"><image src="http://fpoimg.com/100x100" mode="aspectFill"></image><text>kkk</text></a>
+      <a class="cate-item" href="/pages/counter/main"><image src="http://fpoimg.com/100x100" mode="aspectFill"></image><text>kkk</text></a>
+      <a class="cate-item" href="/pages/counter/main"><image src="http://fpoimg.com/100x100" mode="aspectFill"></image><text>kkk</text></a>
+      <a class="cate-item" href="/pages/counter/main"><image src="http://fpoimg.com/100x100" mode="aspectFill"></image><text>kkk</text></a>
+      <a class="cate-item" href="/pages/counter/main"><image src="http://fpoimg.com/100x100" mode="aspectFill"></image><text>kkk</text></a>
+      <a class="cate-item" href="/pages/counter/main"><image src="http://fpoimg.com/100x100" mode="aspectFill"></image><text>kkk</text></a>
     </div>
 
-    <div class="usermotto">
-      <div class="user-motto">
-        <card :text="motto"></card>
-      </div>
-    </div>
+    <div class=""></div>
 
-    <form class="form-container">
-      <input type="text" class="form-control" :value="motto" placeholder="v-model" />
-      <input type="text" class="form-control" v-model="motto" placeholder="v-model" />
-      <input type="text" class="form-control" v-model.lazy="motto" placeholder="v-model.lazy" />
-    </form>
+    <!-- <form class="form-container">
+      <card :text="motto"></card>
+      <input type="text" :value="motto" placeholder="v-model" />
+      <input type="text" v-model="motto" placeholder="v-model" />
+      <input type="text" v-model.lazy="motto" placeholder="v-model.lazy" />
+    </form> -->
 
-    <a href="/pages/counter/main" class="counter">去往Vuex示例页面</a>
 
-    <div class="all">
-        <div class="left">
-        </div>
-        <div class="right">
-        </div>
-    </div>
   </div>
 </template>
 
+
 <script>
 import card from '@/components/card'
+import utils from '@/utils/index'
 
 export default {
   data () {
     return {
       motto: 'Hello miniprograme',
+      imgUrls: [
+        {
+          src: 'http://fpoimg.com/700x300',
+          url: '../logs/main'
+        },
+        {
+          src: 'http://fpoimg.com/300x300',
+          url: '../logs/main'
+        },
+        {
+          src: 'http://fpoimg.com/300x700',
+          url: '../logs/main'
+        }
+      ],
       userInfo: {
         nickName: 'mpvue',
         avatarUrl: 'http://mpvue.com/assets/logo.png'
@@ -60,6 +73,14 @@ export default {
         mpvue.navigateTo({ url })
       }
     },
+    jump (url) {
+      // console.log(url)
+      // console.log(mpvue)
+      // console.log(mpvuePlatform)
+      mpvue.navigateTo({
+        url: url
+      })
+    },
     clickHandle (ev) {
       console.log('clickHandle:', ev)
       // throw {message: 'custom test'}
@@ -68,59 +89,53 @@ export default {
   created () {
     let app = getApp()
     console.log(app)
+    console.log(this)
+    console.log(utils)
   }
 }
 </script>
 
 <style scoped>
-.userinfo {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.swiper {
+  border-radius: 10rpx;
+  overflow: hidden;
+  margin: 0 30rpx;
+  height: 300rpx;
+}
+.swiper swiper-item {
+  background: #eee;
+}
+.swiper image {
+  width: 100%;
+  height: 300rpx;
 }
 
-.userinfo-avatar {
-  width: 128rpx;
-  height: 128rpx;
-  margin: 20rpx;
+
+.cate {
+  margin: 30rpx;
+  overflow: hidden;
+}
+.cate-item {
+  width: 33.33%;
+  float: left;
+}
+.cate-item image {
+  width: 100rpx;
+  height: 100rpx;
   border-radius: 50%;
-}
-
-.userinfo-nickname {
-  color: #aaa;
-}
-
-.usermotto {
-  margin-top: 150px;
-}
-
-.form-control {
+  overflow: hidden;
   display: block;
-  padding: 0 12px;
-  margin-bottom: 5px;
-  border: 1px solid #ccc;
+  margin: 0px auto;
 }
-.all{
-  width:7.5rem;
-  height:1rem;
-  background-color:blue;
-}
-.all:after{
-  display:block;
-  content:'';
-  clear:both;
-}
-.left{
-  float:left;
-  width:3rem;
-  height:1rem;
-  background-color:red;
+.cate-item text {
+  display: block;
+  font-size: 28rpx;
+  line-height: 50rpx;
+  margin-bottom: 10rpx;
+  text-align: center;
+  color: #333;
 }
 
-.right{
-  float:left;
-  width:4.5rem;
-  height:1rem;
-  background-color:green;
-}
+
+
 </style>
