@@ -54,57 +54,76 @@
   </div>
 </template>
 
+
+<script>
+import card from '@/components/card'
+import u from '@/utils/index'
+
+export default {
+  data () {
+    return {
+      motto: 'Hello miniprograme',
+      sliderArr: [
+        {
+          img: '/static/img/home-slider.jpg',
+          url: '../logs/main'
+        }
+      ],
+      proArr: [
+        {
+          img: 'http://fpoimg.com/400x400',
+          name: '青花瓷功夫茶杯',
+          price: '386',
+          url: '../logs/main'
+        },
+        {
+          img: 'http://fpoimg.com/400x400',
+          name: '青花瓷功夫茶杯',
+          price: '386',
+          url: '../logs/main'
+        }
+      ]
+    }
+  },
+  components: {
+    card
+  },
+  methods: {
+    bindViewTap () {
+      const url = '../logs/main'
+      if (mpvuePlatform === 'wx') {
+        mpvue.switchTab({ url })
+      } else {
+        mpvue.navigateTo({ url })
+      }
+    },
+    jump (url) {
+      // console.log(url)
+      // console.log(mpvue)
+      // console.log(mpvuePlatform)
+      mpvue.navigateTo({
+        url: url
+      })
+    }
+  },
+  created () {
+    // let app = getApp()
+    // console.log(app)
+    // console.log(this)
+    // console.log(u)
+    // u.wxLogin()
+    u.request({
+      url: u.api.test,
+      method: 'GET',
+      data: {},
+      success(res) {
+        console.log(res)
+      }
+    })
+  }
+}
+</script>
 <style scoped>
-.more {
-  margin: 30rpx 0px;
-  text-align: center;
-}
-.more-btn {
-  display: inline-block;
-  line-height: 60rpx;
-  height: 60rpx;
-  border: 1rpx solid #d1a178;
-  border-radius: 30rpx;
-  padding: 0 50rpx;
-  font-size: 28rpx;
-  text-align: center;
-  color: #d1a178;
-}
-.pro1 {
-  margin: 10rpx 0 30rpx 30rpx;
-}
-.pro1 scroll-view {
- white-space: nowrap;
-}
-.pro1-item {
-  display: inline-block;
-  margin-right: 20rpx;
-}
-.pro1-item image {
-  display: block;
-  width: 250rpx;
-  height: 250rpx;
-}
-.pro1-item-tit {
-  display: block;
-  font-size: 26rpx;
-  color: #333;
-  line-height: 50rpx;
-}
-.pro1-item-price {
-  display: block;
-  font-size: 32rpx;
-  color: #d1a178;
-  font-weight: bold;
-  line-height: 40rpx;
-}
-.pro1-item-price text {
-  font-size: 12px;
-}
-
-
-
-
 .swiper {
   width: 690rpx;
   border-radius: 10rpx;
@@ -159,6 +178,53 @@
   background-image: linear-gradient(to bottom, #eee, #fff, #fff, #fff, #fff);
 }
 
+.pro1 {
+  margin: 10rpx 0 30rpx 30rpx;
+}
+.pro1 scroll-view {
+ white-space: nowrap;
+}
+.pro1-item {
+  display: inline-block;
+  margin-right: 20rpx;
+}
+.pro1-item image {
+  display: block;
+  width: 250rpx;
+  height: 250rpx;
+}
+.pro1-item-tit {
+  display: block;
+  font-size: 26rpx;
+  color: #333;
+  line-height: 50rpx;
+}
+.pro1-item-price {
+  display: block;
+  font-size: 32rpx;
+  color: #d1a178;
+  font-weight: bold;
+  line-height: 40rpx;
+}
+.pro1-item-price text {
+  font-size: 12px;
+}
+
+.more {
+  margin: 30rpx 0px;
+  text-align: center;
+}
+.more-btn {
+  display: inline-block;
+  line-height: 60rpx;
+  height: 60rpx;
+  border: 1rpx solid #d1a178;
+  border-radius: 30rpx;
+  padding: 0 50rpx;
+  font-size: 28rpx;
+  text-align: center;
+  color: #d1a178;
+}
 
 .pro {
   overflow: hidden;
@@ -190,82 +256,3 @@
   font-size: 12px;
 }
 </style>
-
-<script>
-import card from '@/components/card'
-import u from '@/utils/index'
-
-export default {
-  data () {
-    return {
-      motto: 'Hello miniprograme',
-      sliderArr: [
-        {
-          img: '/static/img/home-slider.jpg',
-          url: '../logs/main'
-        }
-      ],
-      proArr: [
-        {
-          img: 'http://fpoimg.com/400x400',
-          name: '青花瓷功夫茶杯',
-          price: '386',
-          url: '../logs/main'
-        },
-        {
-          img: 'http://fpoimg.com/400x400',
-          name: '青花瓷功夫茶杯',
-          price: '386',
-          url: '../logs/main'
-        },
-        {
-          img: 'http://fpoimg.com/400x400',
-          name: '青花瓷功夫茶杯',
-          price: '386',
-          url: '../logs/main'
-        },
-        {
-          img: 'http://fpoimg.com/400x400',
-          name: '青花瓷功夫茶杯',
-          price: '386',
-          url: '../logs/main'
-        }
-      ]
-    }
-  },
-  components: {
-    card
-  },
-  methods: {
-    bindViewTap () {
-      const url = '../logs/main'
-      if (mpvuePlatform === 'wx') {
-        mpvue.switchTab({ url })
-      } else {
-        mpvue.navigateTo({ url })
-      }
-    },
-    jump (url) {
-      // console.log(url)
-      // console.log(mpvue)
-      // console.log(mpvuePlatform)
-      mpvue.navigateTo({
-        url: url
-      })
-    }
-  },
-  created () {
-    // let app = getApp()
-    // console.log(app)
-    // console.log(this)
-    // console.log(u)
-    u.wxLogin()
-
-
-
-
-    
-    
-  }
-}
-</script>

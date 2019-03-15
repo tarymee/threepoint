@@ -1,17 +1,17 @@
-const API = require('./api.js')
+const api = require('./api.js')
 
-console.log(API)
+console.log(api)
 
 function wxLogin(callback) {
   // mpvue.setStorage({
   //   key: 'openid',
   //   data: '54654654654654654654654',
   //   complete: function () {
-  //     console.log()
+  //     console.log(mpvue.getStorageSync('openid'))
   //   }
   // })
-
-  let openid = mpvue.getStorageSync('openid1')
+  let openid = mpvue.getStorage('openid') || '11111'
+  console.log('openid = ' + openid)
   if (openid) {
     callback && callback()
   } else {
@@ -23,7 +23,7 @@ function wxLogin(callback) {
           mask: true
         })
         wx.request({
-          url: API.wxlogin,
+          url: api.wxlogin,
           method: 'post',
           data: {
             code: result.code
@@ -79,64 +79,58 @@ function wxLogin(callback) {
 
 }
 
-// 统一微信登录函数
-// function wxLogin(App, callback, isVerifyUserInfo = true) {
-//   // App.globalData.openid = 'ssss'
-//   // console.log('openid', App.globalData.openid)
-//   // console.log('userInfo', App.globalData.userInfo)
-//   console.log('isVerifyUserInfo', isVerifyUserInfo)
-//   if (isVerifyUserInfo ? (App.globalData.openid && App.globalData.userInfo) : App.globalData.openid) {
-//     callback && callback()
-//   } else {
-//     wx.login({
-//       success(result) {
-//         // console.log(result)
-//         // return false
-//         wx.showLoading({
-//           mask: true,
-//         })
-//         wx.request({
-//           url: API.wxLogin,
-//           method: 'post',
-//           data: {
-//             code: result.code
-//           },
-//           success: function (res) {
-//             // console.log(res)
-//             wx.hideLoading()
+// 封装wx.request方法
+// 添加 isShowLoading isVerifyLogin isShowError 字段
+function request(config) {
+  let { url, method, data, header, dataType, responseType, success, fail, complete, isShowLoading = true, isVerifyLogin = true, isShowError = true } = config
+  if (isShowLoading) {
+    wx.showLoading({
+      mask: true
+    })
+  }
 
-//             // wx.navigateTo({
-//             //   // url: '/pages/store/store'
-//             //   url: `/pages/salesup/salesup?storeid=31960`
-//             //   // url: '/pages/login/login'
-//             //   // url: '/pages/travel/travel'
-//             //   // url: '/pages/attendance/attendance'
-//             // })
+  function post() {
+    wx.request({
+      url: url,
+      method: method || 'GET',
+      header: header || {},
+      dataType: dataType || 'json',
+      responseType: responseType || 'text',
+      data: data,
+      success(res) {
+        success && success(res)
+      },
+      fail(res) {
+        if (isShowError) {
+          wx.showModal({
+            title: '提示',
+            content: '网络异常 请稍后重试',
+            showCancel: false
+          })
+        }
+        fail && fail(res)
+      },
+      complete(res) {
+        if (isShowLoading) {
+          wx.hideLoading()
+        }
+        complete && complete(res)
+      }
+    })
+  }
 
-//             if (res.data.code === 1) {
-//               // 1 表示已经登录
-//               // 保存用户信息
-//               App.globalData.openid = res.data.openid
-//               App.globalData.userInfo = res.data.data
-//               callback && callback()
-//             } else {
-//               App.globalData.openid = res.data.openid
-//               // !1表示还没登录
-//               wx.redirectTo({
-//                 url: '/pages/register/register'
-//               })
-//             }
-//           },
-//           fail: function (res) {
-//             // alert('网络异常，请稍后重试')
-//             console.error(res)
-//             wx.hideLoading()
-//           }
-//         })
-//       }
-//     })
-//   }
-// }
+  if (isVerifyLogin) {
+    console.log('校验登录后发起请求')
+    wxLogin(function () {
+      post()
+    })
+  } else {
+    console.log('没校验登录发起请求')
+    post()
+  }
+}
+
+
 
 
 
@@ -152,76 +146,6 @@ function wxLogin(callback) {
 // }
 
 
-
-// // 请求接口
-// function request(config) {
-//   let { api, apiName, data, callback, hideFail } = config
-//   let APP = getApp()
-//   let globalData = APP.globalData
-
-//   wxLogin(APP, function () {
-//     data.openid = globalData.openid
-//     data.openId = globalData.openid
-//     wx.showLoading({
-//       mask: true,
-//     })
-//     wx.request({
-//       url: `${globalData.host}/${api}`,
-//       method: 'POST',
-//       data: data,
-//       success(res) {
-//         wx.hideLoading()
-//         if (res.data.code === 1) {
-//           callback && callback(res)
-//         } else {
-//           if (!hideFail) {
-//             alert(`${apiName}失败`)
-//           }
-//           res.data.openid = globalData.openid
-//           res.data.data = data
-//           wx.getSystemInfo({
-//             success(res2) {
-//               res.data.version = res2.SDKVersion
-//             }
-//           })
-//         }
-//       },
-//       fail() {
-//         wx.hideLoading()
-//         if (!hideFail) {
-//           alert('网络异常，请稍后重试')
-//         }
-//       }
-//     })
-//   })
-// }
-
-// // 请求接口
-// function post(config) {
-//   let { url, data, success, fail } = config
-//   let App = getApp()
-//   data.openid = App.globalData.openid
-//   wxLogin(App, function () {
-//     wx.showLoading({
-//       mask: true,
-//     })
-//     wx.request({
-//       url: url,
-//       method: 'POST',
-//       data: data,
-//       success(res) {
-//         wx.hideLoading()
-//         success && success(res)
-//       },
-//       fail(res) {
-//         wx.hideLoading()
-//         alert('网络异常，请稍后重试')
-//         fail && fail(res)
-//       }
-//     })
-//   })
-// }
-
 // // 图片上传
 // function uploadImage(config) {
 //   let { picUrl, callback, hideFail, fail } = config
@@ -236,7 +160,7 @@ function wxLogin(callback) {
 //         mask: true,
 //       })
 //       wx.uploadFile({
-//         url: API.getPhotoUrl,
+//         url: api.getPhotoUrl,
 //         filePath: picUrl,
 //         name: 'photo',
 //         formData: data,
@@ -269,38 +193,6 @@ function wxLogin(callback) {
 //       })
 //     }, false)
 //   }
-// }
-
-// const formatDate = date => {
-//   const year = date.getFullYear()
-//   const month = date.getMonth() + 1
-//   const day = date.getDate()
-//   return [year, month, day].map(formatNumber).join('-')
-// }
-
-// const formatNumber = n => {
-//   n = n.toString()
-//   return n[1] ? n : '0' + n
-// }
-
-// const postUrl = (url, data, callBack) => {
-//   wx.showLoading({
-//     mask: true,
-//   })
-//   wx.request({
-//     url: url,
-//     data: data,
-//     method: 'POST',
-//     success: function (res) {
-//       wx.hideLoading()
-//       if (callBack) {
-//         callBack(res)
-//       }
-//     },
-//     fail: function (error) {
-//       wx.hideLoading()
-//     }
-//   })
 // }
 
 // // 图片压缩
@@ -360,15 +252,10 @@ function wxLogin(callback) {
 // }
 
 module.exports = {
-  API,
+  api,
   wxLogin,
-  aaa: '56757465'
-  // wxLogin,
-  // post,
+  request
   // alert,
-  // request,
-  // postUrl,
   // uploadImage,
-  // formatDate: formatDate,
   // compressImage: compressImage
 }
