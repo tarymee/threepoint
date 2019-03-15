@@ -12,6 +12,7 @@
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "三分联盟",
+    "defaultTitle": "三分联盟",
     "navigationBarTextStyle": "black"
   },
   "tabBar": {
@@ -19,6 +20,39 @@
     "backgroundColor": "#fff",
     "selectedColor": "#d0a177",
     "borderStyle": "black",
+    "textColor": "#333",
+    "items": [
+      {
+        "name": "首页",
+        "pagePath": "pages/index/main",
+        "icon": "static/tabs/home.png",
+        "activeIcon": "static/tabs/home-active.png"
+      },
+      {
+        "name": "我要开店",
+        "pagePath": "pages/open/main",
+        "icon": "static/tabs/open.png",
+        "activeIcon": "static/tabs/open-active.png"
+      },
+      {
+        "name": "门店",
+        "pagePath": "pages/store/main",
+        "icon": "static/tabs/store.png",
+        "activeIcon": "static/tabs/store-active.png"
+      },
+      {
+        "name": "购物车",
+        "pagePath": "pages/cart/main",
+        "icon": "static/tabs/cart.png",
+        "activeIcon": "static/tabs/cart-active.png"
+      },
+      {
+        "name": "会员中心",
+        "pagePath": "pages/user/main",
+        "icon": "static/tabs/user.png",
+        "activeIcon": "static/tabs/user-active.png"
+      }
+    ],
     "list": [
       {
         "text": "首页",
@@ -36,7 +70,7 @@
         "text": "门店",
         "pagePath": "pages/store/main",
         "iconPath": "static/tabs/store.png",
-        "selectedIconPath": "static/tabs/orders-active.png"
+        "selectedIconPath": "static/tabs/store-active.png"
       },
       {
         "text": "购物车",

@@ -27,7 +27,7 @@ export default {
     }
 
     let app = getApp()
-    console.log(app)
+    // console.log(app)
   },
   log () {
     console.log(`log at:${Date.now()}`)

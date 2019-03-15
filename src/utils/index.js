@@ -3,53 +3,80 @@ const API = require('./api.js')
 console.log(API)
 
 function wxLogin(callback) {
-  wx.login({
-    success(result) {
-      console.log(result)
-      // return false
-      // wx.showLoading({
-      //   mask: true
-      // })
-      // wx.request({
-      //   url: API.wxlogin,
-      //   method: 'post',
-      //   data: {
-      //     code: result.code
-      //   },
-      //   success: function (res) {
-      //     // console.log(res)
-      //     wx.hideLoading()
+  // mpvue.setStorage({
+  //   key: 'openid',
+  //   data: '54654654654654654654654',
+  //   complete: function () {
+  //     console.log()
+  //   }
+  // })
 
-      //     // wx.navigateTo({
-      //     //   // url: '/pages/store/store'
-      //     //   url: `/pages/salesup/salesup?storeid=31960`
-      //     //   // url: '/pages/login/login'
-      //     //   // url: '/pages/travel/travel'
-      //     //   // url: '/pages/attendance/attendance'
-      //     // })
+  let openid = mpvue.getStorageSync('openid1')
+  if (openid) {
+    callback && callback()
+  } else {
+    wx.login({
+      success(result) {
+        console.log(result)
+        // return false
+        wx.showLoading({
+          mask: true
+        })
+        wx.request({
+          url: API.wxlogin,
+          method: 'post',
+          data: {
+            code: result.code
+          },
+          success: function (res) {
+            // console.log(res)
+            wx.hideLoading()
 
-      //     if (res.data.code === 1) {
-      //       // 1 表示已经登录
-      //       // 保存用户信息
-      //       App.globalData.openid = res.data.openid
-      //       App.globalData.userInfo = res.data.data
-      //       callback && callback()
-      //     } else {
-      //       App.globalData.openid = res.data.openid
-      //       // !1表示还没登录
-      //       wx.redirectTo({
-      //         url: '/pages/register/register'
-      //       })
-      //     }
-      //   },
-      //   fail: function (res) {
-      //     // alert('网络异常，请稍后重试')
-      //     console.error(res)
-      //     wx.hideLoading()
-      //   }
-      // })
-    }
-  })
+            // wx.navigateTo({
+            //   // url: '/pages/store/store'
+            //   url: `/pages/salesup/salesup?storeid=31960`
+            //   // url: '/pages/login/login'
+            //   // url: '/pages/travel/travel'
+            //   // url: '/pages/attendance/attendance'
+            // })
+
+            if (res.data.code === 1) {
+              // 1 表示已经登录
+              // 保存用户信息
+              mpvue.setStorage({
+                key: 'openid',
+                data: res.data.openid,
+                complete: function () {
+                  callback && callback()
+                }
+              })
+            } else {
+              // !1表示还没登录
+              mpvue.setStorage({
+                key: 'openid',
+                data: res.data.openid,
+                complete: function () {
+                  wx.redirectTo({
+                    url: '/pages/register/register'
+                  })
+                }
+              })
+            }
+          },
+          fail: function (res) {
+            // alert('网络异常，请稍后重试')
+            console.error(res)
+            wx.hideLoading()
+          }
+        })
+      }
+    })
+  }
+
+
+
+
+
 }
 
 // 统一微信登录函数
