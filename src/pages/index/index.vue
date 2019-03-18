@@ -1,5 +1,12 @@
 <template>
   <div>
+    <div class="people">
+      <div class="people-l-img"><image src="http://fpoimg.com/100x100" mode="aspectFill"></image></div>
+      <div class="people-l-store"><div class="people-l-name">彭于晏</div><div class="people-l-storename">三分联盟直营店</div></div>
+      <div class="people-r" style="border-left: 1px solid #e9e9e9"><image src="/static/img/home-icon2.png" mode="aspectFill"></image><div class="people-r-des">客服</div></div>
+      <div class="people-r" @click="phone()"><image src="/static/img/home-icon1.png" mode="aspectFill"></image><div class="people-r-des">电话</div></div>
+    </div>
+
     <swiper v-if="sliderArr.length > 0" autoplay="true" interval="5000" duration="300" class="swiper">
       <block v-for="(item, index) in sliderArr" :key="index" >
         <swiper-item>
@@ -16,32 +23,29 @@
       <a class="cate-item" href="/pages/counter/main"><image src="/static/img/home-cate5.png" mode="aspectFill"></image><text>装饰类</text></a>
       <a class="cate-item" href="/pages/counter/main"><image src="/static/img/home-cate6.png" mode="aspectFill"></image><text>布料</text></a>
     </div>
+
     <div class="title">新品推荐</div>
     <div class="pro1">
       <scroll-view scroll-x>
-      <a class="pro1-item" v-for="(item, index) in proArr" :key="index" :href="item.url">
+      <a class="pro1-item" v-for="(item, index) in newArr" :key="index" :href="item.url">
           <image :src="item.img" mode="aspectFill"></image>
           <text class="pro1-item-tit">{{item.name}}</text>
           <div class="pro1-item-price"><text>￥</text>{{item.price}}</div>
         </a>
       </scroll-view>
     </div>
-
     <div class="more">
       <a class="more-btn" href="/pages/counter/main">查看更多</a>
     </div>
 
     <div class="title">精选商品</div>
     <div class="pro">
-      <a class="pro-item" v-for="(item, index) in proArr" :key="index" :href="item.url">
+      <a class="pro-item" v-for="(item, index) in choiceArr" :key="index" :href="item.url">
         <image :src="item.img" mode="aspectFill"></image>
         <text class="pro-item-tit">{{item.name}}</text>
         <div class="pro-item-price"><text>￥</text>{{item.price}}</div>
       </a>
     </div>
-
-
-
 
     <!-- <form class="form-container">
       <card :text="motto"></card>
@@ -49,7 +53,6 @@
       <input type="text" v-model="motto" placeholder="v-model" />
       <input type="text" v-model.lazy="motto" placeholder="v-model.lazy" />
     </form> -->
-
 
   </div>
 </template>
@@ -62,25 +65,51 @@ import u from '@/utils/index'
 export default {
   data () {
     return {
-      motto: 'Hello miniprograme',
+      // motto: 'Hello miniprograme',
       sliderArr: [
         {
           img: '/static/img/home-slider.jpg',
-          url: '../logs/main'
+          url: '/pages/logs/main'
         }
       ],
-      proArr: [
+      newArr: [
         {
           img: 'http://fpoimg.com/400x400',
           name: '青花瓷功夫茶杯',
           price: '386',
-          url: '../logs/main'
+          url: '/pages/logs/main'
         },
         {
           img: 'http://fpoimg.com/400x400',
           name: '青花瓷功夫茶杯',
           price: '386',
-          url: '../logs/main'
+          url: '/pages/logs/main'
+        },
+        {
+          img: 'http://fpoimg.com/400x400',
+          name: '青花瓷功夫茶杯',
+          price: '386',
+          url: '/pages/logs/main'
+        },
+        {
+          img: 'http://fpoimg.com/400x400',
+          name: '青花瓷功夫茶杯',
+          price: '386',
+          url: '/pages/logs/main'
+        }
+      ],
+      choiceArr: [
+        {
+          img: 'http://fpoimg.com/400x400',
+          name: '青花瓷功夫茶杯',
+          price: '386',
+          url: '/pages/logs/main'
+        },
+        {
+          img: 'http://fpoimg.com/400x400',
+          name: '青花瓷功夫茶杯',
+          price: '386',
+          url: '/pages/logs/main'
         }
       ]
     }
@@ -90,12 +119,17 @@ export default {
   },
   methods: {
     bindViewTap () {
-      const url = '../logs/main'
+      const url = '/pages/logs/main'
       if (mpvuePlatform === 'wx') {
         mpvue.switchTab({ url })
       } else {
         mpvue.navigateTo({ url })
       }
+    },
+    phone () {
+      mpvue.makePhoneCall({
+        phoneNumber: '1340000'
+      })
     },
     jump (url) {
       // console.log(url)
@@ -107,23 +141,73 @@ export default {
     }
   },
   created () {
+    mpvue.switchTab({
+      url: './pages/open/main'
+    })
     // let app = getApp()
     // console.log(app)
     // console.log(this)
     // console.log(u)
     // u.wxLogin()
-    u.request({
-      url: u.api.test,
-      method: 'GET',
-      data: {},
-      success(res) {
-        console.log(res)
-      }
-    })
+    // u.request({
+    //   url: u.api.test,
+    //   method: 'GET',
+    //   data: {},
+    //   success(res) {
+    //     console.log(res)
+    //   }
+    // })
   }
 }
 </script>
 <style scoped>
+.people {
+  overflow: hidden;
+  margin: 30rpx;
+}
+.people-l-img {
+  float: left;
+
+}
+.people-l-img image {
+  display: block;
+  width: 100rpx;
+  height: 100rpx;
+  overflow: hidden;
+  border-radius: 50%;
+}
+.people-l-store {
+  margin-left: 20rpx;
+  float: left;
+}
+.people-l-name {
+  line-height: 50rpx;
+  font-size: 32rpx;
+  color: #333;
+}
+.people-l-storename {
+  line-height: 40rpx;
+  font-size: 24rpx;
+  color: #999;
+}
+.people-r {
+  float: right;
+  padding-left: 30rpx;
+  margin-top: 10rpx;
+  margin-left: 30rpx;
+}
+.people-r image {
+  display: block;
+  width: 50rpx;
+  height: 50rpx;
+}
+.people-r-des {
+  font-size: 12px;
+  line-height: 30rpx;
+  color: #999;
+  line-height: 12px;
+}
+
 .swiper {
   width: 690rpx;
   border-radius: 10rpx;
