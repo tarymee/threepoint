@@ -1,22 +1,10 @@
 <template>
   <div>
-    <a class="store">
-      <image src="/static/img/open-item1.jpg" mode="aspectFill"></image>
-      <div class="store-tit">三分联盟专卖店（工厂直供）</div>
-      <div class="store-price"><div class="store-price-price1">优选价: </div><div class="store-price-price2">￥</div><div class="store-price-price3">9999</div></div>
-      <div class="store-del">原价：￥19999</div>
-    </a>
-    <a class="store">
-      <image src="/static/img/open-item2.jpg" mode="aspectFill"></image>
-      <div class="store-tit">三分联盟专卖店（工厂直供）</div>
-      <div class="store-price"><div class="store-price-price1">优选价: </div><div class="store-price-price2">￥</div><div class="store-price-price3">9999</div></div>
-      <div class="store-del">原价：￥19999</div>
-    </a>
-    <a class="store">
-      <image src="/static/img/open-item3.jpg" mode="aspectFill"></image>
-      <div class="store-tit">三分联盟专卖店（工厂直供）</div>
-      <div class="store-price"><div class="store-price-price1">优选价: </div><div class="store-price-price2">￥</div><div class="store-price-price3">9999</div></div>
-      <div class="store-del">原价：￥19999</div>
+    <a class="store" @click="contact(item.phone)" v-for="(item, index) in storeArr" :key="index">
+      <image :src="item.img" mode="aspectFill"></image>
+      <div class="store-tit">{{item.name}}</div>
+      <div class="store-price"><div class="store-price-price1">优选价: </div><div class="store-price-price2">￥</div><div class="store-price-price3">{{item.price}}</div></div>
+      <div class="store-del">原价：￥{{item.delprice}}</div>
     </a>
 
     <div class="con">
@@ -34,11 +22,50 @@ export default {
   components: {},
   data () {
     return {
-
+      storeArr: [
+        {
+          img: '/static/img/open-item1.jpg',
+          name: '三分联盟专卖店（工厂直供）',
+          price: '386',
+          delprice: '19999',
+          phone: '13666666666'
+        },
+        {
+          img: '/static/img/open-item2.jpg',
+          name: '三分联盟专卖店（工厂直供）',
+          price: '386',
+          delprice: '19999',
+          phone: '13666666666'
+        },
+        {
+          img: '/static/img/open-item3.jpg',
+          name: '三分联盟专卖店（工厂直供）',
+          price: '386',
+          delprice: '19999',
+          phone: '13666666666'
+        }
+      ]
     }
   },
+  methods: {
+    contact (number) {
+      mpvue.showModal({
+        title: '提示',
+        content: '请与店主联系',
+        success() {
+          mpvue.makePhoneCall({
+            phoneNumber: number
+          })
+        },
+        showCancel: false
+      })
+    }
+  },
+  mounted () {
+    console.log('open mounted')
+  },
   created () {
-
+    console.log('open created')
   }
 }
 </script>

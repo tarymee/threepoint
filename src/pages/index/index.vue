@@ -140,9 +140,12 @@ export default {
       })
     }
   },
-  created () {
+  mounted () {
+    console.log('index mounted')
+
+
     mpvue.switchTab({
-      url: './pages/open/main'
+      url: '/pages/store/main'
     })
     // let app = getApp()
     // console.log(app)
@@ -157,6 +160,9 @@ export default {
     //     console.log(res)
     //   }
     // })
+  },
+  created () {
+    console.log('index created')
   }
 }
 </script>

@@ -72,11 +72,6 @@ function wxLogin(callback) {
       }
     })
   }
-
-
-
-
-
 }
 
 // 封装wx.request方法
