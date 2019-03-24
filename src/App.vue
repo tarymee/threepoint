@@ -54,4 +54,71 @@ export default {
   -webkit-transition: width 2s;
   -o-transition: width 2s;
 }
+
+.none {
+  text-align: center;
+  font-size: 24rpx;
+  color: #999;
+  padding: 20px 0;
+}
+
+
+/* 列表模块 */
+.list {
+  display: block;
+  line-height: 25px;
+  padding: 10px 0 10px 0;
+  margin: 0 15px;
+  border-bottom: 1rpx solid #eee;
+  overflow: hidden;
+}
+.list-l {
+  font-size: 16px;
+  float: left;
+}
+.list-r {
+  float: right;
+  color: #999;
+  font-size: 12px;
+}
+.list-r image {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  vertical-align: top;
+  margin-top: 6px;
+}
+
+
+/* 商品 */
+.pro {
+  overflow: hidden;
+  margin: 0 10px 15px;
+}
+.pro-item {
+  float: left;
+  margin: 5px;
+}
+.pro-item image {
+  display: block;
+  width: 167px;
+  height: 167px;
+  background-color: #eee;
+}
+.pro-item-tit {
+  display: block;
+  font-size: 13px;
+  color: #333;
+  line-height: 25px;
+}
+.pro-item-price {
+  display: block;
+  font-size: 16px;
+  color: #d1a178;
+  font-weight: bold;
+  line-height: 20px;
+}
+.pro-item-price text {
+  font-size: 12px;
+}
 </style>

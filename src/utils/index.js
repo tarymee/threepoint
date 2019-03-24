@@ -93,7 +93,7 @@ function request(config) {
       responseType: responseType || 'text',
       data: data,
       success(res) {
-        success && success(res)
+        success && success(res.data)
       },
       fail(res) {
         if (isShowError) {
@@ -128,7 +128,21 @@ function request(config) {
 
 
 
+function phone(number) {
+  mpvue.makePhoneCall({
+    phoneNumber: number
+  })
+}
+function jump(url) {
+  if (url) {
+    mpvue.navigateTo({
+      url: url
+    })
+  } else {
+      console.log('没有url')
+  }
 
+}
 
 
 // // 提示
@@ -248,6 +262,8 @@ function request(config) {
 
 module.exports = {
   api,
+  phone,
+  jump,
   wxLogin,
   request
   // alert,

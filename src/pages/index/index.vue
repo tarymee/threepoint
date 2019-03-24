@@ -1,10 +1,11 @@
 <template>
   <div>
-    <div class="people">
-      <div class="people-l-img"><image src="http://fpoimg.com/100x100" mode="aspectFill"></image></div>
-      <div class="people-l-store"><div class="people-l-name">彭于晏</div><div class="people-l-storename">三分联盟直营店</div></div>
-      <div class="people-r" style="border-left: 1px solid #e9e9e9"><image src="/static/img/home-icon2.png" mode="aspectFill"></image><div class="people-r-des">客服</div></div>
-      <div class="people-r" @click="phone()"><image src="/static/img/home-icon1.png" mode="aspectFill"></image><div class="people-r-des">电话</div></div>
+
+    <div class="site" @click="jump()">
+      <div class="site-l-img"><image src="http://fpoimg.com/100x100" mode="aspectFill"></image></div>
+      <div class="site-l-store"><div class="site-l-name">{{site.title}}</div><div class="site-l-storename">{{site.address}}</div></div>
+      <div class="site-r" style="border-left: 1px solid #e9e9e9"><image src="/static/img/home-icon2.png" mode="aspectFill"></image><div class="site-r-des">客服</div></div>
+      <div class="site-r" @click="phone(site.phone)"><image src="/static/img/home-icon1.png" mode="aspectFill"></image><div class="site-r-des">电话</div></div>
     </div>
 
     <swiper v-if="sliderArr.length > 0" autoplay="true" interval="5000" duration="300" class="swiper">
@@ -16,29 +17,39 @@
     </swiper>
 
     <div class="cate">
-      <a class="cate-item" href="/pages/counter/main"><image src="/static/img/home-cate1.png" mode="aspectFill"></image><text>竹木类</text></a>
-      <a class="cate-item" href="/pages/counter/main"><image src="/static/img/home-cate2.png" mode="aspectFill"></image><text>陶瓷类</text></a>
-      <a class="cate-item" href="/pages/counter/main"><image src="/static/img/home-cate3.png" mode="aspectFill"></image><text>玻璃类</text></a>
-      <a class="cate-item" href="/pages/counter/main"><image src="/static/img/home-cate4.png" mode="aspectFill"></image><text>不锈钢</text></a>
-      <a class="cate-item" href="/pages/counter/main"><image src="/static/img/home-cate5.png" mode="aspectFill"></image><text>装饰类</text></a>
-      <a class="cate-item" href="/pages/counter/main"><image src="/static/img/home-cate6.png" mode="aspectFill"></image><text>布料</text></a>
+      <a class="cate-item" href="/pages/cate/main"><image src="/static/img/home-cate1.png" mode="aspectFill"></image><text>竹木类</text></a>
+      <a class="cate-item" href="/pages/cate/main"><image src="/static/img/home-cate2.png" mode="aspectFill"></image><text>陶瓷类</text></a>
+      <a class="cate-item" href="/pages/cate/main"><image src="/static/img/home-cate3.png" mode="aspectFill"></image><text>玻璃类</text></a>
+      <a class="cate-item" href="/pages/cate/main"><image src="/static/img/home-cate4.png" mode="aspectFill"></image><text>不锈钢</text></a>
+      <a class="cate-item" href="/pages/cate/main"><image src="/static/img/home-cate5.png" mode="aspectFill"></image><text>装饰类</text></a>
+      <a class="cate-item" href="/pages/cate/main"><image src="/static/img/home-cate6.png" mode="aspectFill"></image><text>布料</text></a>
     </div>
 
     <div class="title">新品推荐</div>
     <div class="pro1">
       <scroll-view scroll-x>
-      <a class="pro1-item" v-for="(item, index) in newArr" :key="index" :href="item.url">
-          <image :src="item.img" mode="aspectFill"></image>
-          <text class="pro1-item-tit">{{item.name}}</text>
-          <div class="pro1-item-price"><text>￥</text>{{item.price}}</div>
+      <a class="pro1-item" v-for="(item, index) in newArr" :key="index" @click="jump()">
+          <image :src="item.logo" mode="aspectFill"></image>
+          <text class="pro1-item-tit">{{item.title}}</text>
+          <div class="pro1-item-price"><text>￥</text>{{item.marketPrice}}</div>
         </a>
       </scroll-view>
     </div>
+
     <div class="more">
-      <a class="more-btn" href="/pages/counter/main">查看更多</a>
+      <a class="more-btn" @click="jump()">查看更多</a>
     </div>
 
     <div class="title">精选商品</div>
+
+    <div class="cate1">
+      <scroll-view scroll-x>
+        <a class="cate1-item" v-for="(item, index) in cate1Arr" :key="index" @click="load(item.id)">
+          <text>{{item.title}}</text>
+        </a>
+      </scroll-view>
+    </div>
+
     <div class="pro">
       <a class="pro-item" v-for="(item, index) in choiceArr" :key="index" :href="item.url">
         <image :src="item.img" mode="aspectFill"></image>
@@ -46,13 +57,6 @@
         <div class="pro-item-price"><text>￥</text>{{item.price}}</div>
       </a>
     </div>
-
-    <!-- <form class="form-container">
-      <card :text="motto"></card>
-      <input type="text" :value="motto" placeholder="v-model" />
-      <input type="text" v-model="motto" placeholder="v-model" />
-      <input type="text" v-model.lazy="motto" placeholder="v-model.lazy" />
-    </form> -->
 
   </div>
 </template>
@@ -65,7 +69,7 @@ import u from '@/utils/index'
 export default {
   data () {
     return {
-      // motto: 'Hello miniprograme',
+      site: {},
       sliderArr: [
         {
           img: '/static/img/home-slider.jpg',
@@ -73,29 +77,59 @@ export default {
         }
       ],
       newArr: [
+        // {
+        //   img: 'http://fpoimg.com/400x400',
+        //   name: '青花瓷功夫茶杯',
+        //   price: '386',
+        //   url: '/pages/logs/main'
+        // },
+        // {
+        //   img: 'http://fpoimg.com/400x400',
+        //   name: '青花瓷功夫茶杯',
+        //   price: '386',
+        //   url: '/pages/logs/main'
+        // },
+        // {
+        //   img: 'http://fpoimg.com/400x400',
+        //   name: '青花瓷功夫茶杯',
+        //   price: '386',
+        //   url: '/pages/logs/main'
+        // },
+        // {
+        //   img: 'http://fpoimg.com/400x400',
+        //   name: '青花瓷功夫茶杯',
+        //   price: '386',
+        //   url: '/pages/logs/main'
+        // }
+      ],
+      cate1Arr: [
         {
-          img: 'http://fpoimg.com/400x400',
-          name: '青花瓷功夫茶杯',
-          price: '386',
-          url: '/pages/logs/main'
+          title: '青瓷',
+          id: '1'
         },
         {
-          img: 'http://fpoimg.com/400x400',
-          name: '青花瓷功夫茶杯',
-          price: '386',
-          url: '/pages/logs/main'
+          title: '白瓷',
+          id: '2'
         },
         {
-          img: 'http://fpoimg.com/400x400',
-          name: '青花瓷功夫茶杯',
-          price: '386',
-          url: '/pages/logs/main'
+          title: '对帖',
+          id: '3'
         },
         {
-          img: 'http://fpoimg.com/400x400',
-          name: '青花瓷功夫茶杯',
-          price: '386',
-          url: '/pages/logs/main'
+          title: '荷花',
+          id: '4'
+        },
+        {
+          title: '印花',
+          id: '5'
+        },
+        {
+          title: '玻璃',
+          id: '6'
+        },
+        {
+          title: '布料',
+          id: '7'
         }
       ],
       choiceArr: [
@@ -126,27 +160,35 @@ export default {
         mpvue.navigateTo({ url })
       }
     },
-    phone () {
-      mpvue.makePhoneCall({
-        phoneNumber: '1340000'
-      })
+    phone (number) {
+      u.phone(number)
     },
     jump (url) {
-      // console.log(url)
-      // console.log(mpvue)
-      // console.log(mpvuePlatform)
-      mpvue.navigateTo({
-        url: url
-      })
+      u.jump(url)
     }
   },
   mounted () {
     console.log('index mounted')
-
-
-    mpvue.switchTab({
-      url: '/pages/store/main'
+    var that = this
+    u.request({
+      url: u.api.index,
+      method: 'POST',
+      isVerifyLogin: false,
+      success(res) {
+        console.log(res)
+        that.site = res.site
+        that.newArr = res.newest
+        that.site = res.site
+      }
     })
+
+    mpvue.navigateTo({
+      url: '/pages/cate/main'
+    })
+    // mpvue.switchTab({
+    //   url: '/pages/user/main'
+    // })
+
     // let app = getApp()
     // console.log(app)
     // console.log(this)
@@ -167,81 +209,82 @@ export default {
 }
 </script>
 <style scoped>
-.people {
+/* 门店 */
+.site {
   overflow: hidden;
-  margin: 30rpx;
+  margin: 15px;
 }
-.people-l-img {
+.site-l-img {
   float: left;
 
 }
-.people-l-img image {
+.site-l-img image {
   display: block;
-  width: 100rpx;
-  height: 100rpx;
+  width: 50px;
+  height: 50px;
   overflow: hidden;
   border-radius: 50%;
 }
-.people-l-store {
-  margin-left: 20rpx;
+.site-l-store {
+  margin-left: 10px;
   float: left;
 }
-.people-l-name {
-  line-height: 50rpx;
-  font-size: 32rpx;
+.site-l-name {
+  line-height: 25px;
+  font-size: 16px;
   color: #333;
 }
-.people-l-storename {
-  line-height: 40rpx;
-  font-size: 24rpx;
+.site-l-storename {
+  line-height: 20px;
+  font-size: 12px;
   color: #999;
 }
-.people-r {
+.site-r {
   float: right;
-  padding-left: 30rpx;
-  margin-top: 10rpx;
-  margin-left: 30rpx;
+  padding-left: 15px;
+  margin-top: 5px;
+  margin-left: 15px;
 }
-.people-r image {
+.site-r image {
   display: block;
-  width: 50rpx;
-  height: 50rpx;
+  width: 25px;
+  height: 25px;
 }
-.people-r-des {
+.site-r-des {
   font-size: 12px;
-  line-height: 30rpx;
+  line-height: 15px;
   color: #999;
   line-height: 12px;
 }
-
+/* 焦点图 */
 .swiper {
-  width: 690rpx;
-  border-radius: 10rpx;
+  width: 345px;
+  border-radius: 5px;
   overflow: hidden;
-  margin: 0 30rpx 0 30rpx;
-  height: 300rpx;
+  margin: 0 15px 0 15px;
+  height: 150px;
 }
 .swiper swiper-item {
   background: #eee;
 }
 .swiper image {
   width: 100%;
-  height: 300rpx;
+  height: 150px;
 }
 
-
+/* 分类 */
 .cate {
-  margin: 30rpx;
+  margin: 15px;
   overflow: hidden;
 }
 .cate-item {
-  width: 230rpx;
-  padding: 10rpx 0;
+  width: 115px;
+  padding: 5px 0;
   float: left;
 }
 .cate-item image {
-  width: 100rpx;
-  height: 100rpx;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   overflow: hidden;
   display: block;
@@ -249,17 +292,17 @@ export default {
 }
 .cate-item text {
   display: block;
-  font-size: 24rpx;
-  line-height: 40rpx;
+  font-size: 12px;
+  line-height: 20px;
   text-align: center;
   color: #333;
 }
 
 .title {
-  height: 100rpx;
+  height: 50px;
   width: 100%;
-  line-height: 100rpx;
-  font-size: 38rpx;
+  line-height: 50px;
+  font-size: 20px;
   font-weight: bold;
   text-align: center;
   background-image: -webkit-linear-gradient(top, #eee, #fff, #fff, #fff, #fff);
@@ -267,82 +310,79 @@ export default {
   background-image: -moz-linear-gradient(top, #eee, #fff, #fff, #fff, #fff);
   background-image: linear-gradient(to bottom, #eee, #fff, #fff, #fff, #fff);
 }
-
+/* 新品推荐 */
 .pro1 {
-  margin: 10rpx 0 30rpx 30rpx;
+  margin: 5px 0 15px 15px;
 }
 .pro1 scroll-view {
  white-space: nowrap;
 }
 .pro1-item {
   display: inline-block;
-  margin-right: 20rpx;
+  margin-right: 10px;
 }
 .pro1-item image {
   display: block;
-  width: 250rpx;
-  height: 250rpx;
+  width: 125px;
+  height: 125px;
 }
 .pro1-item-tit {
   display: block;
-  font-size: 26rpx;
+  font-size: 13px;
   color: #333;
-  line-height: 50rpx;
+  line-height: 25px;
 }
 .pro1-item-price {
   display: block;
-  font-size: 32rpx;
+  font-size: 16px;
   color: #d1a178;
   font-weight: bold;
-  line-height: 40rpx;
+  line-height: 20px;
 }
 .pro1-item-price text {
   font-size: 12px;
 }
-
+/* 更多 */
 .more {
-  margin: 30rpx 0px;
+  margin: 15px 0px;
   text-align: center;
 }
 .more-btn {
   display: inline-block;
-  line-height: 60rpx;
-  height: 60rpx;
+  line-height: 30px;
+  height: 30px;
   border: 1rpx solid #d1a178;
-  border-radius: 30rpx;
-  padding: 0 50rpx;
-  font-size: 28rpx;
+  border-radius: 15px;
+  padding: 0 25px;
+  font-size: 14px;
   text-align: center;
   color: #d1a178;
 }
 
-.pro {
-  overflow: hidden;
-  margin: 0 20rpx 30rpx;
+
+/* 精选下面的分类 */
+.cate1 {
+  margin: 5px 0 15px 15px;
 }
-.pro-item {
-  float: left;
-  margin: 10rpx;
+.cate1 scroll-view {
+ white-space: nowrap;
 }
-.pro-item image {
+.cate1-item {
+  display: inline-block;
+  margin-right: 25px;
+}
+.cate1-item text {
   display: block;
-  width: 335rpx;
-  height: 335rpx;
-}
-.pro-item-tit {
-  display: block;
-  font-size: 26rpx;
+  font-size: 13px;
   color: #333;
-  line-height: 50rpx;
+  line-height: 25px;
+  border-bottom: 2px solid #d1a178;
 }
-.pro-item-price {
+.cate1-item.cur text {
   display: block;
-  font-size: 32rpx;
-  color: #d1a178;
+  font-size: 15px;
   font-weight: bold;
-  line-height: 40rpx;
+  border-bottom: 2px solid #d1a178;
 }
-.pro-item-price text {
-  font-size: 12px;
-}
+
 </style>
