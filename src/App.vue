@@ -59,7 +59,12 @@ export default {
 
 
 
-
+.pagetip {
+  text-align: center;
+  font-size: 12px;
+  color: #999;
+  padding: 20px 0;
+}
 
 
 image[lazy-load] {
@@ -67,7 +72,7 @@ image[lazy-load] {
 }
 .none {
   text-align: center;
-  font-size: 24rpx;
+  font-size: 12px;
   color: #999;
   padding: 20px 0;
 }

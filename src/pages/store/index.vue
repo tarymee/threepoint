@@ -62,10 +62,10 @@ export default {
     }
   },
   mounted () {
-    console.log('open mounted')
+    console.log('store mounted')
   },
   created () {
-    console.log('open created')
+    // console.log('store created')
   }
 }
 </script>

@@ -76,7 +76,7 @@ export default {
     })
   },
   created () {
-    console.log('open created')
+    // console.log('open created')
   }
 }
 </script>

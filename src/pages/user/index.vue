@@ -127,6 +127,13 @@ export default {
       console.log('test')
     }
   },
+  onPageScroll: function(t) {
+    // console.log(t)
+  },
+  onReachBottom: function(t) {
+    console.log('地步')
+    this.foo()
+  },
   mounted () {
     console.log('index mounted')
     var that = this

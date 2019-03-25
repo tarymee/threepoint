@@ -182,12 +182,12 @@ export default {
       }
     })
 
-    // mpvue.navigateTo({
-    //   url: '/pages/cate/main'
-    // })
-    mpvue.switchTab({
-      url: '/pages/user/main'
+    mpvue.navigateTo({
+      url: '/pages/cate/main'
     })
+    // mpvue.switchTab({
+    //   url: '/pages/user/main'
+    // })
 
     // let app = getApp()
     // console.log(app)
@@ -204,7 +204,7 @@ export default {
     // })
   },
   created () {
-    console.log('index created')
+    // console.log('index created')
   }
 }
 </script>
