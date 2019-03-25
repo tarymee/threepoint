@@ -55,6 +55,16 @@ export default {
   -o-transition: width 2s;
 }
 
+
+
+
+
+
+
+
+image[lazy-load] {
+  background-color: #eee;
+}
 .none {
   text-align: center;
   font-size: 24rpx;
@@ -67,26 +77,25 @@ export default {
 .list {
   display: block;
   line-height: 25px;
-  padding: 10px 0 10px 0;
-  margin: 0 15px;
+  padding: 15px;
   border-bottom: 1rpx solid #eee;
   overflow: hidden;
 }
 .list-l {
-  font-size: 16px;
+  font-size: 15px;
   float: left;
 }
 .list-r {
   float: right;
   color: #999;
-  font-size: 12px;
+  font-size: 14px;
 }
 .list-r image {
   display: inline-block;
-  width: 12px;
-  height: 12px;
+  width: 5px;
+  height: 9px;
   vertical-align: top;
-  margin-top: 6px;
+  margin-top: 8px;
 }
 
 

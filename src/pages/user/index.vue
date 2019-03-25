@@ -11,7 +11,7 @@
     <div class="user">
       <a class="list" style="border: none" href="/pages/myorder/main">
         <div class="list-l">我的订单</div>
-        <div class="list-r">查看全部 <image src="http://fpoimg.com/10x10" mode="aspectFill"></image></div>
+        <div class="list-r">查看全部 <image src="/static/img/right-icon.png" mode="aspectFill"></image></div>
       </a>
 
       <div class="status">
@@ -19,30 +19,30 @@
         <a class="status-item" href="/pages/order/main"><image src="/static/img/user-icon2.png" mode="aspectFill"></image><text>待发货</text></a>
         <a class="status-item" href="/pages/order/main"><image src="/static/img/user-icon3.png" mode="aspectFill"></image><text>待收款</text></a>
         <a class="status-item" href="/pages/order/main"><image src="/static/img/user-icon4.png" mode="aspectFill"></image><text>已完成</text></a>
-        <a class="status-item" href="/pages/order/main"><image src="/static/img/user-icon4.png" mode="aspectFill"></image><text>退换/售后</text></a>
+        <a class="status-item" href="/pages/order/main"><image src="/static/img/user-icon5.png" mode="aspectFill"></image><text>退换/售后</text></a>
       </div>
 
       <div style="background-color: #efefef; height: 15px"></div>
 
       <a class="list" href="/pages/address/main">
         <div class="list-l">收获地址</div>
-        <div class="list-r"><image src="http://fpoimg.com/10x10" mode="aspectFill"></image></div>
+        <div class="list-r"><image src="/static/img/right-icon.png" mode="aspectFill"></image></div>
       </a>
       <a class="list" href="/pages/bindphone/main">
         <div class="list-l">绑定手机</div>
-        <div class="list-r">未绑定 <image src="http://fpoimg.com/10x10" mode="aspectFill"></image></div>
+        <div class="list-r">未绑定 <image src="/static/img/right-icon.png" mode="aspectFill"></image></div>
       </a>
       <a class="list" href="/pages/service/main">
         <div class="list-l">联系客服</div>
-        <div class="list-r"><image src="http://fpoimg.com/10x10" mode="aspectFill"></image></div>
+        <div class="list-r"><image src="/static/img/right-icon.png" mode="aspectFill"></image></div>
       </a>
       <a class="list" href="/pages/feedback/main">
         <div class="list-l">用户反馈</div>
-        <div class="list-r"><image src="http://fpoimg.com/10x10" mode="aspectFill"></image></div>
+        <div class="list-r"><image src="/static/img/right-icon.png" mode="aspectFill"></image></div>
       </a>
       <a class="list" href="/pages/about/main">
         <div class="list-l">关于</div>
-        <div class="list-r"><image src="http://fpoimg.com/10x10" mode="aspectFill"></image></div>
+        <div class="list-r"><image src="/static/img/right-icon.png" mode="aspectFill"></image></div>
       </a>
 
       <div style="height: 50px"></div>
