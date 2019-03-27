@@ -8,39 +8,24 @@
       </a>
     </div>
     <div class="pagetip">{{pagetip}}</div>
-    <!-- <div class="more" v-if="pageindex <= pagecount">
-      <a class="more-btn">{{pagetip}}</a>
-    </div>
-    <div class="none" v-if="pageindex > pagecount">没有数据了</div> -->
-
-
   </div>
 </template>
 <style scoped>
-/* 更多 */
-/* .more {
-  margin: 15px;
-  text-align: center;
-}
-.more-btn {
-  display: block;
-  line-height: 30px;
-  height: 30px;
-  border: 1upx solid #d1a178;
-  border-radius: 15px;
-  font-size: 14px;
-  text-align: center;
-  color: #d1a178;
-} */
+    .pagetip {
+        text-align: center;
+        font-size: 12px;
+        color: #999;
+        padding: 20px 0;
+    }
 </style>
 
 <script>
 import u from '@/common/util'
-// import mixin from '@/mixin/mixin.js'
+import mixin from '@/common/mixin.js'
 
 export default {
   components: {},
-  // mixins: [mixin],
+  mixins: [mixin],
   data () {
     return {
       pageapi: u.api.index,

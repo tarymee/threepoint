@@ -140,5 +140,25 @@
                 "selectedIconPath": "static/tabs/user-active.png"
             }
         ]
+    },
+    "condition" : {
+        "current": 2,
+        "list": [
+            {
+                "name": "user",
+                "path": "pages/user/user",
+                "query": "id=4000&autoplay=false"
+            },
+            {
+                "name": "cate",
+                "path": "pages/cate/cate",
+                "query": "id=4000"
+            },
+            {
+                "name": "confirm",
+                "path": "pages/confirm/confirm",
+                "query": "id=4000"
+            }
+        ]
     }
 }

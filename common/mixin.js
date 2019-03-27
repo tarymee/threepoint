@@ -1,6 +1,5 @@
 
-// import u from '../utils/index'
-var u = require('../utils/index')
+import u from '@/common/util'
 const mixin = {
   data() {
     return {
@@ -25,9 +24,6 @@ const mixin = {
     that.load()
   },
   methods: {
-    foo() {
-      console.log('foo')
-    },
     load() {
       var that = this
       console.log(that.pageapi)
