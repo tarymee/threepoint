@@ -1,6 +1,7 @@
 <template>
   <div>
-    <tt-bottom-load :api="api">
+    <div class="pro__item-price" @click="reload">重新加载</div>
+    <tt-bottom-load :api="api" :params="postData" ref="ttBottomLoad">
       <div class="pro">
         <a class="pro__item" v-for="(item, index) in data" :key="index" :href="item.url">
           <image class="pro__item-img" :src="item.logo" lazy-load="true" mode="aspectFill"></image>
@@ -59,12 +60,20 @@ export default {
   },
   data () {
     return {
-      api: u.api.index
+      api: u.api.index,
+      postData: {
+        id: '123456'
+      }
     }
   },
   methods: {
-    test () {
-      console.log('test')
+    reload () {
+      console.log('reload')
+      // this.api = 'oooo'
+      this.$refs.ttBottomLoad.reload()
+    },
+    haha () {
+      console.log('haha')
     }
   }
 }

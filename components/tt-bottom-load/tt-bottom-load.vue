@@ -1,7 +1,10 @@
 <template>
   <view class="tt-bottom-load">
     <slot></slot>
-    <div class="pagetip">{{pagetip}}</div>
+    <div class="tt-bottom-load__tip">
+      <img src="http://fpoimg.com/400x400" class="tt-bottom-load__tip-img" v-if="tip === '暂无数据'" />
+      <div class="tt-bottom-load__tip-text">{{tip}}</div>
+    </div>
   </view>
 </template>
 
@@ -14,37 +17,29 @@ export default {
     return {
       pageindex: 1,
       pagesize: 10,
-      pagenum: 1,
-      pagetip: '加载中...',
+      pagetotal: 0,
+      tip: '查看更多',
       data: [
-        {
-          logo: 'http://fpoimg.com/400x400',
-          title: '青花瓷功夫茶杯',
-          price: '386',
-          url: '/pages/order/order'
-        }
+        // {
+        //   logo: 'http://fpoimg.com/400x400',
+        //   title: '青花瓷功夫茶杯',
+        //   price: '386',
+        //   url: '/pages/order/order'
+        // }
       ]
     }
   },
   props: {
     api: String,
-    disabled: {
-      //是否禁用
+    badgeType: {
       type: [Boolean, String],
       default: false
     },
-    badgeType: {
-      //badge类型
-      type: String,
-      default: "success"
-    },
-    extraIcon: {
+    params: {
       type: Object,
       default() {
         return {
-          type: "contact",
-          color: "#000000",
-          size: "20"
+          type: "contact"
         }
       }
     }
@@ -55,17 +50,30 @@ export default {
   },
   mounted() {
     console.log('mixin mounted')
-    var that = this
+    let that = this
     that.load()
   },
   methods: {
-    load() {
-      var that = this
+    reload() {
+      let that = this
+      // that.$parent.haha()
       console.log(that.api)
-      if (that.pageindex <= that.pagenum && that.pagetip === "加载中...") {
+      // 父组件可能会更改api和params
+      // 滚动到顶部
+      that.data = []
+      that.pageindex = 1
+      that.pagetotal = 0
+      that.tip = '查看更多'
+      that.load()
+    },
+    load() {
+      let that = this
+      console.log(that.api)
+      if (that.tip === '查看更多') {
+        that.tip = '加载中...'
         u.request({
           url: that.api,
-          method: "POST",
+          method: 'POST',
           data: {
             pagesize: that.pagesize,
             pageindex: that.pageindex
@@ -73,17 +81,23 @@ export default {
           isVerifyLogin: false,
           success(res) {
             console.log(res)
-            that.data = that.data.concat(res.newest)
-            that.pagenum = 3
-            that.pageindex++
-            if (that.pageindex > that.pagenum) {
-              that.pagetip = "没有数据了"
+            // res.newest = []
+            if (res.newest && res.newest.length) {
+                that.data = that.data.concat(res.newest)
+            }
+            that.pagetotal = 9
+            that.pageindex ++
+
+            if (that.pagetotal === 0) {
+                that.tip = '暂无数据'
+            } else if (that.pageindex > that.pagetotal) {
+                that.tip = '没有数据了'
             } else {
-              that.pagetip = "加载中..."
+              that.tip = '查看更多'
             }
           },
           fail(res) {
-            that.pagetip = "加载中..."
+            that.tip = '加载失败 点击重新加载'
           }
         })
       }
@@ -92,12 +106,28 @@ export default {
 }
 </script>
 
-<style>
+<style scope>
 @charset "UTF-8";
-.pagetip {
+.tt-bottom-load__tip {
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #999;
+  padding: 20px 0;
+}
+.tt-bottom-load__tip {
+  padding: 60px 0;
+}
+.tt-bottom-load__tip-img {
+  display: block;
+  width: 100px;
+  height: 100px;
+  margin: 0px auto;
+}
+.tt-bottom-load__tip-text {
   text-align: center;
   font-size: 12px;
   color: #999;
-  padding: 20px 0;
+  line-height: 1.5;
 }
 </style>

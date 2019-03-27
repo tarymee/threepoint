@@ -142,7 +142,7 @@
         ]
     },
     "condition" : {
-        "current": 2,
+        "current": 1,
         "list": [
             {
                 "name": "user",
