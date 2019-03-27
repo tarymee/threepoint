@@ -1,0 +1,144 @@
+{
+    "pages": [
+        {
+            "path": "pages/index/index",
+            "style": {
+                "navigationBarTitleText": "三分联盟"
+            }
+        },
+        {
+            "path": "pages/open/open",
+            "style": {
+                "navigationBarTitleText": "我要开店"
+            }
+        },
+        {
+            "path": "pages/store/store",
+            "style": {
+                "navigationBarTitleText": "门店"
+            }
+        },
+        {
+            "path": "pages/storedetail/storedetail",
+            "style": {
+                "navigationBarTitleText": "门店首页"
+            }
+        },
+        {
+            "path": "pages/cart/cart",
+            "style": {
+                "navigationBarTitleText": "购物车"
+            }
+        },
+        {
+            "path": "pages/user/user",
+            "style": {
+                "navigationBarTitleText": "会员中心"
+            }
+        },
+        {
+            "path": "pages/order/order",
+            "style": {
+                "navigationBarTitleText": "订单"
+            }
+        },
+        {
+            "path": "pages/myorder/myorder",
+            "style": {
+                "navigationBarTitleText": "我的订单"
+            }
+        },
+        {
+            "path": "pages/product/product",
+            "style": {
+                "navigationBarTitleText": "商品详情"
+            }
+        },
+        {
+            "path": "pages/cate/cate",
+            "style": {
+                "navigationBarTitleText": "分类"
+            }
+        },
+        {
+            "path": "pages/address/address",
+            "style": {
+                "navigationBarTitleText": "地址"
+            }
+        },
+        {
+            "path": "pages/confirm/confirm",
+            "style": {
+                "navigationBarTitleText": "订单确认"
+            }
+        },
+        {
+            "path": "pages/service/service",
+            "style": {
+                "navigationBarTitleText": "联系客服"
+            }
+        },
+        {
+            "path": "pages/about/about",
+            "style": {
+                "navigationBarTitleText": "关于三分联盟"
+            }
+        },
+        {
+            "path": "pages/bindphone/bindphone",
+            "style": {
+                "navigationBarTitleText": "绑定手机"
+            }
+        },
+        {
+            "path": "pages/feedback/feedback",
+            "style": {
+                "navigationBarTitleText": "用户反馈"
+            }
+        }
+    ],
+    "globalStyle": {
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "三分联盟",
+        "navigationBarBackgroundColor": "#F8F8F8",
+        "backgroundColor": "#FFFFFF"
+    },
+    "tabBar": {
+        "color": "#333",
+        "selectedColor": "#d0a177",
+        "borderStyle": "black",
+        "backgroundColor": "#fff",
+        "list": [
+            {
+                "text": "首页",
+                "pagePath": "pages/index/index",
+                "iconPath": "static/tabs/home.png",
+                "selectedIconPath": "static/tabs/home-active.png"
+            },
+            {
+                "text": "我要开店",
+                "pagePath": "pages/open/open",
+                "iconPath": "static/tabs/open.png",
+                "selectedIconPath": "static/tabs/open-active.png"
+            },
+            {
+                "text": "门店",
+                "pagePath": "pages/store/store",
+                "iconPath": "static/tabs/store.png",
+                "selectedIconPath": "static/tabs/store-active.png"
+            },
+            {
+                "text": "购物车",
+                "pagePath": "pages/cart/cart",
+                "iconPath": "static/tabs/cart.png",
+                "selectedIconPath": "static/tabs/cart-active.png"
+            },
+            {
+                "text": "会员中心",
+                "pagePath": "pages/user/user",
+                "iconPath": "static/tabs/user.png",
+                "selectedIconPath": "static/tabs/user-active.png"
+            }
+        ]
+    }
+}
