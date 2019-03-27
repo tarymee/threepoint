@@ -1,12 +1,12 @@
 <template>
   <view class="tt-bottom-load">
-        <slot></slot>
-        <div class="pagetip">{{pagetip}}</div>
+    <slot></slot>
+    <div class="pagetip">{{pagetip}}</div>
   </view>
 </template>
 
 <script>
-import u from "@/common/util";
+import u from "@/common/util"
 export default {
   name: "tt-bottom-load",
   components: {},
@@ -17,14 +17,14 @@ export default {
       pagenum: 1,
       pagetip: '加载中...',
       data: [
-        // {
-        //   logo: 'http://fpoimg.com/400x400',
-        //   title: '青花瓷功夫茶杯',
-        //   price: '386',
-        //   url: '/pages/logs/main'
-        // }
+        {
+          logo: 'http://fpoimg.com/400x400',
+          title: '青花瓷功夫茶杯',
+          price: '386',
+          url: '/pages/order/order'
+        }
       ]
-    };
+    }
   },
   props: {
     api: String,
@@ -45,12 +45,12 @@ export default {
           type: "contact",
           color: "#000000",
           size: "20"
-        };
+        }
       }
     }
   },
   onReachBottom: function (t) {
-    console.log('触底执行')
+    // console.log('触底执行')
     this.load()
   },
   mounted() {
@@ -60,8 +60,8 @@ export default {
   },
   methods: {
     load() {
-      var that = this;
-      console.log(that.api);
+      var that = this
+      console.log(that.api)
       if (that.pageindex <= that.pagenum && that.pagetip === "加载中...") {
         u.request({
           url: that.api,
@@ -72,24 +72,24 @@ export default {
           },
           isVerifyLogin: false,
           success(res) {
-            console.log(res);
-            that.data = that.data.concat(res.newest);
-            that.pagenum = 3;
-            that.pageindex++;
+            console.log(res)
+            that.data = that.data.concat(res.newest)
+            that.pagenum = 3
+            that.pageindex++
             if (that.pageindex > that.pagenum) {
-              that.pagetip = "没有数据了";
+              that.pagetip = "没有数据了"
             } else {
-              that.pagetip = "加载中...";
+              that.pagetip = "加载中..."
             }
           },
           fail(res) {
-            that.pagetip = "加载中...";
+            that.pagetip = "加载中..."
           }
-        });
+        })
       }
     }
   }
-};
+}
 </script>
 
 <style>

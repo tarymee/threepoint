@@ -66,25 +66,6 @@ export default {
     test () {
       console.log('test')
     }
-  },
-  mounted () {
-    console.log('index mounted')
-    var that = this
-    // u.request({
-    //   url: u.api.index,
-    //   method: 'POST',
-    //   isVerifyLogin: false,
-    //   success(res) {
-    //     console.log(res)
-    //     that.site = res.site
-    //     that.newArr = res.newest
-    //     that.site = res.site
-    //   }
-    // })
-
-  },
-  created () {
-
   }
 }
 </script>
