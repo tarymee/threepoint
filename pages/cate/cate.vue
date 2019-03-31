@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- <div class="pro__item-price" @click="reload">重新加载</div> -->
+    <div class="pro__item-price" @click="jump">重新加载</div>
     <tt-bottom-load :api="api" :params="postData" pagesize="20" ref="ttBottomLoad">
       <div class="pro">
         <a class="pro__item" v-for="(item, index) in data" :key="index" :href="item.url">
@@ -71,6 +71,29 @@ export default {
       console.log('reload')
       // this.api = 'oooo'
       this.$refs.ttBottomLoad.reload()
+    },
+    goDetail: function (e) {
+        console.log(e)
+        // let detail = {
+        //     author_name: e.author_name,
+        //     cover: e.cover,
+        //     id: e.id,
+        //     post_id: e.post_id,
+        //     published_at: e.published_at,
+        //     title: e.title
+        // }
+        // uni.navigateTo({
+        //     url: "/pages/product/main?detailDate=" + encodeURIComponent(JSON.stringify(detail))
+        // })
+    },
+    jump(url) {
+        if (url) {
+            uni.navigateTo({
+                url: url
+            })
+        } else {
+            console.log('没有url')
+        }
     }
   }
 }

@@ -8,7 +8,7 @@
       <div class="site-r" @click="phone(site.phone)"><image src="/static/img/home-icon1.png" mode="aspectFill"></image><div class="site-r-des">电话</div></div>
     </div>
 
-    <swiper v-if="sliderArr.length > 0" autoplay="true" interval="5000" duration="300" class="swiper">
+    <swiper v-if="sliderArr.length > 0" class="swiper" :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
       <block v-for="(item, index) in sliderArr" :key="index" >
         <swiper-item>
           <image lazy-load :src="item.img" mode="aspectFill" @click="jump(item.url)"></image>
@@ -66,11 +66,25 @@
     export default {
         data() {
             return {
+                autoplay: true,
+                indicatorDots: true,
+                interval: 5000,
+                duration: 300,
                 site: {},
-                sliderArr: [{
-                    img: '/static/img/home-slider.jpg',
-                    url: '/pages/logs/main'
-                }],
+                sliderArr: [
+                    {
+                        img: '/static/img/home-slider.jpg',
+                        url: '/pages/product/product'
+                    },
+                    {
+                        img: '/static/img/home-slider.jpg',
+                        url: '/pages/product/product'
+                    },
+                    {
+                        img: '/static/img/home-slider.jpg',
+                        url: '/pages/product/product'
+                    }
+                ],
                 newArr: [
                     // {
                     //   img: 'http://fpoimg.com/400x400',

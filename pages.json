@@ -158,6 +158,11 @@
                 "name": "confirm",
                 "path": "pages/confirm/confirm",
                 "query": "id=4000"
+            },
+            {
+                "name": "product",
+                "path": "pages/product/product",
+                "query": "id=4000&title=就会看见好看"
             }
         ]
     }

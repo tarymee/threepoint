@@ -3,7 +3,7 @@
     <slot></slot>
     <div class="tt-bottom-load__tip">
       <img src="/static/img/none.png" class="tt-bottom-load__tip-img" v-if="tip === '暂无数据'" />
-      <div class="tt-bottom-load__tip-text" @click="load">{{tip}}</div>
+      <div class="tt-bottom-load__tip-text">{{tip}}</div>
     </div>
   </view>
 </template>
@@ -21,12 +21,12 @@ export default {
     return {
       tip: '加载中...',
       data: [
-        // {
-        //   logo: 'http://fpoimg.com/400x400',
-        //   title: '青花瓷功夫茶杯',
-        //   marketPrice: '386',
-        //   url: '/pages/order/order'
-        // }
+        {
+          logo: 'http://fpoimg.com/400x400',
+          title: '青花瓷功夫茶杯',
+          marketPrice: '386',
+          url: '/pages/product/product?id=12345&title=测试产品'
+        }
       ]
     }
   },
@@ -68,6 +68,14 @@ export default {
       isload = true
       that.tip = '加载中...'
       that.load()
+    },
+    goDetail: function (e) {
+      console.log(22)
+        console.log(e)
+    },
+    jump: function (e) {
+      console.log(22)
+        console.log(e)
     },
     load() {
       let that = this
