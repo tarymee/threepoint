@@ -54,25 +54,25 @@
     </div>
 
 
-<uni-popup :show="isShowSel" position="bottom" @hidePopup="togglePopup()">
-    <view class="bottom-title">分享到</view>
-    <view class="bottom-content">
-        <view class="bottom-content-box" v-for="(item, index) in bottomData" :key="index">
-            <view class="bottom-content-image" :class="item.name">
-                <text class="icon">{{ item.icon }}</text>
+    <uni-popup :show="isShowSel" position="bottom" @hidePopup="togglePopup()">
+        <view class="bottom-title">分享到</view>
+        <view class="bottom-content">
+            <view class="bottom-content-box" v-for="(item, index) in bottomData" :key="index" @click="test">
+                <view class="bottom-content-image" :class="item.name">
+                    <text class="icon">{{ item.icon }}</text>
+                </view>
+                <view class="bottom-content-text">{{ item.text }}</view>
             </view>
-            <view class="bottom-content-text">{{ item.text }}</view>
         </view>
-    </view>
-    <view class="bottom-btn" @click="togglePopup('')">取消分享</view>
-</uni-popup>
+        <view class="bottom-btn" @click="togglePopup('')">取消分享</view>
+    </uni-popup>
 
     <view class="product-con">
         <rich-text :nodes="htmlString"></rich-text>
     </view>
 
     <div class="product-tf">
-        <div class="product-tf__item">
+        <div class="product-tf__item" @click="togglePopup()" data-position="bottom">
             <div class="product-tf__item-icon"></div>
             <div class="product-tf__item-tit">分享</div>
         </div>
@@ -85,8 +85,8 @@
             <div class="product-tf__item-tit">购物车</div>
         </div>
         <div class="product-tf__btns">
-            <div class="product-tf__btns-buy" @click="togglePopup()">立即购买</div>
-            <div class="product-tf__btns-add" @click="togglePopup()">加入购物车</div>
+            <div class="product-tf__btns-buy">立即购买</div>
+            <div class="product-tf__btns-add">加入购物车</div>
         </div>
     </div>
   </div>
@@ -425,6 +425,9 @@ export default {
     },
     togglePopup(type) {
         this.isShowSel = !this.isShowSel;
+    },
+    test() {
+        console.log(888)
     }
   },
   onShareAppMessage() {
