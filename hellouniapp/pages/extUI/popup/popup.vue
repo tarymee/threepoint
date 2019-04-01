@@ -9,6 +9,7 @@
 			<button type="button" @click="togglePopup('bottom')">底部部弹出 popup</button>
 			<uni-popup :show="type === 'bottom'" position="bottom" mode="fixed" msg="底部弹出popup" @hidePopup="togglePopup('')"></uni-popup>
 		</view>
+		<!-- <div class="" style="height: 1000px"></div> -->
 		<view class="example">
 			<view class="example-title">slot用法</view>
 			<button type="button" @click="togglePopup('middle-img')">居中弹出（插屏广告）</button>
@@ -19,7 +20,7 @@
 			</uni-popup>
 			<button type="button" @click="togglePopup('middle-list')">居中弹出（滚动列表）</button>
 			<uni-popup :show="type === 'middle-list'" position="middle" mode="fixed" @hidePopup="togglePopup('')">
-				<scroll-view class="uni-center center-box" scroll-y="true">
+				<scroll-view class="uni-center center-box" :scroll-y="true">
 					<view class="uni-list-item" v-for="(item, index) in list" :key="index">
 						滚动列表数据 {{ item }}
 					</view>
@@ -30,7 +31,7 @@
 				<view class="bottom-title">分享到</view>
 				<view class="bottom-content">
 					<view class="bottom-content-box" v-for="(item, index) in bottomData" :key="index">
-						<view class="bottom-content-image" :class="item.name">
+						<view class="bottom-content-image" @click="test">
 							<text class="icon">{{ item.icon }}</text>
 						</view>
 						<view class="bottom-content-text">{{ item.text }}</view>
@@ -95,7 +96,10 @@
 		methods: {
 			togglePopup(type) {
 				this.type = type;
-			}
+			},
+            test() {
+                console.log(888)
+            }
 		}
 	};
 </script>

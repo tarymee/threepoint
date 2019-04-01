@@ -37,7 +37,7 @@
 </template>
 <script>
 	// #ifndef MP-ALIPAY || MP-TOUTIAO
-	import setTabBar from '@/components/api-set-tababr.vue';
+	import setTabBar from '@/components/api-set-tabbar.vue';
 	// #endif
 
 	export default {
@@ -170,6 +170,12 @@
 							{
 							name: '屏幕亮度',
 							url: 'brightness'
+						},
+						// #endif
+						// #ifdef APP-PLUS || MP-WEIXIN
+							{
+							name: '蓝牙',
+							url: 'bluetooth'
 						},
 						// #endif
 						{

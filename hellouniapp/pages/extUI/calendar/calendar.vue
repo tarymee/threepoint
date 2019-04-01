@@ -1,46 +1,47 @@
 <template>
-	<view class="content">
+	<view class="calendar-content">
 		<!-- :start-date="'2019-2-10'"
 		:end-date="'2019-3-15'" -->
-		<text class="title">禁止滚动</text>
-		<view class="calendar-box">
-			<uni-calendar slide="none" />
+		<text class="calendar-title">日历组件</text>
+		<view class="calendar-tags-group">
+			<view class="calendar-tags" :class="{ checked: item.checked }" v-for="(item, index) in tags" :key="index" @click="toggle(index, item)">
+				<view class="calendar-tags-item">{{ item.name }}</view>
+			</view>
 		</view>
-		<text class="title">不固定高度</text>
-		<view class="calendar-box">
-			<uni-calendar :fixedHeihgt="false" slide="none" />
+		<button class="calendar-button" type="button" @click="open">打开日历</button>
+		<text v-if="timeData.lunar" class="calendar-title">已选日期</text>
+		<view v-if="timeData.lunar" class="calendar-info">
+			<view>当前选择时间 : {{timeData.fulldate}}</view>
+			<view v-if="tags['lunar'].checked">农历日期 : {{timeData.year +
+									'年' +
+									timeData.month +
+									'月' +
+									timeData.date +
+									'日 （' +
+									timeData.lunar.astro +
+									')'}}</view>
+			<view v-if="tags['lunar'].checked"> {{
+					timeData.lunar.gzYear +
+						'年' +
+						timeData.lunar.gzMonth +
+						'月' +
+						timeData.lunar.gzDay +
+						'日 (' +
+						timeData.lunar.Animal +
+						'年)'
+				}}
+				{{ timeData.lunar.IMonthCn + timeData.lunar.IDayCn }}
+				{{ timeData.lunar.isTerm ? timeData.lunar.Term : '' }}</view>
 		</view>
-		<text class="title">日历水平滚动切换</text>
-		<view class="calendar-box">
-			<uni-calendar slide="horizontal" />
+		<view v-if="show" class="calendar-mask" @click="closeMask">
+			<view class="calendar-box" @click.stop="">
+				<uni-calendar :lunar="tags['lunar'].checked" :fixedHeihgt="tags['fixedHeihgt'].checked" :slide="slide" :disableBefore="tags['disableBefore'].checked" :start-date="startDate" :end-date="endDate" :date="date" @change="change" @to-click="toClick" />
+				<view class="calendar-button-groups">
+					<button class="calendar-button-confirm" @click="closeMask">取消</button>
+					<button class="calendar-button-confirm" @click="confirm">确认</button>
+				</view>
+			</view>
 		</view>
-		<text class="title">日历垂直滚动切换</text>
-		<view class="calendar-box">
-			<uni-calendar slide="vertical" />
-		</view>
-		<text class="title">禁止选择今天之前的日期</text>
-		<view class="calendar-box">
-			<uni-calendar :disable-before="true" slide="none" />
-		</view>
-		<text class="title">选择范围 （2019-02-10 ～ 2019-05-10）</text>
-		<view class="calendar-box">
-			<uni-calendar start-date="2019-02-10" end-date="2019-05-10" slide="none" />
-		</view>
-		<text class="title">自定义当前日期 （2019-03-10）</text>
-		<view class="calendar-box">
-			<uni-calendar :disable-before="true" date="2019-03-10" slide="none" />
-		</view>
-		<text class="title">开启农历</text>
-		<view class="calendar-box">
-			<uni-calendar :lunar="true" slide="none" />
-		</view>
-		<text class="title">事件</text>
-		<view class="calendar-box">
-			<uni-calendar :lunar="false" :disable-before="false" slide="horizontal" @change="change" @to-click="toClick" />
-		</view>
-		<view>change: 当前选择时间：{{cahngInfo}}</view>
-		<view>to-click: 当前选择时间：{{clickInfo}}</view>
-
 	</view>
 </template>
 
@@ -51,25 +52,131 @@
 		components: {
 			uniCalendar
 		},
+
 		data() {
+			/**
+			 * 时间计算
+			 */
+			function getDate(date, AddDayCount = 0) {
+				if (typeof date !== 'object') {
+					date = date.replace(/-/g, '/');
+				}
+				let dd = new Date(date);
+				dd.setMonth(dd.getMonth() + AddDayCount); // 获取AddDayCount天后的日期
+				let y = dd.getFullYear();
+				let m = dd.getMonth() + 1 < 10 ? '0' + (dd.getMonth() + 1) : dd.getMonth() + 1; // 获取当前月份的日期，不足10补0
+				let d = dd.getDate() < 10 ? '0' + dd.getDate() : dd.getDate(); // 获取当前几号，不足10补0
+				return y + '-' + m + '-' + d;
+			}
+			let tags = {
+				lunar: {
+					name: '农历',
+					checked: false,
+					attr: 'lunar'
+				},
+				fixedHeihgt: {
+					name: '固定高度',
+					checked: false,
+					attr: 'fixedHeihgt'
+				},
+				vertical: {
+					name: '垂直滚动',
+					checked: false,
+					attr: 'vertical'
+				},
+				horizontal: {
+					name: '水平滚动',
+					checked: false,
+					attr: 'horizontal'
+				},
+				startDate: {
+					name: '开始日期(' + getDate(new Date(), -1) + ')',
+					checked: false,
+					value: getDate(new Date(), -1),
+					attr: 'startDate'
+				},
+				endDate: {
+					name: '结束日期(' + getDate(new Date(), 2) + ')',
+					value: getDate(new Date(), 2),
+					checked: false,
+					attr: 'endDate'
+				},
+				disableBefore: {
+					name: '禁用今天之前的日期',
+					checked: false,
+					attr: 'disableBefore'
+				},
+				date: {
+					name: '自定义当前日期(' + getDate(new Date(), 1) + ')',
+					value: getDate(new Date(), 1),
+					checked: false,
+					attr: 'date'
+				}
+			};
+
+
 			return {
-				clickInfo: '',
-				cahngInfo: '',
-				val: '',
-				maskShow: false
+				show: false,
+				tags,
+				slide: 'none',
+				date: '',
+				startDate: '',
+				endDate: '',
+				timeData: {}
 			};
 		},
 		onLoad() {},
 		methods: {
-			moveHandle() {},
 			closeMask() {
-				this.maskShow = false;
+				this.show = false;
+			},
+			toggle(index, item) {
+				this.tags[index].checked = !item.checked;
+				// item.checked = !item.checked;
+				if (index === 'horizontal') {
+					this.tags['vertical'].checked = false;
+				}
+				if (index === 'vertical') {
+					this.tags['horizontal'].checked = false;
+				}
+				// this.attribute[item.attr] = !item.checked;
+			},
+			open() {
+				if (this.tags['horizontal'].checked) {
+					this.slide = 'horizontal';
+				} else if (this.tags['vertical'].checked) {
+					this.slide = 'vertical';
+				} else {
+					this.slide = 'none';
+				}
+				if (this.tags['startDate'].checked) {
+					this.startDate = this.tags['startDate'].value;
+				} else {
+					this.startDate = '';
+				}
+				if (this.tags['endDate'].checked) {
+					this.endDate = this.tags['endDate'].value;
+				} else {
+					this.endDate = '';
+				}
+				if (this.tags['date'].checked) {
+					this.date = this.tags['date'].value;
+				} else {
+					this.date = '';
+				}
+				this.show = true;
+				console.log(this.date)
 			},
 			change(e) {
-				this.cahngInfo = e.fulldate;
+				console.log('change 返回:', e.fulldate);
+				this.timeData = e;
 			},
 			toClick(e) {
-				this.clickInfo = e.fulldate;
+				console.log('点击事件', e.fulldate);
+				this.timeData = e;
+			},
+			confirm() {
+				this.show = false;
 			}
 		}
 	};
@@ -112,41 +219,103 @@
 		background: #fff;
 	}
 
-	.content {
-		padding: 20upx;
+	.calendar-content {
+		padding: 20upx 0;
 		padding-bottom: 60upx;
 		font-size: 26upx;
 	}
 
-	.content>.title {
+	.calendar-content>.calendar-title {
 		line-height: 80upx;
-		font-weight: bold;
+		/* font-weight: bold; */
+		color: #666;
+		font-size: 32upx;
+		/* border-left: 2px #0d9ebb solid; */
+		/* padding-left: 20upx; */
+		margin: 0 20upx;
+	}
+
+	.calendar-tags-group {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		margin: 0 10upx;
+	}
+
+	.calendar-tags {
+		width: 50%;
+		box-sizing: border-box;
+	}
+
+	.calendar-tags-item {
+		padding: 10upx 20upx;
+		border: 1px rgba(0, 0, 0, .2) solid;
 		color: #333;
-		font-size: 30upx;
-		border-left: 2px #0d9ebb solid;
-		padding-left: 20upx;
+		border-radius: 10upx;
+		text-align: center;
+		margin: 10upx;
+		background: #f8f8f8;
 	}
 
-	.content .calendar-box {
-		border-radius: 15upx;
+	.calendar-tags-item:active {
+		background: #f8f8f8;
+	}
+
+	.checked .calendar-tags-item {
+		background: rgb(0, 122, 255);
+		;
+		color: #fff;
+		border: 1px rgba(0, 0, 0, 0.1) solid;
+	}
+
+	.calendar-button {
+		margin: 10upx 20upx;
+	}
+
+	.calendar-info {
+		padding: 0 20upx;
+	}
+
+	.calendar-mask {
+		position: fixed;
+		/* #ifdef H5 */
+		top: 45px;
+		/* #endif */
+		/* #ifndef H5 */
+		top: 0;
+		/* #endif */
+		bottom: 0;
+		display: flex;
+		align-items: center;
+		width: 100%;
+		background: rgba(0, 0, 0, 0.4);
+	}
+
+	.calendar-box {
+		/* margin: 20upx; */
+		border: 1px #f5f5f5 solid;
+		/* border-radius: 10upx; */
+		width: 100%;
+		height: 100%;
 		overflow: hidden;
+		background: #fff;
+	}
+
+	.calendar-button-groups {
+		position: absolute;
+		width: 100%;
+		bottom: 0;
+		display: flex;
+	}
+
+	.calendar-button-confirm {
+		width: 50%;
+		margin: 10upx;
 		border: 1px #eee solid;
-		margin-bottom: 30upx;
+		font-size: 32upx;
 	}
 
-	.content .button-group {
-		margin-top: 20upx;
-	}
-
-	.content .button-group button {
-		margin-top: 20upx;
-		font-size: 30upx;
-		line-height: 90upx;
-	}
-
-	.content .clock-info {
-		margin: 20upx 0;
-		border: 1px #ccc solid;
-		padding: 15upx;
+	.calendar-button-confirm:after {
+		border: none;
 	}
 </style>

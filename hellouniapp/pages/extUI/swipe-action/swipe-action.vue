@@ -1,52 +1,44 @@
 <template>
 	<view>
 		<view class="example-title">基本用法</view>
-		<uni-swipe-action :options="options" @click="bindClick">
+		<uni-swipe-action :options="options2" @click="bindClick">
 			<view class='cont'>SwipeAction 基础使用场景</view>
 		</uni-swipe-action>
 		<view class="example-title">禁止滑动</view>
 		<uni-swipe-action :disabled="true">
 			<view class='cont'>SwipeAction 禁止滑动展示</view>
 		</uni-swipe-action>
-		<view class="example-title">传递点击事件</view>
-		<uni-swipe-action :options="options" @click="bindClick">
-			<view class='cont'>点击选项时触发事件</view>
-		</uni-swipe-action>
-		<view class="example-title">开启或关闭事件</view>
-		<uni-swipe-action :options="options" @opened="bindOpened" @closed="bindClosed">
-			<view class='cont'>开启或关闭事件时触发事件</view>
-		</uni-swipe-action>
 		<view class="example-title">使用变量控制开关</view>
 		<view class="button-view">
 			<view class="button" @click="setOpened">当前状态：{{isOpened ? '开' : '关'}}</view>
 		</view>
-		<uni-swipe-action :options="options" :is-opened="isOpened" :auto-close="true" @opened="bindOpened2" @closed="bindClosed2">
-			<view class='cont'>开启或关闭事件时触发事件</view>
+		<uni-swipe-action :options="options2" :is-opened="isOpened" :auto-close="true" @opened="bindOpened" @closed="bindClosed">
+			<view class='cont'>使用变量控制SwipeAction的开启状态</view>
 		</uni-swipe-action>
 		<view class="example-title">与 List 组件一起使用</view>
 		<!-- #ifndef MP-BAIDU || MP-ALIPAY || MP-TOUTIAO -->
 		<uni-list>
 			<uni-swipe-action :options="options1">
-				<uni-list-item title="item1" show-arrow="false"></uni-list-item>
+				<uni-list-item title="item1" :show-arrow="false"></uni-list-item>
 			</uni-swipe-action>
-			<uni-swipe-action :options="options">
-				<uni-list-item title="item2" show-arrow="false"></uni-list-item>
+			<uni-swipe-action :options="options2">
+				<uni-list-item title="item2" :show-arrow="false"></uni-list-item>
 			</uni-swipe-action>
 			<uni-swipe-action :options="options3">
-				<uni-list-item title="item3" show-arrow="false"></uni-list-item>
+				<uni-list-item title="item3" :show-arrow="false"></uni-list-item>
 			</uni-swipe-action>
 		</uni-list>
 		<!-- #endif -->
 		<!-- #ifdef MP-BAIDU || MP-ALIPAY || MP-TOUTIAO -->
 		<view class="uni-list">
 			<uni-swipe-action :options="options1">
-				<uni-list-item title="item1" show-arrow="false"></uni-list-item>
+				<uni-list-item title="item1" :show-arrow="false"></uni-list-item>
 			</uni-swipe-action>
-			<uni-swipe-action :options="options">
-				<uni-list-item title="item2" show-arrow="false"></uni-list-item>
+			<uni-swipe-action :options="options2">
+				<uni-list-item title="item2" :show-arrow="false"></uni-list-item>
 			</uni-swipe-action>
 			<uni-swipe-action :options="options3">
-				<uni-list-item title="item3" show-arrow="false"></uni-list-item>
+				<uni-list-item title="item3" :show-arrow="false"></uni-list-item>
 			</uni-swipe-action>
 		</view>
 		<!-- #endif -->
@@ -67,7 +59,10 @@
 		data() {
 			return {
 				isOpened: false,
-				options: [{
+				options1: [{
+					text: '取消置顶'
+				}],
+				options2: [{
 					text: '取消',
 					style: {
 						backgroundColor: '#007aff'
@@ -77,9 +72,6 @@
 					style: {
 						backgroundColor: '#dd524d'
 					}
-				}],
-				options1: [{
-					text: '取消置顶'
 				}],
 				options3: [{
 					text: '置顶'
@@ -103,25 +95,13 @@
 					icon: 'none'
 				})
 			},
-			bindOpened() {
-				uni.showToast({
-					title: `SwipeAction 开启`,
-					icon: 'none'
-				})
-			},
-			bindClosed() {
-				uni.showToast({
-					title: `SwipeAction 关闭`,
-					icon: 'none'
-				})
-			},
 			setOpened() {
 				this.isOpened = !this.isOpened
 			},
-			bindOpened2() {
+			bindOpened() {
 				this.isOpened = true
 			},
-			bindClosed2() {
+			bindClosed() {
 				this.isOpened = false
 			}
 		}

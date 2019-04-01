@@ -1,7 +1,7 @@
 <template>
 	<view class="uni-padding-wrap uni-common-pb">
 		<view class="uni-header-logo">
-			<image src="../../../static/templateIndex.png"></image>
+			<image src="/static/templateIndex.png"></image>
 		</view>
 		<view class="uni-hello-text uni-common-pb">
 			以下是部分模板示例，更多模板见插件市场：https://ext.dcloud.net.cn。
@@ -69,13 +69,8 @@
 							{
 								name: '导航栏带搜索框',
 								url:'nav-search-input'
-							},
-							// #endif
-
-							{
-								name: '自定义导航栏组件(非原生)',
-								url: 'nav-bar'
 							}
+							// #endif
 						]
 					},
 					// #ifndef MP-ALIPAY
@@ -87,10 +82,10 @@
 						open: false,
 						pages: [{
 							name: '非原生',
-							url: '/platforms/app-plus/tabbar/tabbar'
+							url: 'tabbar'
 						}, {
 							name: '原生',
-							url: 'tabbar'
+							url: 'tabbar-native'
 						}]
 						// #endif
 					},
@@ -195,9 +190,6 @@
 					}, {
 						name: '表单验证',
 						url: 'datachecker'
-					}, {
-						name: '插屏弹窗',
-						url: 'sbanner'
 					},
 					// #ifdef APP-PLUS 
 					{

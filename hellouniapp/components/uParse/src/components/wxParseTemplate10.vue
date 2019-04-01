@@ -80,14 +80,15 @@
 			wxParseVideo,
 			wxParseAudio,
 		},
+		inject: ['uparse'],
 		methods: {
 			wxParseATap(e) {
 				const {
 					href
 				} = e.currentTarget.dataset;
 				if (!href) return;
-				this.node.$host.navigate(href, e);
-			},
-		},
+				this.uparse.navigate(href, e);
+			}
+		}
 	};
 </script>
