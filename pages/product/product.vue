@@ -1,70 +1,70 @@
 <template>
   <div>
     <swiper v-if="sliderArr.length > 0" class="swiper" :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
-        <swiper-item v-for="(item, index) in sliderArr" :key="index">
-            <image lazy-load :src="item.img" mode="aspectFill"></image>
+        <swiper-item v-for="(item, index) in sliderArr" :key="index" class="swiper__item">
+            <image lazy-load :src="item.img" mode="aspectFill" class="swiper__img"></image>
         </swiper-item>
     </swiper>
     <div class="product__price"></div>
     <div class="product__title"></div>
-    <div class="product__sel" @click="showSel">
+    <div class="product__sel" @click="togglePopup('select')" data-position="bottom">
         <div class="product__sel-tit">选择</div>
         <div class="product__sel-des">请选择 尺码 颜色</div>
     </div>
 
-    <div class="product__selcon">
-        <div class="product__selcon-close">X</div>
-        <div class="product__selcon-tit" style="margin-top: 50px">尺码</div>
-        <div class="product__selcon-list">
-            <div class="product__selcon-item product__selcon-item--cur">S</div>
-            <div class="product__selcon-item">M</div>
-            <div class="product__selcon-item">L</div>
-            <div class="product__selcon-item">XL</div>
-            <div class="product__selcon-item">XL</div>
-            <div class="product__selcon-item">XL</div>
-            <div class="product__selcon-item">XL</div>
-            <div class="product__selcon-item">XL</div>
-            <div class="product__selcon-item">XL</div>
-        </div>
+<!-- <div class="product__selcon-item" :class="aaa" @click="selItem2(autoplay)">qqqqqqsssm.,m.,m.,</div> -->
+<!-- <div class="product__selcon-item" :class="{
+    'product__selcon-item--cur': autoplay
+}" @click="selItem2">qqqqqqss</div> -->
 
-        <div class="product__selcon-tit">颜色</div>
-        <div class="product__selcon-list">
-            <div class="product__selcon-item product__selcon-item--cur">S</div>
-            <div class="product__selcon-item">M</div>
-            <div class="product__selcon-item">L</div>
-            <div class="product__selcon-item">XL</div>
-            <div class="product__selcon-item">XL</div>
-            <div class="product__selcon-item">XL</div>
-            <div class="product__selcon-item">XL</div>
-            <div class="product__selcon-item">XL</div>
-            <div class="product__selcon-item">XL</div>
-        </div>
-
-        <div class="product__selcon-tit">购买数量</div>
-        <div class="product__selcon-num">
-            <uni-number-box :min="1" :max="1000" :value="1"></uni-number-box>
-        </div>
-        <div class="product__selcon-btns">
-            <div class="product__selcon-btns-buy">立即购买</div>
-            <div class="product__selcon-btns-add">加入购物车</div>
-        </div>
-        <div class="product__selcon-btns">
-            <div class="product__selcon-btns-confirm">确定</div>
-        </div>
-    </div>
+            <div v-for="(item, index) in selectArr" :key="index">
+                <div class="product__selcon-item" :class="{
+                            'product__selcon-item--cur': item.select
+                        }" @click="selItem(index, item)">{{ item.title }}</div>
+            </div>
 
 
-    <uni-popup :show="isShowSel" position="bottom" @hidePopup="togglePopup()">
-        <view class="bottom-title">分享到</view>
-        <view class="bottom-content">
-            <view class="bottom-content-box" v-for="(item, index) in bottomData" :key="index" @click="test">
-                <view class="bottom-content-image" :class="item.name">
-                    <text class="icon">{{ item.icon }}</text>
+    <uni-popup :show="type === 'select'" position="bottom" @hidePopup="togglePopup('')">
+        <div class="product__selcon">
+            <div class="product__selcon-close" @click="togglePopup('')">X</div>
+
+            <div v-for="(item, index) in selectArr" :key="index">
+                <div class="product__selcon-tit">{{ item.title }}</div>
+                <div class="product__selcon-list">
+                    <div v-for="(item2, index2) in item.items" :key="index2">
+                        <div class="product__selcon-item" :class="{
+                            'product__selcon-item--cur': item2.select
+                        }" @click="selItem(index, index2)">{{ item2.text }}</div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="product__selcon-tit">购买数量</div>
+            <div class="product__selcon-num">
+                <uni-number-box :min="1" :max="1000" :value="1"></uni-number-box>
+            </div>
+            <div class="product__selcon-btns">
+                <div class="product__selcon-btns-buy">立即购买</div>
+                <div class="product__selcon-btns-add">加入购物车</div>
+            </div>
+            <div class="product__selcon-btns">
+                <div class="product__selcon-btns-confirm">确定</div>
+            </div>
+        </div>
+    </uni-popup>
+
+    <uni-popup :show="type === 'share'" position="bottom" @hidePopup="togglePopup('')">
+        <view class="share__tit">分享到</view>
+        <view class="share__con">
+            <view class="share__con-item" v-for="(item, index) in shareData" :key="index" @click="test">
+                <view class="share__item-img" :class="item.name">
+                    <text class="share__item-icon">{{ item.icon }}</text>
                 </view>
-                <view class="bottom-content-text">{{ item.text }}</view>
+                <view class="share__item-txt">{{ item.text }}</view>
             </view>
         </view>
-        <view class="bottom-btn" @click="togglePopup('')">取消分享</view>
+        <view class="share__btn" @click="togglePopup('')">取消分享</view>
     </uni-popup>
 
     <view class="product-con">
@@ -72,7 +72,7 @@
     </view>
 
     <div class="product-tf">
-        <div class="product-tf__item" @click="togglePopup()" data-position="bottom">
+        <div class="product-tf__item" @click="togglePopup('share')" data-position="bottom">
             <div class="product-tf__item-icon"></div>
             <div class="product-tf__item-tit">分享</div>
         </div>
@@ -92,106 +92,61 @@
   </div>
 </template>
 <style scoped>
-
-
-	.uni-helllo-text {
-		height: 100upx;
-		line-height: 100upx;
-		text-align: center;
+	.share__tit {
+		line-height: 50px;
+		font-size: 12px;
 	}
-
-	.center-box {
-		width: 500upx;
-		height: 500upx;
-	}
-
-	.uni-list-item {
-		text-align: left;
-		line-height: 80upx;
-		border-bottom: 1px #f5f5f5 solid;
-	}
-
-	.uni-list-item:last-child {
-		border: none;
-	}
-
-	.center-box .image {
-		width: 100%;
-		height: 100%;
-	}
-
-	.bottom-title {
-		line-height: 60upx;
-		font-size: 24upx;
-		padding: 15upx 0;
-	}
-
-	.bottom-content {
+	.share__con {
 		display: flex;
 		flex-wrap: wrap;
-		padding: 0 35upx;
+		padding: 0 15px;
 	}
-
-	.bottom-content-box {
+	.share__con-item {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		margin-bottom: 15upx;
 		width: 25%;
 		box-sizing: border-box;
+        margin-bottom: 10px;
 	}
-
-	.bottom-content-image {
+	.share__item-img {
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		width: 90upx;
-		height: 90upx;
+		width: 45px;
+		height: 45px;
 		overflow: hidden;
 		background: #007aff;
-		border-radius: 10upx;
+		border-radius: 5px;
 	}
-
-	.bottom-content-text {
-		font-size: 26upx;
+	.share__item-txt {
+		font-size: 12px;
 		color: #333;
-		margin-top: 10upx;
+        line-height: 20px;
 	}
-
-	.bottom-btn {
-		height: 90upx;
-		line-height: 90upx;
-		border-top: 1px #f5f5f5 solid;
-	}
-
-	.bottom-content-image.wx {
+	.share__item-img.wx {
 		background: #00ce47;
 	}
-
-	.bottom-content-image.qq {
+	.share__item-img.qq {
 		background: #00b6f6;
 	}
-
-	.bottom-content-image.sina {
+	.share__item-img.sina {
 		background: #ff766a;
 	}
-
-	.bottom-content-image.copy {
+	.share__item-img.copy {
 		background: #07ccd0;
 	}
-
-	@font-face {
+	.share__item-icon {
 		font-family: 'iconfont';
-		/* project id 1028200 */
-		src: url('https://at.alicdn.com/t/font_1028200_47ewtwy4t04.ttf') format('truetype');
-	}
-
-	.icon {
-		font-family: 'iconfont';
-		font-size: 40upx;
+		font-size: 20px;
 		color: #fff;
 	}
-
+	.share__btn {
+		height: 45px;
+		line-height: 45px;
+        font-size: 14px;
+		border-top: 1px #eee solid;
+	}
 
 
 
@@ -214,6 +169,7 @@
     background-color: #fff;
     padding: 15px;
     position: relative;
+    text-align: left;
 }
 .product__selcon-close{
     width: 25px;
@@ -229,29 +185,33 @@
 }
 .product__selcon-tit {
     font-size: 15px;
-    line-height: 30px;
+    line-height: 40px;
 }
 .product__selcon-list {
     overflow: hidden;
-    margin-bottom: 15px;
+    /* margin-bottom: 10px; */
+    vertical-align: top;
 }
 .product__selcon-item {
-    display: inline-block;
+    /* display: inline-block; */
+    float: left;
     height: 25px;
     line-height: 25px;
     background-color: #ddd;
-    border: 1upx solid #ddd;
+    border: 1px solid #ddd;
     margin-right: 10px;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
     border-radius: 3px;
     padding: 0 10px;
     font-size: 12px;
+    vertical-align: top;
 }
 .product__selcon-item--cur {
     color: #f60;
-    border: 1upx solid #f60;
+    border: 1px solid #f60;
 }
 .product__selcon-num {
+    overflow: hidden;
     /* margin-top: 5px; */
 }
 .product__selcon-btns {
@@ -285,7 +245,7 @@
 
 .product-tf {
     background-color: #fff;
-    border-top: 1upx solid #eee;
+    border-top: 1px solid #eee;
     height: 50px;
     overflow: hidden;
     width: 100%;
@@ -309,7 +269,7 @@
 }
 .product-tf__item-tit {
     text-align: center;
-    font-size: 20upx;
+    font-size: 10px;
     line-height: 15px;
     color: #999;
 }
@@ -340,14 +300,14 @@
     /* 焦点图 */
     .swiper {
         overflow: hidden;
-        height: 750upx;
+        height: 300px;
     }
-    .swiper swiper-item {
+    .swiper__item {
         background: url('~@/static/img/loading.gif') center center no-repeat;
     }
-    .swiper image {
+    .swiper__img {
         width: 100%;
-        height: 750upx;
+        height: 300px;
     }
 
 
@@ -361,104 +321,177 @@
 </style>
 
 <script>
-import u from "@/common/util";
+import u from "@/common/util"
 import uniNumberBox from '@/components/uni-number-box/uni-number-box.vue'
 import uniPopup from '@/components/uni-popup/uni-popup.vue'
 export default {
-  components: {
-      uniNumberBox,
-      uniPopup
-  },
-  data() {
-    return {
-        autoplay: true,
-        indicatorDots: true,
-        interval: 5000,
-        duration: 300,
-        sliderArr: [
-            {
-                img: 'http://fpoimg.com/1000x1000'
-            }
-        ],
-        isShowSel: false,
-        type: '',
-        bottomData: [{
-                text: '微信',
-                icon: '\ue6a4',
-                name: 'wx'
-            },
-            {
-                text: '朋友圈',
-                icon: '\ue646',
-                name: 'wx'
-            },
-            {
-                text: 'QQ',
-                icon: '\ue66b',
-                name: 'qq'
-            },
-            {
-                text: '新浪',
-                icon: '\ue600',
-                name: 'sina'
-            },
-            {
-                text: '复制',
-                icon: '\ue632',
-                name: 'copy'
-            },
-            {
-                text: '更多',
-                icon: '\ue618',
-                name: 'more'
-            }
-        ],
-        title: 'list-triplex-row',
-        htmlString: "",
-        id: '5188314'
-    }
-  },
-  methods: {
-    // flag
-    showSel(flag) {
-        
+    components: {
+        uniNumberBox,
+        uniPopup
     },
-    togglePopup(type) {
-        this.isShowSel = !this.isShowSel;
+    data() {
+        return {
+            autoplay: true,
+            indicatorDots: true,
+            interval: 5000,
+            duration: 300,
+            id: '5188314',
+            title: 'list-triplex-row',
+            htmlString: "",
+            sliderArr: [
+                {
+                    img: 'http://fpoimg.com/1000x1000'
+                }
+            ],
+            selectArr: [
+                {
+                    title: '尺码',
+                    id: '112233',
+                    select: true,
+                    items: [
+                        {
+                            id: '111111',
+                            text: 'S',
+                            select: true
+                        },
+                        {
+                            id: '222222',
+                            text: 'M'
+                        },
+                        {
+                            id: '333333',
+                            text: 'L'
+                        }
+                    ]
+                },
+                {
+                    title: '颜色',
+                    id: '445566',
+                    items: [
+                        {
+                            id: '444444',
+                            text: '黑色'
+                        },
+                        {
+                            id: '555555',
+                            text: '红色'
+                        },
+                        {
+                            id: '666666',
+                            text: '绿色'
+                        }
+                    ]
+                }
+            ],
+            select: {
+                count: 1,
+                item: {
+                    '112233': '333333',
+                    '445566': '444444'
+                }
+            },
+            type: '',
+            shareData: [{
+                    text: '微信',
+                    icon: '\ue6a4',
+                    name: 'wx'
+                },
+                {
+                    text: '朋友圈',
+                    icon: '\ue646',
+                    name: 'wx'
+                },
+                {
+                    text: 'QQ',
+                    icon: '\ue66b',
+                    name: 'qq'
+                },
+                {
+                    text: '新浪',
+                    icon: '\ue600',
+                    name: 'sina'
+                },
+                {
+                    text: '复制',
+                    icon: '\ue632',
+                    name: 'copy'
+                },
+                {
+                    text: '更多',
+                    icon: '\ue618',
+                    name: 'more'
+                }
+            ]
+        }
     },
-    test() {
-        console.log(888)
-    }
-  },
-  onShareAppMessage() {
+    computed: {
+        aaa () {
+            return this.autoplay ? 'product__selcon-item--cur': ''
+        }
+    },
+    onBackPress() {
+        if (this.type !== '') {
+            this.type = ''
+            return true
+        }
+    },
+    methods: {
+        togglePopup(type) {
+            this.type = type
+        },
+        selItem(index, item) {
+            // this.selectArr[index].items[index2].select = true
+            console.log(index, item)
+            this.selectArr[index].select = !item.select
+            console.log(this.selectArr[index])
+            // console.log(this.selectArr)
+        },
+        selItem2(item) {
+            // item = !item
+            // console.log(this.autoplay)
+            this.autoplay = !this.autoplay
+            // console.log(this.autoplay)
+            // console.log(this.selectArr)
+        },
+        buy() {
+            console.log(888)
+        },
+        addcart() {
+            console.log(888)
+        },
+        test() {
+            console.log(888)
+        }
+    },
+    onShareAppMessage() {
         return {
             title: this.title,
             path: `/pages/product/product/?id=${that.id}&title=${that.title}`
         }
     },
-  onLoad(event) {
-    console.log("product onLoad")
-    let that = this
-    console.log(event)
-    that.title = event.title
-    uni.setNavigationBarTitle({
-        title: that.title
-    })
-    uni.request({
-        url: `https://unidemo.dcloud.net.cn/api/news/36kr/${that.id}`,
-        success: (data) => {
-            if (data.statusCode == 200) {
-                this.htmlString = data.data.content.replace(/\\/g, "").replace(/<img/g, "<img style=\"display:none;\"")
-                that.sliderArr[0].img = data.data.cover
-                uni.setNavigationBarTitle({
-                    title: data.data.title
-                })
+    onLoad(event) {
+        console.log("product onLoad")
+        let that = this
+        console.log(event)
+        that.title = event.title
+        uni.setNavigationBarTitle({
+            title: that.title
+        })
+        uni.request({
+            url: `https://unidemo.dcloud.net.cn/api/news/36kr/${that.id}`,
+            success: (data) => {
+                if (data.statusCode == 200) {
+                    this.htmlString = data.data.content.replace(/\\/g, "").replace(/<img/g, "<img style=\"display:none;\"")
+                    that.sliderArr[0].img = data.data.cover
+                    uni.setNavigationBarTitle({
+                        title: data.data.title
+                    })
+                }
+            },
+            fail: () => {
+                console.log('fail')
             }
-        },
-        fail: () => {
-            console.log('fail');
-        }
-    })
-  }
+        })
+    }
 };
 </script>
