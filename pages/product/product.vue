@@ -24,7 +24,7 @@
                 <div class="product__selcon-tit">{{ item.title }}</div>
                 <div class="product__selcon-list">
                     <div v-for="(item2, index2) in item.items" :key="index2">
-                        <div class="product__selcon-item" :class="item.select === item2.id ? 'product__selcon-item--cur' : ''" @click="selItem(index, index2)">{{ item2.text }}</div>
+                        <div class="product__selcon-item" :class="item.items[item.select].id === item2.id ? 'product__selcon-item--cur' : ''" @click="selItem(index, index2)">{{ item2.text }}</div>
                     </div>
                 </div>
             </div>
@@ -86,15 +86,11 @@
 import u from "@/common/util"
 import uniNumberBox from '@/components/uni-number-box/uni-number-box.vue'
 import uniPopup from '@/components/uni-popup/uni-popup.vue'
-import uniList from '@/components/uni-list/uni-list.vue'
-import uniListItem from '@/components/uni-list-item/uni-list-item.vue'
 
 export default {
     components: {
         uniNumberBox,
-        uniPopup,
-        uniList,
-        uniListItem
+        uniPopup
     },
     data() {
         return {
@@ -102,48 +98,13 @@ export default {
             indicatorDots: true,
             interval: 5000,
             duration: 300,
-            id: '5188314',
-            price: 16,
-            title: '青花瓷89CM',
+            id: '',
+            price: 0,
+            title: '',
             htmlString: "",
-            swiperArr: [
-                {
-                    img: 'http://fpoimg.com/1000x1000'
-                }
-            ],
+            swiperArr: [],
             // 产品分类数据
-            categoryArr: [
-                {
-                    title: '尺码',
-                    id: '112233',
-                    select: '',
-                    items: [
-                        {
-                            id: '111111',
-                            text: 'S'
-                        },
-                        {
-                            id: '222222',
-                            text: 'M'
-                        }
-                    ]
-                },
-                {
-                    title: '颜色',
-                    id: '445566',
-                    select: '',
-                    items: [
-                        {
-                            id: '444444',
-                            text: '黑色'
-                        },
-                        {
-                            id: '555555',
-                            text: '红色'
-                        }
-                    ]
-                }
-            ],
+            categoryArr: [],
             count: 1,
             // 弹出框类型 share: 分享, select： 选择产品颜色大小等
             popupType: '',
@@ -187,13 +148,7 @@ export default {
     computed: {
         selectText () {
             let that = this
-            let a = that.checkSelect()
-            if (a.isSelect){
-                return 'hhah'
-            } else {
-                return '请选择 ' + a.noSelectArr.join(' ')
-            }
-            return this.autoplay ? 'product__selcon-item--cur': ''
+            return that.checkSelect().selectText
         }
     },
     // 干嘛用？
@@ -208,30 +163,34 @@ export default {
             this.popupType = popupType
         },
         selItem(index, index2) {
-            if (this.categoryArr[index].select != this.categoryArr[index].items[index2].id) {
-                this.categoryArr[index].select = this.categoryArr[index].items[index2].id
+            if (this.categoryArr[index].select != index2) {
+                this.categoryArr[index].select = index2
             } else {
-                this.categoryArr[index].select = ''
+                this.categoryArr[index].select = null
             }
         },
         // 检测是否选择尺码颜色了
         checkSelect() {
             let that = this
+            let isNeedSelect = that.categoryArr.length ? true : false
             let isSelect = true
-            let slectArr = []
+            let selectArr = []
             let noSelectArr = []
             for (let i = 0, len = that.categoryArr.length; i < len; i++) {
-                if (that.categoryArr[i].select === '') {
+                if (that.categoryArr[i].select === null) {
                     isSelect = false
                     noSelectArr.push(that.categoryArr[i].title)
                 } else {
-                    noSelectArr.push(that.categoryArr[i].title)
+                    selectArr.push(`"${that.categoryArr[i].items[that.categoryArr[i].select].text}"`)
                 }
             }
+
             return {
-                slectArr,
+                isNeedSelect,
+                isSelect,
+                selectArr,
+                selectText: isSelect ? `已选择${selectArr.join(' ')}` : `请选择${noSelectArr.join(' ')}`,
                 noSelectArr,
-                isSelect
             }
         },
         // 整合数据
@@ -250,32 +209,25 @@ export default {
         },
         buy() {
             let that = this
-            if (that.checkSelect().isSelect) {
-                // 跳去订单确认页
-            } else {
-                // 打开选择框
-                that.togglePopup('select')
-                that.selectPopupFrom = 2
-            }
+            // 打开选择框
+            that.togglePopup('select')
+            that.selectPopupFrom = 2
         },
         addcart() {
             let that = this
-            if (that.checkSelect().isSelect) {
-                // 跳去订单确认页
-            } else {
-                // 打开选择框
-                that.togglePopup('select')
-                that.selectPopupFrom = 2
-            }
+            // 打开选择框
+            that.togglePopup('select')
+            that.selectPopupFrom = 2
         },
         popupBuy() {
             let that = this
-            if (that.checkSelect().isSelect) {
+            let a = that.checkSelect()
+            if (a.isSelect) {
                 // 跳去订单确认页
             } else {
                 // 弹出提示
                 uni.showToast({
-                    title: '请选择尺码 颜色',
+                    title: a.selectText,
                     icon: 'none'
                 })
             }
@@ -287,7 +239,7 @@ export default {
             } else {
                 // 弹出提示
                 uni.showToast({
-                    title: '请选择尺码 颜色',
+                    title: a.selectText,
                     icon: 'none'
                 })
             }
@@ -299,7 +251,7 @@ export default {
             } else {
                 // 弹出提示
                 uni.showToast({
-                    title: '请选择尺码 颜色',
+                    title: a.selectText,
                     icon: 'none'
                 })
             }
@@ -312,7 +264,7 @@ export default {
     onShareAppMessage() {
         return {
             title: this.title,
-            path: `/pages/product/product/?id=${that.id}&title=${that.title}`
+            path: `/pages/product/product/?id=${that.id}&title=${that.title}&price=${that.price}`
         }
     },
     onLoad(event) {
@@ -320,25 +272,84 @@ export default {
         let that = this
         console.log(event)
         that.title = event.title
+        that.id = event.id
+        that.price = event.price
+        that.swiperArr = [{
+            img: event.cover
+        }]
         uni.setNavigationBarTitle({
             title: that.title
         })
-        uni.request({
-            url: `https://unidemo.dcloud.net.cn/api/news/36kr/${that.id}`,
-            success: (data) => {
-                if (data.statusCode == 200) {
-                    this.htmlString = data.data.content.replace(/\\/g, "").replace(/<img/g, "<img style=\"display:none;\"")
-                    that.swiperArr[0].img = data.data.cover
-                    that.title = data.data.title
-                    uni.setNavigationBarTitle({
-                        title: that.title
-                    })
+
+        // u.request({
+        //     url: `https://unidemo.dcloud.net.cn/api/news/36kr/${that.id}`,
+        //     method: 'GET',
+        //     data: {},
+        //     isVerifyLogin: false,
+        //     success(res) {
+        //         console.log(res)
+        //     },
+        //     fail(res) {
+        //         console.error(res)
+        //     }
+        // })
+
+
+        let res = {
+            'id': '5188314',
+            'title': '青花瓷22CM',
+            'swiperArr': [
+                {
+                    img: 'https://pic.36krcnd.com/201903/25021423/n0x2x3v809xijacy!heading',
+                },
+                {
+                    img: 'https://pic.36krcnd.com/avatar/201903/25001720/s4nf1w16zgl4d4sd.png!heading',
                 }
-            },
-            fail: () => {
-                console.log('fail')
-            }
-        })
+            ],
+            'content': '<p>编者按：本文来自36氪战略合作区块链媒体“Odaily星球日报”（公众号ID：o-daily，APP下载）</p><p><img style="max-width:100%" src="https://pic.36krcnd.com/201903/25021423/n0x2x3v809xijacy!heading" /></p><p>本周 BTC 价格本周比特币价格高低起伏明显，高点低点均出现在 3 月 22 日。美元和日元比特币交易市场份额较上周减少，占 83.71%；各家矿池份额占比较上周差距明显；闪电实验室发布比特币支付渠道新功能“闪电环”。</p>',
+            'categoryArr': [
+                {
+                    'title': '尺码',
+                    'id': '112233',
+                    'select': null,
+                    'items': [
+                        {
+                            'id': '111111',
+                            'text': 'S'
+                        },
+                        {
+                            'id': '222222',
+                            'text': 'M'
+                        }
+                    ]
+                },
+                {
+                    'title': '颜色',
+                    'id': '445566',
+                    'select': null,
+                    'items': [
+                        {
+                            'id': '444444',
+                            'text': '黑色'
+                        },
+                        {
+                            'id': '555555',
+                            'text': '红色'
+                        }
+                    ]
+                }
+            ]
+        }
+        if (res) {
+            that.htmlString = res.content.replace(/\\/g, "").replace(/<img/g, "<img style=\"display:none;\"")
+            that.swiperArr = res.swiperArr
+            that.categoryArr = res.categoryArr
+            that.title = res.title
+            uni.setNavigationBarTitle({
+                title: that.title
+            })
+        }
+
     }
 }
 </script>
