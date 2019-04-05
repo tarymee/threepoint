@@ -68,27 +68,35 @@
 
     <div class="cate1">
         <scroll-view scroll-x>
-            <a class="cate1-item" v-for="(item, index) in cate1Arr" :key="index" @click="load(item.id)">
+            <a class="cate1-item" :class="item.select ? 'cur' : ''" v-for="(item, index) in cate1Arr" :key="index" @click="reloadCate(index, item.id)">
                 <text>{{item.title}}</text>
             </a>
         </scroll-view>
     </div>
-
-    <div class="pro">
-        <a class="pro-item" v-for="(item, index) in choiceArr" :key="index" :href="item.url">
+    <productList :data="bottomLoad_data"></productList>
+    <tip :text="bottomLoad_tip" :none-icon="false"></tip>
+    <!-- <div class="pro">
+        <a class="pro-item" v-for="(item, index) in bottomLoad_data" :key="index" :href="item.url">
             <image :src="item.img" mode="aspectFill"></image>
             <text class="pro-item-tit">{{item.name}}</text>
             <div class="pro-item-price"><text>￥</text>{{item.price}}</div>
         </a>
-    </div>
+    </div> -->
 
 </div>
 </template>
 
 <script>
 import u from '@/common/util'
+import bottomLoad from '@/mixins/bottom-load.js'
+import tip from '@/components/tip/tip.vue'
+import productList from '@/components/product-list/product-list.vue'
 export default {
-    components: {},
+    components: {
+        tip,
+        productList
+    },
+    mixins: [bottomLoad],
     data() {
         return {
             autoplay: true,
@@ -139,6 +147,7 @@ export default {
             cate1Arr: [
                 {
                     title: '青瓷',
+                    select: true,
                     id: '1'
                 },
                 {
@@ -166,20 +175,11 @@ export default {
                     id: '7'
                 }
             ],
-            choiceArr: [
-                {
-                    img: 'http://fpoimg.com/400x400',
-                    name: '青花瓷功夫茶杯',
-                    price: '386',
-                    url: '/pages/logs/main'
-                },
-                {
-                    img: 'http://fpoimg.com/400x400',
-                    name: '青花瓷功夫茶杯',
-                    price: '386',
-                    url: '/pages/logs/main'
-                }
-            ]
+            bottomLoad_data: [],
+            bottomLoad_api: u.api.index,
+            bottomLoad_params: {
+                id: '1'
+            }
         }
     },
     methods: {
@@ -188,6 +188,18 @@ export default {
         },
         jump(url) {
             u.jump(url)
+        },
+        reloadCate(index, id) {
+            let that = this
+            that.cate1Arr.forEach((item, i) => {
+                if (index === i) {
+                    item.select = true
+                } else {
+                    item.select = false
+                }
+            })
+            that.bottomLoad_params.id = id
+            that.bottomLoad_reload()
         }
     },
     mounted() {
@@ -415,21 +427,21 @@ export default {
 
 .cate1-item {
     display: inline-block;
-    margin-right: 25px;
+    margin-right: 30px;
 }
 
 .cate1-item text {
     display: block;
-    font-size: 13px;
+    font-size: 14px;
     color: #333;
     line-height: 25px;
-    border-bottom: 2px solid #d1a178;
+    border-bottom: 3px solid #fff;
 }
 
 .cate1-item.cur text {
     display: block;
-    font-size: 15px;
+    font-size: 16px;
     font-weight: bold;
-    border-bottom: 2px solid #d1a178;
+    border-bottom: 3px solid #d1a178;
 }
 </style>

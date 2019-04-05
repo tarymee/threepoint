@@ -21,14 +21,16 @@
             <div class="store__address-r">{{item.type}}</div>
         </div>
     </a>
-    <div class="none" v-if="storeArr.length == 0">很抱歉 该地区暂未开通</div>
-
+    <tip text="很抱歉 该地区暂未开通" :none-icon="true"></tip>
 </div>
 </template>
 
 <script>
+import tip from '@/components/tip/tip.vue'
 export default {
-    components: {},
+    components: {
+        tip
+    },
     data() {
         return {
             storeArr: [

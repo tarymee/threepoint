@@ -15,7 +15,7 @@ export default {
     props: {
         text: {
             type: String,
-            default: '暂无数据'
+            default: ''
         },
         noneIcon: {
             type: [Boolean, String],

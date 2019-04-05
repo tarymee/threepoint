@@ -22,14 +22,6 @@
 		src: url('https://at.alicdn.com/t/font_1028200_47ewtwy4t04.ttf') format('truetype');
 	}
 
-    .none {
-        text-align: center;
-        font-size: 12px;
-        color: #999;
-        padding: 20px 0;
-    }
-
-
 
 
 
