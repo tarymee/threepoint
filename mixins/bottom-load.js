@@ -22,7 +22,7 @@ const bottomLoad = {
     mounted() {
         console.log('mixins tt-bottom-load mounted')
         let that = this
-        that.bottomLoad_load()
+        that.bottomLoad_reload()
     },
     methods: {
         bottomLoad_reload() {
@@ -36,7 +36,7 @@ const bottomLoad = {
             bottomLoad_pagetotal = 1
             bottomLoad_isload = true
             that.bottomLoad_tip = '加载中...'
-            that.load()
+            that.bottomLoad_load()
         },
         bottomLoad_load() {
             let that = this

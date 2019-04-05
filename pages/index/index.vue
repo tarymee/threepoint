@@ -29,27 +29,27 @@
     </swiper>
 
     <div class="cate">
-        <a class="cate-item" href="/pages/cate/main">
+        <a class="cate-item" url="/pages/cate/cate?id=1&title=竹木类">
             <image src="/static/img/home-cate1.png" mode="aspectFill"></image><text>竹木类</text>
         </a>
-        <a class="cate-item" href="/pages/cate/main">
+        <a class="cate-item" url="/pages/cate/cate?id=2&title=陶瓷类">
             <image src="/static/img/home-cate2.png" mode="aspectFill"></image><text>陶瓷类</text>
         </a>
-        <a class="cate-item" href="/pages/cate/main">
+        <a class="cate-item" url="/pages/cate/cate?id=3&title=玻璃类">
             <image src="/static/img/home-cate3.png" mode="aspectFill"></image><text>玻璃类</text>
         </a>
-        <a class="cate-item" href="/pages/cate/main">
+        <a class="cate-item" url="/pages/cate/cate?id=4&title=不锈钢">
             <image src="/static/img/home-cate4.png" mode="aspectFill"></image><text>不锈钢</text>
         </a>
-        <a class="cate-item" href="/pages/cate/main">
+        <a class="cate-item" url="/pages/cate/cate?id=5&title=装饰类">
             <image src="/static/img/home-cate5.png" mode="aspectFill"></image><text>装饰类</text>
         </a>
-        <a class="cate-item" href="/pages/cate/main">
+        <a class="cate-item" url="/pages/cate/cate?id=6&title=布料">
             <image src="/static/img/home-cate6.png" mode="aspectFill"></image><text>布料</text>
         </a>
     </div>
 
-    <div class="title">新品推荐</div>
+    <div class="title" v-if="newArr.length">新品推荐</div>
     <div class="pro1">
         <scroll-view scroll-x>
             <a class="pro1-item" v-for="(item, index) in newArr" :key="index" @click="jump()">
@@ -59,13 +59,11 @@
             </a>
         </scroll-view>
     </div>
-
-    <div class="more">
-        <a class="more-btn" @click="jump()">查看更多</a>
+    <div class="more" v-if="newArr.length">
+        <a class="more-btn" @click="jump('/pages/cate/cate?id=4000&title=最新产品')">查看更多</a>
     </div>
 
     <div class="title">精选商品</div>
-
     <div class="cate1">
         <scroll-view scroll-x>
             <a class="cate1-item" :class="item.select ? 'cur' : ''" v-for="(item, index) in cate1Arr" :key="index" @click="reloadCate(index, item.id)">
@@ -75,13 +73,6 @@
     </div>
     <productList :data="bottomLoad_data"></productList>
     <tip :text="bottomLoad_tip" :none-icon="false"></tip>
-    <!-- <div class="pro">
-        <a class="pro-item" v-for="(item, index) in bottomLoad_data" :key="index" :href="item.url">
-            <image :src="item.img" mode="aspectFill"></image>
-            <text class="pro-item-tit">{{item.name}}</text>
-            <div class="pro-item-price"><text>￥</text>{{item.price}}</div>
-        </a>
-    </div> -->
 
 </div>
 </template>
