@@ -20,14 +20,7 @@ export default {
   data() {
     return {
       tip: '加载中...',
-      data: [
-        {
-          logo: 'http://fpoimg.com/400x400',
-          title: '青花瓷功夫茶杯',
-          marketPrice: '386',
-          url: '/pages/product/product?id=12345&title=测试产品'
-        }
-      ]
+      data: []
     }
   },
   props: {
@@ -46,10 +39,10 @@ export default {
       }
     }
   },
-  onReachBottom: function (t) {
-    // console.log('触底执行')
-    this.load()
-  },
+//   onReachBottom: function (t) {
+//     console.log('触底执行')
+//     this.load()
+//   },
   mounted() {
     console.log('mixin mounted')
     let that = this
@@ -69,14 +62,6 @@ export default {
       that.tip = '加载中...'
       that.load()
     },
-    goDetail: function (e) {
-      console.log(22)
-        console.log(e)
-    },
-    jump: function (e) {
-      console.log(22)
-        console.log(e)
-    },
     load() {
       let that = this
       if (pageindex <= pagetotal && isload) {
@@ -93,11 +78,56 @@ export default {
           isVerifyLogin: false,
           success(res) {
             console.log(res)
-            // res.newest = []
+            res.newest = [
+              {
+                logo: 'http://fpoimg.com/400x400',
+                title: '青花瓷功夫茶杯',
+                marketPrice: '386',
+                url: '/pages/product/product?id=5188314&title=青花瓷89CM&price=16&cover=https://pic.36krcnd.com/201903/25021423/n0x2x3v809xijacy!heading'
+              },
+              {
+                logo: 'http://fpoimg.com/400x400',
+                title: '青花瓷功夫茶杯',
+                marketPrice: '386',
+                url: '/pages/product/product?id=5188314&title=青花瓷89CM&price=16&cover=https://pic.36krcnd.com/201903/25021423/n0x2x3v809xijacy!heading'
+              },
+              {
+                logo: 'http://fpoimg.com/400x400',
+                title: '青花瓷功夫茶杯',
+                marketPrice: '386',
+                url: '/pages/product/product?id=5188314&title=青花瓷89CM&price=16&cover=https://pic.36krcnd.com/201903/25021423/n0x2x3v809xijacy!heading'
+              },
+              {
+                logo: 'http://fpoimg.com/400x400',
+                title: '青花瓷功夫茶杯',
+                marketPrice: '386',
+                url: '/pages/product/product?id=5188314&title=青花瓷89CM&price=16&cover=https://pic.36krcnd.com/201903/25021423/n0x2x3v809xijacy!heading'
+              },
+              {
+                logo: 'http://fpoimg.com/400x400',
+                title: '青花瓷功夫茶杯',
+                marketPrice: '386',
+                url: '/pages/product/product?id=5188314&title=青花瓷89CM&price=16&cover=https://pic.36krcnd.com/201903/25021423/n0x2x3v809xijacy!heading'
+              },
+              {
+                logo: 'http://fpoimg.com/400x400',
+                title: '青花瓷功夫茶杯',
+                marketPrice: '386',
+                url: '/pages/product/product?id=5188314&title=青花瓷89CM&price=16&cover=https://pic.36krcnd.com/201903/25021423/n0x2x3v809xijacy!heading'
+              },
+              {
+                logo: 'http://fpoimg.com/400x400',
+                title: '青花瓷功夫茶杯',
+                marketPrice: '386',
+                url: '/pages/product/product?id=5188314&title=青花瓷89CM&price=16&cover=https://pic.36krcnd.com/201903/25021423/n0x2x3v809xijacy!heading'
+              }
+            ]
             if (Array.isArray(res.newest) && res.newest.length) {
                 that.data = that.data.concat(res.newest)
                 // that.data = [that.data, ...res.newest]
+                that.$emit('cartadd', that.data)
             }
+            console.log(that.data)
             pagetotal = 2
             pageindex ++
 

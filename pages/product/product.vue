@@ -56,9 +56,9 @@
         <view class="share__btn" @click="togglePopup('')">取消分享</view>
     </uni-popup>
 
-    <view class="product-con">
+    <div class="product-con">
         <rich-text :nodes="htmlString"></rich-text>
-    </view>
+    </div>
 
     <div class="product-tf">
         <div class="product-tf__item" @click="togglePopup('share')" data-position="bottom">
@@ -294,7 +294,6 @@ export default {
         //     }
         // })
 
-
         let res = {
             'id': '5188314',
             'title': '青花瓷22CM',
@@ -306,7 +305,7 @@ export default {
                     img: 'https://pic.36krcnd.com/avatar/201903/25001720/s4nf1w16zgl4d4sd.png!heading',
                 }
             ],
-            'content': '<p>编者按：本文来自36氪战略合作区块链媒体“Odaily星球日报”（公众号ID：o-daily，APP下载）</p><p><img style="max-width:100%" src="https://pic.36krcnd.com/201903/25021423/n0x2x3v809xijacy!heading" /></p><p>本周 BTC 价格本周比特币价格高低起伏明显，高点低点均出现在 3 月 22 日。美元和日元比特币交易市场份额较上周减少，占 83.71%；各家矿池份额占比较上周差距明显；闪电实验室发布比特币支付渠道新功能“闪电环”。</p>',
+            'content': '<p>编者按：本文来自36氪战略合作区块链媒体“Odaily星球日报”（公众号ID：o-daily，APP下载）</p><p><img style="max-width:100%" src="/static/img/open-art4.jpg" /></p><p><img style="max-width:100%" src="https://pic.36krcnd.com/201903/25021423/n0x2x3v809xijacy!heading" /></p><p>本周 BTC 价格本周比特币价格高低起伏明显，高点低点均出现在 3 月 22 日。美元和日元比特币交易市场份额较上周减少，占 83.71%；各家矿池份额占比较上周差距明显；闪电实验室发布比特币支付渠道新功能“闪电环”。</p>',
             'categoryArr': [
                 {
                     'title': '尺码',
@@ -341,7 +340,8 @@ export default {
             ]
         }
         if (res) {
-            that.htmlString = res.content.replace(/\\/g, "").replace(/<img/g, "<img style=\"display:none;\"")
+            // that.htmlString = res.content.replace(/\\/g, "").replace(/<img/g, "<img style=\"display:none;\"")
+            that.htmlString = res.content
             that.swiperArr = res.swiperArr
             that.categoryArr = res.categoryArr
             that.title = res.title
@@ -374,11 +374,13 @@ export default {
 
     /* 图文详情 */
     .product-con {
-        line-height: 1.5;
+        line-height: 1.6;
         padding: 15px 15px 65px;
         overflow: hidden;
         font-size: 14px;
+        color: #333;
     }
+
 
 
     .product__price {

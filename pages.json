@@ -145,6 +145,16 @@
         "current": 1,
         "list": [
             {
+                "name": "about",
+                "path": "pages/about/about",
+                "query": ""
+            },
+            {
+                "name": "open",
+                "path": "pages/open/open",
+                "query": ""
+            },
+            {
                 "name": "user",
                 "path": "pages/user/user",
                 "query": "id=4000&autoplay=false"
@@ -152,7 +162,7 @@
             {
                 "name": "cate",
                 "path": "pages/cate/cate",
-                "query": "id=4000"
+                "query": "id=4000&title=最新产品"
             },
             {
                 "name": "confirm",

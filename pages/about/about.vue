@@ -1,49 +1,29 @@
 <template>
-  <div>
-    <div style="height: 50px"></div>
-
-  </div>
+    <div>
+        <rich-text :nodes="htmlString"></rich-text>
+    </div>
 </template>
 <style scoped>
 
 </style>
 
 <script>
-import u from '@/common/util'
-
 export default {
-  components: {},
-  data () {
-    return {
-      user: {
-        logo: 'http://fpoimg.com/100x100',
-        name: 'tarymee'
-      }
+    components: {},
+    data() {
+        return {
+            htmlString: ''
+        }
+    },
+    methods: {
+        test() {
+            console.log('test')
+        }
+    },
+    mounted() {
+        console.log('about mounted')
+        var that = this
+        that.htmlString = '<p><img style="width:100%" src="/static/img/about/01.jpg" /></p><p><img style="width:100%" src="/static/img/about/02.jpg" /></p><p><img style="width:100%" src="/static/img/about/03.jpg" /></p><p><img style="width:100%" src="/static/img/about/04.jpg" /></p><p><img style="width:100%" src="/static/img/about/05.jpg" /></p>'
     }
-  },
-  methods: {
-    test () {
-      console.log('test')
-    }
-  },
-  mounted () {
-    console.log('index mounted')
-    var that = this
-    // u.request({
-    //   url: u.api.index,
-    //   method: 'POST',
-    //   isVerifyLogin: false,
-    //   success(res) {
-    //     console.log(res)
-    //     that.site = res.site
-    //     that.newArr = res.newest
-    //     that.site = res.site
-    //   }
-    // })
-
-  },
-  created () {
-
-  }
 }
 </script>
