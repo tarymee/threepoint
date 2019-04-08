@@ -42,7 +42,7 @@ export default {
 <style scope>
 @charset "UTF-8";
 /* 商品 */
-.pro {
+/* .pro {
     overflow: hidden;
     margin: 15upx 15upx 0;
 }
@@ -50,6 +50,18 @@ export default {
 .pro__item {
     float: left;
     margin: 15upx;
+} */
+
+.pro {
+    overflow: hidden;
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.pro__item {
+    width: 330upx;
+    margin: 15upx 0 15upx 30upx;
+    flex: none;
 }
 
 .pro__item-img {
@@ -58,22 +70,23 @@ export default {
     height: 330upx;
     background: url('~@/static/img/loading.gif') center center no-repeat;
 }
+
 .pro__item-tit {
     display: block;
-    font-size: 28upx;
+    font-size: 14px;
     color: #333;
-    line-height: 50upx;
+    line-height: 25px;
 }
 
 .pro__item-price {
     display: block;
-    font-size: 32upx;
+    font-size: 16px;
     color: #d1a178;
     font-weight: bold;
-    line-height: 40upx;
+    line-height: 20px;
 }
 
 .pro__item-symbol {
-    font-size: 24upx;
+    font-size: 12px;
 }
 </style>

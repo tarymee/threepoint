@@ -9,27 +9,27 @@
         </div>
         <div class="user">
             <div class="user__list-item--noborder">
-                <uni-list-item title="我的订单" @click="jump('/pages/myorder/myorder')" show-badge="true" badge-text="查看全部" badge-type="default" badge-inverted="true"></uni-list-item>
+                <uni-list-item title="我的订单" @click="jump('/pages/order/order?id=0&title=全部订单')" show-badge="true" badge-text="查看全部" badge-type="default" badge-inverted="true"></uni-list-item>
             </div>
 
             <div class="status">
-                <a class="status__item" href="/pages/order/main">
+                <a class="status__item" @click="jump('/pages/order/order?id=0&title=待付款')">
                     <image src="/static/img/user-icon1.png" mode="aspectFill" class="status__item-img"></image>
                     <text class="status__item-text">待付款</text>
                 </a>
-                <a class="status__item" href="/pages/order/main">
+                <a class="status__item" @click="jump('/pages/order/order?id=0&title=待发货')">
                     <image src="/static/img/user-icon2.png" mode="aspectFill" class="status__item-img"></image>
                     <text class="status__item-text">待发货</text>
                 </a>
-                <a class="status__item" href="/pages/order/main">
+                <a class="status__item" @click="jump('/pages/order/order?id=0&title=待收款')">
                     <image src="/static/img/user-icon3.png" mode="aspectFill" class="status__item-img"></image>
                     <text class="status__item-text">待收款</text>
                 </a>
-                <a class="status__item" href="/pages/order/main">
+                <a class="status__item" @click="jump('/pages/order/order?id=0&title=已完成')">
                     <image src="/static/img/user-icon4.png" mode="aspectFill" class="status__item-img"></image>
                     <text class="status__item-text">已完成</text>
                 </a>
-                <a class="status__item" href="/pages/order/main">
+                <a class="status__item" @click="jump('/pages/order/order?id=0&title=退换/售后')">
                     <image src="/static/img/user-icon5.png" mode="aspectFill" class="status__item-img"></image>
                     <text class="status__item-text">退换/售后</text>
                 </a>

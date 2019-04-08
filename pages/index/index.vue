@@ -64,7 +64,8 @@
     </div>
 
     <div class="title">精选商品</div>
-    <div class="cate1">
+    <div class="cate1__place" :class="cate1Fixed ? 'cate1__place--holder' : ''"></div>
+    <div class="cate1" :class="cate1Fixed ? 'cate1--fixed' : ''">
         <scroll-view scroll-x>
             <a class="cate1-item" :class="item.select ? 'cur' : ''" v-for="(item, index) in cate1Arr" :key="index" @click="reloadCate(index, item.id)">
                 <text>{{item.title}}</text>
@@ -166,6 +167,7 @@ export default {
                     id: '7'
                 }
             ],
+            cate1Fixed: false,
             bottomLoad_data: [],
             bottomLoad_api: u.api.index,
             bottomLoad_params: {
@@ -192,6 +194,20 @@ export default {
             that.bottomLoad_params.id = id
             that.bottomLoad_reload()
         }
+    },
+    onPageScroll(e) {
+        // console.log(e)
+        let that = this
+        let view = uni.createSelectorQuery().select(".cate1__place")
+        view.boundingClientRect(data => {
+            // console.log("得到布局位置信息" + JSON.stringify(data))
+            // console.log("节点离页面顶部的距离为" + data.top)
+            if (data.top <= 0) {
+                that.cate1Fixed = true
+            } else {
+                that.cate1Fixed = false
+            }
+        }).exec()
     },
     mounted() {
         console.log('index mounted')
@@ -312,7 +328,12 @@ export default {
     margin: 15px;
     overflow: hidden;
 }
-
+.cate1__place {
+    height: 0;
+}
+.cate1__place--holder {
+    height: 34px;
+}
 .cate-item {
     width: 115px;
     padding: 5px 0;
@@ -409,7 +430,15 @@ export default {
 
 /* 精选下面的分类 */
 .cate1 {
-    margin: 5px 0 15px 15px;
+    padding-left: 15px;
+    background-color: #fff;
+    width: 100%;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.cate1--fixed {
+    position: fixed;
+    top: 0px;
 }
 
 .cate1 scroll-view {
@@ -425,7 +454,7 @@ export default {
     display: block;
     font-size: 14px;
     color: #333;
-    line-height: 25px;
+    line-height: 30px;
     border-bottom: 3px solid #fff;
 }
 

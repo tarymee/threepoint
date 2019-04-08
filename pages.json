@@ -150,14 +150,19 @@
                 "query": ""
             },
             {
-                "name": "open",
-                "path": "pages/open/open",
+                "name": "cart",
+                "path": "pages/cart/cart",
                 "query": ""
             },
             {
                 "name": "user",
                 "path": "pages/user/user",
-                "query": "id=4000&autoplay=false"
+                "query": ""
+            },
+            {
+                "name": "order",
+                "path": "pages/order/order",
+                "query": "id=123456&title=全部订单"
             },
             {
                 "name": "cate",

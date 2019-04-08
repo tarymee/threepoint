@@ -101,7 +101,7 @@
 		display: inline-flex;
 		flex-direction: row;
 		justify-content: flex-start;
-		height: 35px;
+		height: 70upx;
 		position: relative
 	}
 
@@ -116,7 +116,7 @@
 		right: -50%;
 		bottom: -50%;
 		border: 1px solid #c8c7cc;
-		border-radius: 6px;
+		border-radius: 12upx;
 		transform: scale(.5)
 	}
 
@@ -124,21 +124,19 @@
 	.uni-numbox__plus {
 		margin: 0;
 		background-color: #f8f8f8;
-		width: 35px;
-		font-size: 20px;
+		width: 70upx;
+		font-size: 40upx;
 		height: 100%;
-		line-height: 35px;
+		line-height: 70upx;
 		text-align: center;
 		color: #333;
 		position: relative
 	}
 
 	.uni-numbox__value {
-		font-size: 16px;
 		position: relative;
 		background-color: #fff;
-		min-width: 40px;
-		max-width: 80px;
+		width: 80upx;
 		height: 100%;
 		text-align: center;
 		padding: 0
@@ -154,8 +152,12 @@
 		left: -50%;
 		right: -50%;
 		bottom: -50%;
-		border-left: 1px solid #c8c7cc;
-		border-right: 1px solid #c8c7cc;
+		border-style: solid;
+		border-color: #c8c7cc;
+		border-left-width: 1px;
+		border-right-width: 1px;
+		border-top-width: 0;
+		border-bottom-width: 0;
 		transform: scale(.5)
 	}
 
