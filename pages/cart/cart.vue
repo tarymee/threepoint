@@ -1,39 +1,30 @@
 <template>
     <view>
         <!-- 商品列表 -->
-        <view class="goods-list">
-            <view class="tip" v-if="goodsList.length==0">购物车是空的哦~</view>
-            <view class="row" v-for="(row,index) in goodsList" :key="index" @touchstart="touchStart(index,$event)" @touchmove="touchMove(index,$event)" @touchend="touchEnd(index,$event)">
-                <!-- 删除按钮 -->
-                <view class="menu" @tap.stop="deleteGoods(row.id)">
-                    <view>删除</view>
-                </view>
-                <!-- 商品 -->
-                <view class="carrier" :class="[theIndex==index?'open':oldIndex==index?'close':'']">
+        <view class="cart">
+            <view class="cart__none" v-if="goodsList.length==0">购物车是空的哦~</view>
+            <uni-swipe-action :options="options2" v-for="(row,index) in goodsList" :key="index" @click="deleteGoods(row.id)">
+                <view class="cart___item">
                     <!-- checkbox -->
-                    <view class="checkbox-box" @tap="selected(index)">
-                        <view class="checkbox">
-                            <view :class="[row.selected?'on':'']"></view>
-                        </view>
+                    <view class="cart___item-checkbox" @tap="selected(index)">
+                        <div class="checkbox" :class="row.selected ? 'checkbox--on' : ''"></div>
                     </view>
                     <!-- 商品信息 -->
-                    <view class="goods__info" @tap="toGoods(row)">
-                        <view class="img">
-                            <image :src="row.img"></image>
-                        </view>
-                        <view class="info">
-                            <view class="title">{{row.name}}</view>
-                            <view class="spec">{{row.spec}}</view>
-                            <view class="price-number">
-                                <view class="price">￥{{row.price}}</view>
-                                <view class="number">
-                                    <view class="sub" @tap.stop="sub(index)">
+                    <view class="pro" @tap="toGoods(row)">
+                        <image :src="row.img" class="pro__img"></image>
+                        <view class="pro__info">
+                            <view class="pro__info-tit">{{row.name}}</view>
+                            <view class="pro__info-spec">{{row.spec}}</view>
+                            <view class="pro__info-tf">
+                                <view class="pro__info-price">￥{{row.price}}</view>
+                                <view class="pro__info-number">
+                                    <view class="pro__info-number-sub" @tap.stop="sub(index)">
                                         <view>-</view>
                                     </view>
-                                    <view class="input" @tap.stop="discard">
+                                    <view class="pro__info-number-input" @tap.stop="discard">
                                         <input type="number" v-model="row.number" @input="sum" />
                                     </view>
-                                    <view class="add"  @tap.stop="add(index)">
+                                    <view class="pro__info-number-add"  @tap.stop="add(index)">
                                         <view>+</view>
                                     </view>
                                 </view>
@@ -41,14 +32,45 @@
                         </view>
                     </view>
                 </view>
-            </view>
+            </uni-swipe-action>
+            <!-- <view class="cart___item" v-for="(row,index) in goodsList" :key="index" @touchstart="touchStart(index,$event)" @touchmove="touchMove(index,$event)" @touchend="touchEnd(index,$event)">
+                <div class="cart___item-menu" @tap.stop="deleteGoods(row.id)">
+                    <view>删除</view>
+                </div>
+                <view class="cart___item-content" :class="[theIndex == index ? 'cart___item-content--open' : oldIndex == index ? 'cart___item-content--close' : '']">
+                    <view class="checkbox-box" @tap="selected(index)">
+                        <div class="checkbox" :class="row.selected ? 'checkbox--on' : ''"></div>
+                    </view>
+                    <view class="pro" @tap="toGoods(row)">
+                        <view class="pro__img">
+                            <image :src="row.img"></image>
+                        </view>
+                        <view class="pro__info">
+                            <view class="pro__tit">{{row.name}}</view>
+                            <view class="pro__spec">{{row.spec}}</view>
+                            <view class="pro__price-number">
+                                <view class="pro__price">￥{{row.price}}</view>
+                                <view class="pro__number">
+                                    <view class="pro__number-sub" @tap.stop="sub(index)">
+                                        <view>-</view>
+                                    </view>
+                                    <view class="pro__number-input" @tap.stop="discard">
+                                        <input type="number" v-model="row.number" @input="sum" />
+                                    </view>
+                                    <view class="pro__number-add"  @tap.stop="add(index)">
+                                        <view>+</view>
+                                    </view>
+                                </view>
+                            </view>
+                        </view>
+                    </view>
+                </view>
+            </view> -->
         </view>
         <!-- 脚部菜单 -->
         <view class="footer" :style="{bottom:footerbottom}">
             <view class="checkbox-box" @tap="allSelect">
-                <view class="checkbox">
-                    <view :class="[isAllselected?'on':'']"></view>
-                </view>
+                <view class="checkbox" :class="isAllselected ? 'checkbox--on' : ''"></view>
                 <view class="text">全选</view>
             </view>
             <view class="delBtn" @tap="deleteList" v-if="selectedList.length>0">删除</view>
@@ -61,18 +83,31 @@
 </template>
 
 <script>
-
+import uniNumberBox from '@/components/uni-number-box/uni-number-box.vue'
+import uniSwipeAction from '@/components/uni-swipe-action/uni-swipe-action.vue'
 export default {
+    components: {
+        uniSwipeAction,
+        uniNumberBox
+    },
     data() {
         return {
             sumPrice: '0.00',
             selectedList: [],
             isAllselected: false,
+            options2: [
+                {
+                    text: '删除',
+                    style: {
+                        backgroundColor: '#007aff'
+                    }
+                }
+            ],
             goodsList: [
                 {
                     id: 1,
                     img: 'http://fpoimg.com/100x100',
-                    name: '商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题',
+                    name: '商品标题商品标题商品标',
                     spec: '规格 S码',
                     price: 127.5,
                     number: 1,
@@ -81,7 +116,7 @@ export default {
                 {
                     id: 2,
                     img: 'http://fpoimg.com/100x100',
-                    name: '商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题',
+                    name: '商品标商品标题商品标题',
                     spec: '规格 S码',
                     price: 127.5,
                     number: 1,
@@ -89,6 +124,24 @@ export default {
                 },
                 {
                     id: 3,
+                    img: 'http://fpoimg.com/100x100',
+                    name: '商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题',
+                    spec: '规格 S码',
+                    price: 127.5,
+                    number: 1,
+                    selected: false
+                },
+                {
+                    id: 4,
+                    img: 'http://fpoimg.com/100x100',
+                    name: '商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题',
+                    spec: '规格 S码',
+                    price: 127.5,
+                    number: 1,
+                    selected: false
+                },
+                {
+                    id: 4,
                     img: 'http://fpoimg.com/100x100',
                     name: '商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题',
                     spec: '规格 S码',
@@ -187,9 +240,9 @@ export default {
         //商品跳转
         toGoods(e) {
             // uni.showToast({title: '商品'+e.id,icon:"none"})
-            uni.navigateTo({
-                url: '/pages/product/product'
-            })
+            // uni.navigateTo({
+            //     url: '/pages/product/product'
+            // })
         },
         //跳转确认订单页面
         toConfirmation() {
@@ -266,14 +319,14 @@ export default {
         },
         // 合计
         sum() {
-            this.sumPrice = 0
+            let sumPrice = 0
             let len = this.goodsList.length
-            for (let i = 0; i < len; i++) {
+            for (let i = 0, len = this.goodsList.length; i < len; i++) {
                 if (this.goodsList[i].selected) {
-                    this.sumPrice = this.sumPrice + (this.goodsList[i].number * this.goodsList[i].price)
+                    sumPrice = sumPrice + (this.goodsList[i].number * this.goodsList[i].price)
                 }
             }
-            this.sumPrice = this.sumPrice.toFixed(2)
+            this.sumPrice = sumPrice.toFixed(2)
         },
         discard() {
             //丢弃
@@ -282,249 +335,240 @@ export default {
 }
 </script>
 <style lang="scss">
-.tip{
+.cart__none{
     width: 100%;
-    height: 60upx;
+    height: 30px;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 32upx;
+    font-size: 16px;
 }
 
 
 
-    .checkbox-box{
-        display: flex;
-        align-items: center;
-        .checkbox{
-            width: 35upx;
-            height: 35upx;
-            border-radius: 100%;
-            border: solid 2upx #f06c7a;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            .on{
-                width: 25upx;
-                height: 25upx;
-                border-radius: 100%;
-                background-color: $uni-color-primary;
-            }
-        }
-        .text{
-            font-size: 28upx;
-            margin-left: 10upx;
-        }
+.cart{
+    width: 100%;
+    padding-bottom: 60px;
+}
+.cart___item{
+    display: flex;
+    padding: 15px 0;
+    margin: 0 15px;
+    border-bottom: 1px solid #eee;
+}
+
+
+.cart___item-checkbox {
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+}
+
+
+.checkbox{
+    display: flex;
+    width: 18px;
+    height: 18px;
+    border-radius: 100%;
+    border: 1px solid #ccc;
+    justify-content: center;
+    align-items: center;
+}
+.checkbox--on::after{
+    content: "";
+    width: 12px;
+    height: 12px;
+    border-radius: 100%;
+    background-color: $uni-color-primary;
+}
+
+
+
+
+
+.pro {
+    display: flex;
+    flex: 1;
+}
+.pro__img {
+    width: 80px;
+    height: 80px;
+    border-radius: 5px;
+    overflow: hidden;
+    flex: none;
+    margin-right: 10px;
+}
+
+
+
+.pro__info{
+    overflow: hidden;
+    display: flex;
+    flex: 1;
+    flex-flow: column nowrap;
+}
+
+.pro__info-tit{
+    font-size: 14px;
+    line-height: 18px;
+    max-height: 36px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+}
+.pro__info-spec{
+    font-size: 10px;
+    background-color: #eee;
+    color: #999999;
+    height: 16px;
+    line-height: 16px;
+    align-self: flex-start;
+    padding: 0 5px;
+    margin-top: 5px;
+    border-radius: 8px;
+}
+
+
+.pro__info-tf {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.pro__info-price{
+    font-size: 14px;
+    font-weight: bold;
+}
+.pro__info-number{
+    display: flex;
+    justify-content: center;
+    // align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 13px;
+    height: 24px;
+}
+.pro__info-number-input{
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+}
+.pro__info-number-input input {
+    display: block;
+    width: 30px;
+    height: 24px;
+    line-height: 24px;
+    min-height: 24px;
+    padding: 0px;
+    margin: 0px;
+    text-align: center;
+    font-size: 12px;
+}
+.pro__info-number-sub ,.pro__info-number-add{
+    width: 24px;
+    height: 24px;
+    line-height: 20px;
+    font-size: 16px;
+    text-align: center;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+@keyframes showMenu {
+    0% {
+        transform: translateX(0);
     }
-
-
-
-
-
-    .goods-list{
-        width: 100%;
-        padding: 20upx 0 120upx 0;
-
-        .row{
-            width: calc(92%);
-            height: calc(22vw + 40upx);
-            margin: 20upx auto;
-            // border-radius: 15upx;
-            // box-shadow: 0upx 5upx 20upx rgba(0,0,0,0.1);
-            border-bottom: 1px solid #f60;
-            display: flex;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-            z-index: 4;
-            // border: 0;
-            .menu{
-                position: absolute;
-                width: 30%;
-                height: 100%;
-                right: 0;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                background-color: red;
-                color: #fff;
-                z-index: 2;
-            }
-            .carrier{
-                @keyframes showMenu {
-                    0% {transform: translateX(0);}100% {transform: translateX(-30%);}
-                }
-                @keyframes closeMenu {
-                    0% {transform: translateX(-30%);}100% {transform: translateX(0);}
-                }
-                &.open{
-                    animation: showMenu 0.25s linear both;
-                }
-                &.close{
-                    animation: closeMenu 0.15s linear both;
-                }
-                background-color: #fff;
-                .checkbox-box{
-                    padding-left: 20upx;
-                    flex-shrink: 0;
-                    height: 22vw;
-                    margin-right: 20upx;
-                }
-                position: absolute;
-                width: 100%;
-                padding: 0 0;
-                height: 100%;
-                z-index: 3;
-                display: flex;
-                align-items: center;
-
-                .goods__info{
-                    width: 100%;
-                    display: flex;
-                    padding-right: 20upx;
-                    .img{
-                        width: 22vw;
-                        height: 22vw;
-                        border-radius: 10upx;
-                        overflow: hidden;
-                        flex-shrink: 0;
-                        margin-right: 10upx;
-                        image{
-                            width: 22vw;
-                            height: 22vw;
-                        }
-                    }
-                    .info{
-                        width: 100%;
-                        height: 22vw;
-                        overflow: hidden;
-                        display: flex;
-                        flex-wrap: wrap;
-                        position: relative;
-                        .title{
-                            width: 100%;
-                            font-size: 28upx;
-                            display: -webkit-box;
-                            -webkit-box-orient: vertical;
-                            -webkit-line-clamp: 2;
-                            // text-align: justify;
-                            overflow: hidden;
-                        }
-                        .spec{
-                            font-size: 20upx;
-                            background-color: #f3f3f3;
-                            color: #a7a7a7;
-                            height: 30upx;
-                            display: flex;
-                            align-items: center;
-                            padding: 0 10upx;
-                            border-radius: 15upx;
-                            margin-bottom: 20vw;
-                        }
-                        .price-number{
-                            position: absolute;
-                            width: 100%;
-                            bottom: 0upx;
-                            display: flex;
-                            justify-content: space-between;
-                            align-items: flex-end;
-                            font-size: 28upx;
-                            height: 40upx;
-                            .price{
-                            }
-                            .number{
-                                display: flex;
-                                justify-content: center;
-                                align-items: center;
-                                .input{
-                                    height: 40upx;
-                                    margin: 0 10upx;
-                                    background-color: #f3f3f3;
-                                    input{
-                                        width: 60upx;
-                                        height: 30upx;
-                                        display: flex;
-                                        justify-content: center;
-                                        align-items: center;
-                                        text-align: center;
-                                        font-size: 26upx;
-                                    }
-                                }
-                                
-                                .sub ,.add{
-                                    width: 40upx;
-                                    height: 40upx;
-                                    background-color: #f3f3f3;
-                                    border-radius: 5upx;
-                                    .icon{
-                                        font-size: 20upx;
-                                        width: 40upx;
-                                        height: 40upx;
-                                        display: flex;
-                                        justify-content: center;
-                                        align-items: center;
-                                        
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            
-            
-        }
-        
+    100% {
+        transform: translateX(-30%);
     }
-    .footer{
-        width: 92%;
-        padding: 0 4%;
-        background-color: #fbfbfb;
-        height: 100upx;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-size: 28upx;
-        position: fixed;
-        bottom: 0upx;
-        z-index: 5;
-        .delBtn{
-            border: solid 1upx #f06c7a;
-            color: #f06c7a;
-            padding: 0 30upx;
-            height: 50upx;
-            border-radius: 30upx;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .settlement{
-            width: 60%;
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            .sum{
-                width: 50%;
-                font-size: 28upx;
-                margin-right: 10upx;
-                display: flex;
-                justify-content: flex-end;
-                .money{
-                    font-weight: 600;
-                }
-            }
-            .btn{
-                padding: 0 30upx;
-                height: 50upx;
-                background-color: #f06c7a;
-                color: #fff;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                
-                border-radius: 30upx;
-            }
-        }
+}
+@keyframes closeMenu {
+    0% {
+        transform: translateX(-30%);
     }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+.footer{
+    width: 92%;
+    padding: 0 4%;
+    background-color: #fff;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    position: fixed;
+    bottom: 0;
+    z-index: 5;
+}
+
+.delBtn{
+    border: solid 1px #f06c7a;
+    color: #f06c7a;
+    padding: 0 15px;
+    height: 25px;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.settlement{
+    width: 60%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+}
+.settlement .sum{
+    width: 50%;
+    font-size: 14px;
+    margin-right: 5px;
+    display: flex;
+    justify-content: flex-end;
+
+}
+.settlement .sum .money{
+    font-weight: 600;
+}
+.settlement .btn{
+    padding: 0 15px;
+    height: 25px;
+    background-color: #f06c7a;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+}
+
+
+
+
+
+
+
 </style>
