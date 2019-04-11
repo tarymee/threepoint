@@ -6,8 +6,8 @@
             <uni-swipe-action :options="options2" v-for="(row,index) in goodsList" :key="index" @click="deleteGoods(row.id)">
                 <view class="cart___item">
                     <!-- checkbox -->
-                    <view class="cart___item-checkbox" @tap="selected(index)">
-                        <div class="checkbox" :class="row.selected ? 'checkbox--on' : ''"></div>
+                    <view class="cart___item-sel" @tap="selected(index)">
+                        <tt-checkbox :checked="row.selected">/</tt-checkbox>
                     </view>
                     <!-- 商品信息 -->
                     <view class="pro" @tap="toGoods(row)">
@@ -33,73 +33,48 @@
                     </view>
                 </view>
             </uni-swipe-action>
-            <!-- <view class="cart___item" v-for="(row,index) in goodsList" :key="index" @touchstart="touchStart(index,$event)" @touchmove="touchMove(index,$event)" @touchend="touchEnd(index,$event)">
-                <div class="cart___item-menu" @tap.stop="deleteGoods(row.id)">
-                    <view>删除</view>
-                </div>
-                <view class="cart___item-content" :class="[theIndex == index ? 'cart___item-content--open' : oldIndex == index ? 'cart___item-content--close' : '']">
-                    <view class="checkbox-box" @tap="selected(index)">
-                        <div class="checkbox" :class="row.selected ? 'checkbox--on' : ''"></div>
-                    </view>
-                    <view class="pro" @tap="toGoods(row)">
-                        <view class="pro__img">
-                            <image :src="row.img"></image>
-                        </view>
-                        <view class="pro__info">
-                            <view class="pro__tit">{{row.name}}</view>
-                            <view class="pro__spec">{{row.spec}}</view>
-                            <view class="pro__price-number">
-                                <view class="pro__price">￥{{row.price}}</view>
-                                <view class="pro__number">
-                                    <view class="pro__number-sub" @tap.stop="sub(index)">
-                                        <view>-</view>
-                                    </view>
-                                    <view class="pro__number-input" @tap.stop="discard">
-                                        <input type="number" v-model="row.number" @input="sum" />
-                                    </view>
-                                    <view class="pro__number-add"  @tap.stop="add(index)">
-                                        <view>+</view>
-                                    </view>
-                                </view>
-                            </view>
-                        </view>
-                    </view>
-                </view>
-            </view> -->
         </view>
+
+        <div class="cart-th">
+            <div class="cart-th__sel" @tap="allSelect">
+                <tt-checkbox :checked="isAllselected">/</tt-checkbox>
+                <span class="cart-th__sel-txt">全选</span>
+            </div>
+            <div class="cart-th__edit" @tap="edit">{{isEdit ? '完成' : '编辑'}}</div>
+        </div>
+
         <!-- 脚部菜单 -->
-        <view class="footer" :style="{bottom:footerbottom}">
-            <view class="checkbox-box" @tap="allSelect">
-                <view class="checkbox" :class="isAllselected ? 'checkbox--on' : ''"></view>
-                <view class="text">全选</view>
-            </view>
-            <view class="delBtn" @tap="deleteList" v-if="selectedList.length>0">删除</view>
-            <view class="settlement">
-                <view class="sum">合计:<view class="money">￥{{sumPrice}}</view></view>
-                <view class="btn" @tap="toConfirmation">结算({{selectedList.length}})</view>
-            </view>
-        </view>
+        <div class="cart-tf">
+            <div class="cart-tf__sum">合计:<span class="cart-tf__sum-money">￥{{sumPrice}}</span></div>
+            <div class="cart-tf__set">
+                <div class="cart-tf__del" @tap="deleteList" v-if="isEdit">删除</div>
+                <div class="cart-tf__deal" @tap="toConfirmation" v-if="!isEdit">结算({{selectedList.length}})</div>
+            </div>
+        </div>
     </view>
 </template>
 
 <script>
 import uniNumberBox from '@/components/uni-number-box/uni-number-box.vue'
 import uniSwipeAction from '@/components/uni-swipe-action/uni-swipe-action.vue'
+import ttCheckbox from '@/components/tt-checkbox/tt-checkbox.vue'
 export default {
     components: {
         uniSwipeAction,
-        uniNumberBox
+        uniNumberBox,
+        ttCheckbox
     },
     data() {
         return {
             sumPrice: '0.00',
             selectedList: [],
             isAllselected: false,
+            isEdit: false,
             options2: [
                 {
                     text: '删除',
                     style: {
-                        backgroundColor: '#007aff'
+                        backgroundColor: '#f60'
                     }
                 }
             ],
@@ -158,20 +133,8 @@ export default {
                     number: 1,
                     selected: false
                 }
-            ],
-            //控制滑动效果
-            theIndex: null,
-            oldIndex: null,
-            isStop: false
+            ]
         }
-    },
-    onPageScroll(e) {
-        //兼容iOS端下拉时顶部漂移
-        // if(e.scrollTop>=0){
-        //     this.headerPosition = "fixed"
-        // }else{
-        //     this.headerPosition = "absolute"
-        // }
     },
     //下拉刷新，需要自己在page.json文件中配置开启页面下拉刷新 "enablePullDownRefresh": true
     onPullDownRefresh() {
@@ -180,71 +143,20 @@ export default {
         }, 1000)
     },
     onLoad() {
-        //兼容H5下结算条位置
-        // #ifdef H5
-        this.footerbottom = document.getElementsByTagName('uni-tabbar')[0].offsetHeight + 'px'
-        // #endif
+
     },
     methods: {
-        //控制左滑删除效果-begin
-        touchStart(index, event) {
-            //多点触控不触发
-            if (event.touches.length > 1) {
-                this.isStop = true
-                return
-            }
-            this.oldIndex = this.theIndex
-            this.theIndex = null
-            //初始坐标
-            this.initXY = [event.touches[0].pageX, event.touches[0].pageY]
+        edit() {
+            this.isEdit = !this.isEdit
         },
-        touchMove(index, event) {
-            //多点触控不触发
-            if (event.touches.length > 1) {
-                this.isStop = true
-                return
-            }
-            let moveX = event.touches[0].pageX - this.initXY[0]
-            let moveY = event.touches[0].pageY - this.initXY[1]
-
-            if (this.isStop || Math.abs(moveX) < 5) {
-                return
-            }
-            if (Math.abs(moveY) > Math.abs(moveX)) {
-                // 竖向滑动-不触发左滑效果
-                this.isStop = true
-                return
-            }
-
-            if (moveX < 0) {
-                this.theIndex = index
-                this.isStop = true
-            } else if (moveX > 0) {
-                if (this.theIndex != null && this.oldIndex == this.theIndex) {
-                    this.oldIndex = index
-                    this.theIndex = null
-                    this.isStop = true
-                    setTimeout(() => {
-                        this.oldIndex = null
-                    }, 150)
-                }
-            }
-        },
-        touchEnd(index, $event) {
-            //结束禁止触发效果
-            this.isStop = false
-        },
-        //控制左滑删除效果-end
-
-
-        //商品跳转
+        // 商品跳转
         toGoods(e) {
             // uni.showToast({title: '商品'+e.id,icon:"none"})
             // uni.navigateTo({
             //     url: '/pages/product/product'
             // })
         },
-        //跳转确认订单页面
+        // 跳转确认订单页面
         toConfirmation() {
             let tmpList = []
             let len = this.goodsList.length
@@ -263,7 +175,7 @@ export default {
                 }
             })
         },
-        //删除商品
+        // 删除商品
         deleteGoods(id) {
             let len = this.goodsList.length
             for (let i = 0; i < len; i++) {
@@ -274,15 +186,15 @@ export default {
             }
             this.sum()
         },
-        // 删除商品s
+        // 删除商品
         deleteList() {
-            let len = this.selectedList.length
-            for (let i = 0; i < len; i++) {
-                this.deleteGoods(this.selectedList[i])
-            }
-            this.selectedList = []
-            this.isAllselected = this.selectedList.length == this.goodsList.length && this.goodsList.length > 0
-            this.sum()
+            let that = this
+            that.selectedList.forEach((item, i) => {
+                that.deleteGoods(item)
+            })
+            that.selectedList = []
+            that.isAllselected = that.selectedList.length == that.goodsList.length && that.goodsList.length > 0
+            that.sum()
         },
         // 选中商品
         selected(index) {
@@ -292,17 +204,17 @@ export default {
             this.isAllselected = this.selectedList.length == this.goodsList.length
             this.sum()
         },
-        //全选
+        // 全选
         allSelect() {
-            let len = this.goodsList.length
+            let that = this
             let arr = []
-            for (let i = 0; i < len; i++) {
-                this.goodsList[i].selected = this.isAllselected ? false : true
-                arr.push(this.goodsList[i].id)
-            }
-            this.selectedList = this.isAllselected ? [] : arr
-            this.isAllselected = this.isAllselected || this.goodsList.length == 0 ? false : true
-            this.sum()
+            that.goodsList.forEach((item, i) => {
+                item.selected = that.isAllselected ? false : true
+                arr.push(item.id)
+            })
+            that.selectedList = that.isAllselected ? [] : arr
+            that.isAllselected = that.isAllselected || that.goodsList.length == 0 ? false : true
+            that.sum()
         },
         // 减少数量
         sub(index) {
@@ -335,6 +247,97 @@ export default {
 }
 </script>
 <style lang="scss">
+.cart-tf{
+    display: flex;
+    width: 100%;
+    padding: 0 15px;
+    height: 40px;
+    background-color: #fff;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+    border-top: 1upx solid #eee;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.cart-tf__sum{
+    font-size: 14px;
+}
+.cart-tf__sum-money{
+    font-weight: bold;
+}
+.cart-tf__set {
+    display: flex;
+}
+.cart-tf__deal {
+    background-color: #f06c7a;
+    color: #fff;
+    padding: 0 15px;
+    height: 25px;
+    line-height: 25px;
+    border-radius: 15px;
+    font-size: 14px;
+}
+.cart-tf__del {
+    border: 1upx solid #f06c7a;
+    color: #f06c7a;
+    padding: 0 15px;
+    height: 25px;
+    line-height: 25px;
+    border-radius: 15px;
+    font-size: 14px;
+}
+
+
+
+
+
+
+
+.cart-th{
+    display: flex;
+    width: 100%;
+    padding: 0 15px;
+    height: 40px;
+    background-color: #fff;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    border-bottom: 1upx solid #eee;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.cart-th__sel {
+    display: flex;
+    align-items: center;
+}
+.cart-th__sel-txt {
+    font-size: 14px;
+    margin-left: 10px;
+}
+.cart-th__edit{
+    height: 25px;
+    line-height: 25px;
+    font-size: 14px;
+    color: #333;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .cart__none{
     width: 100%;
     height: 30px;
@@ -348,42 +351,21 @@ export default {
 
 .cart{
     width: 100%;
-    padding-bottom: 60px;
+    // padding-bottom: 60px;
+    margin: 40px 0;
 }
 .cart___item{
     display: flex;
-    padding: 15px 0;
-    margin: 0 15px;
+    padding: 15px;
     border-bottom: 1px solid #eee;
 }
 
 
-.cart___item-checkbox {
+.cart___item-sel {
     display: flex;
     align-items: center;
-    padding: 0 10px;
+    margin-right: 10px;
 }
-
-
-.checkbox{
-    display: flex;
-    width: 18px;
-    height: 18px;
-    border-radius: 100%;
-    border: 1px solid #ccc;
-    justify-content: center;
-    align-items: center;
-}
-.checkbox--on::after{
-    content: "";
-    width: 12px;
-    height: 12px;
-    border-radius: 100%;
-    background-color: $uni-color-primary;
-}
-
-
-
 
 
 .pro {
@@ -482,88 +464,7 @@ export default {
 
 
 
-@keyframes showMenu {
-    0% {
-        transform: translateX(0);
-    }
-    100% {
-        transform: translateX(-30%);
-    }
-}
-@keyframes closeMenu {
-    0% {
-        transform: translateX(-30%);
-    }
-    100% {
-        transform: translateX(0);
-    }
-}
 
-
-
-
-
-
-
-
-
-
-
-
-
-.footer{
-    width: 92%;
-    padding: 0 4%;
-    background-color: #fff;
-    height: 50px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 14px;
-    position: fixed;
-    bottom: 0;
-    z-index: 5;
-}
-
-.delBtn{
-    border: solid 1px #f06c7a;
-    color: #f06c7a;
-    padding: 0 15px;
-    height: 25px;
-    border-radius: 15px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.settlement{
-    width: 60%;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-
-}
-.settlement .sum{
-    width: 50%;
-    font-size: 14px;
-    margin-right: 5px;
-    display: flex;
-    justify-content: flex-end;
-
-}
-.settlement .sum .money{
-    font-weight: 600;
-}
-.settlement .btn{
-    padding: 0 15px;
-    height: 25px;
-    background-color: #f06c7a;
-    color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 15px;
-}
 
 
 

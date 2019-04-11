@@ -1,5 +1,6 @@
 <template>
-    <div class="checkbox" :class="isSelected ? 'checkbox--on' : ''"></div>
+    <div class="tt-checkbox" :class="checked ? 'tt-checkbox--on' : ''"></div>
+    <!-- <div class="tt-checkbox" :class="checked ? 'tt-checkbox--on' : ''" @click="onClick"></div> -->
 </template>
 <script>
 export default {
@@ -10,29 +11,19 @@ export default {
         }
     },
     props: {
-        isSelected: {
+        checked: {
             type: Boolean,
             default: false
         }
     },
     mounted() {
-        console.log('order-list mounted')
+        console.log('tt-checkbox mounted')
         let that = this
     },
     methods: {
-        detail(id) {
-            
-        },
-        pay(id) {
-            
-        },
-        comfirm(id) {
-            
-        },
-        express(id) {
-            uni.navigateTo({
-                url: '/pages/express/express?id=' + id
-            })
+        onClick() {
+            this.checked = !this.checked
+            this.$emit('click', this.checked)
         }
     }
 }
@@ -40,17 +31,18 @@ export default {
 
 <style scope>
 @charset "UTF-8";
-.checkbox{
-    display: flex;
+.tt-checkbox{
+    display: block;
     width: 18px;
     height: 18px;
     border-radius: 100%;
-    border: 1px solid #ccc;
-    justify-content: center;
-    align-items: center;
+    border: 1px solid #333;
+    overflow: hidden;
 }
-.checkbox--on::after{
+.tt-checkbox--on::after{
     content: "";
+    display: block;
+    margin: 3px;
     width: 12px;
     height: 12px;
     border-radius: 100%;
