@@ -2,29 +2,29 @@
     <view>
         <!-- 商品列表 -->
         <view class="cart">
-            <view class="cart__none" v-if="goodsList.length==0">购物车是空的哦~</view>
-            <uni-swipe-action :options="options2" v-for="(row,index) in goodsList" :key="index" @click="deleteGoods(row.id)">
+            <view class="cart__none" v-if="proArr.length==0">购物车是空的哦~</view>
+            <uni-swipe-action :options="options2" v-for="(item,index) in proArr" :key="index" @click="deleteGoods(item.id)">
                 <view class="cart___item">
                     <!-- checkbox -->
                     <view class="cart___item-sel" @tap="selected(index)">
-                        <tt-checkbox :checked="row.selected">/</tt-checkbox>
+                        <tt-checkbox :checked="item.selected">/</tt-checkbox>
                     </view>
                     <!-- 商品信息 -->
-                    <view class="pro" @tap="toGoods(row)">
-                        <image :src="row.img" class="pro__img"></image>
+                    <view class="pro" @tap="toGoods(item)">
+                        <image :src="item.img" class="pro__img"></image>
                         <view class="pro__info">
-                            <view class="pro__info-tit">{{row.name}}</view>
-                            <view class="pro__info-spec">{{row.spec}}</view>
+                            <view class="pro__info-tit">{{item.name}}</view>
+                            <view class="pro__info-spec">{{item.spec}}</view>
                             <view class="pro__info-tf">
-                                <view class="pro__info-price">￥{{row.price}}</view>
-                                <view class="pro__info-number">
-                                    <view class="pro__info-number-sub" @tap.stop="sub(index)">
+                                <view class="pro__info-price">￥{{item.price}}</view>
+                                <view class="pro__info-count">
+                                    <view class="pro__info-count-sub" @tap.stop="sub(index)">
                                         <view>-</view>
                                     </view>
-                                    <view class="pro__info-number-input" @tap.stop="discard">
-                                        <input type="number" v-model="row.number" @input="sum" />
+                                    <view class="pro__info-count-input" @tap.stop="discard">
+                                        <input type="number" v-model="item.count" @input="sum" />
                                     </view>
-                                    <view class="pro__info-number-add"  @tap.stop="add(index)">
+                                    <view class="pro__info-count-add"  @tap.stop="add(index)">
                                         <view>+</view>
                                     </view>
                                 </view>
@@ -48,7 +48,7 @@
             <div class="cart-tf__sum">合计:<span class="cart-tf__sum-money">￥{{sumPrice}}</span></div>
             <div class="cart-tf__set">
                 <div class="cart-tf__del" @tap="deleteList" v-if="isEdit">删除</div>
-                <div class="cart-tf__deal" @tap="toConfirmation" v-if="!isEdit">结算({{selectedList.length}})</div>
+                <div class="cart-tf__deal" @tap="toConfirm" v-if="!isEdit">结算({{selectedList.length}})</div>
             </div>
         </div>
     </view>
@@ -78,14 +78,14 @@ export default {
                     }
                 }
             ],
-            goodsList: [
+            proArr: [
                 {
                     id: 1,
                     img: 'http://fpoimg.com/100x100',
                     name: '商品标题商品标题商品标',
                     spec: '规格 S码',
                     price: 127.5,
-                    number: 1,
+                    count: 1,
                     selected: false
                 },
                 {
@@ -94,7 +94,7 @@ export default {
                     name: '商品标商品标题商品标题',
                     spec: '规格 S码',
                     price: 127.5,
-                    number: 1,
+                    count: 1,
                     selected: false
                 },
                 {
@@ -103,7 +103,7 @@ export default {
                     name: '商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题',
                     spec: '规格 S码',
                     price: 127.5,
-                    number: 1,
+                    count: 1,
                     selected: false
                 },
                 {
@@ -112,7 +112,7 @@ export default {
                     name: '商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题',
                     spec: '规格 S码',
                     price: 127.5,
-                    number: 1,
+                    count: 1,
                     selected: false
                 },
                 {
@@ -121,7 +121,7 @@ export default {
                     name: '商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题',
                     spec: '规格 S码',
                     price: 127.5,
-                    number: 1,
+                    count: 1,
                     selected: false
                 },
                 {
@@ -130,7 +130,7 @@ export default {
                     name: '商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题',
                     spec: '规格 S码',
                     price: 127.5,
-                    number: 1,
+                    count: 1,
                     selected: false
                 }
             ]
@@ -157,30 +157,44 @@ export default {
             // })
         },
         // 跳转确认订单页面
-        toConfirmation() {
-            let tmpList = []
-            let len = this.goodsList.length
-            for (let i = 0; i < len; i++) {
-                if (this.goodsList[i].selected) {
-                    tmpList.push(this.goodsList[i])
-                }
-            }
-            uni.setStorage({
-                key: 'buylist',
-                data: tmpList,
-                success: () => {
-                    uni.navigateTo({
-                        url: '../order/confirmation'
-                    })
+        toConfirm() {
+            let that = this
+            let confirmArr = []
+            that.proArr.forEach((item, i) => {
+                if (item.selected) {
+                    confirmArr.push(item)
                 }
             })
+            console.log(confirmArr)
+            if (confirmArr.length) {
+                uni.navigateTo({
+                    url: '/pages/confirm/confirm?confirmArr=' + encodeURIComponent(JSON.stringify(confirmArr)) + '&proPrice=' + that.sumPrice
+                })
+            } else {
+                uni.showModal({
+                    title: '提示',
+                    content: '请先选择产品',
+                    showCancel: false
+                })
+            }
+
+
+            // uni.setStorage({
+            //     key: 'buylist',
+            //     data: tmpList,
+            //     success: () => {
+            //         uni.navigateTo({
+            //             url: '../order/confirmation'
+            //         })
+            //     }
+            // })
         },
         // 删除商品
         deleteGoods(id) {
-            let len = this.goodsList.length
+            let len = this.proArr.length
             for (let i = 0; i < len; i++) {
-                if (id == this.goodsList[i].id) {
-                    this.goodsList.splice(i, 1)
+                if (id == this.proArr[i].id) {
+                    this.proArr.splice(i, 1)
                     break
                 }
             }
@@ -193,49 +207,49 @@ export default {
                 that.deleteGoods(item)
             })
             that.selectedList = []
-            that.isAllselected = that.selectedList.length == that.goodsList.length && that.goodsList.length > 0
+            that.isAllselected = that.selectedList.length == that.proArr.length && that.proArr.length > 0
             that.sum()
         },
         // 选中商品
         selected(index) {
-            this.goodsList[index].selected = this.goodsList[index].selected ? false : true
-            let i = this.selectedList.indexOf(this.goodsList[index].id)
-            i > -1 ? this.selectedList.splice(i, 1) : this.selectedList.push(this.goodsList[index].id)
-            this.isAllselected = this.selectedList.length == this.goodsList.length
+            this.proArr[index].selected = this.proArr[index].selected ? false : true
+            let i = this.selectedList.indexOf(this.proArr[index].id)
+            i > -1 ? this.selectedList.splice(i, 1) : this.selectedList.push(this.proArr[index].id)
+            this.isAllselected = this.selectedList.length == this.proArr.length
             this.sum()
         },
         // 全选
         allSelect() {
             let that = this
             let arr = []
-            that.goodsList.forEach((item, i) => {
+            that.proArr.forEach((item, i) => {
                 item.selected = that.isAllselected ? false : true
                 arr.push(item.id)
             })
             that.selectedList = that.isAllselected ? [] : arr
-            that.isAllselected = that.isAllselected || that.goodsList.length == 0 ? false : true
+            that.isAllselected = that.isAllselected || that.proArr.length == 0 ? false : true
             that.sum()
         },
         // 减少数量
         sub(index) {
-            if (this.goodsList[index].number <= 1) {
+            if (this.proArr[index].count <= 1) {
                 return
             }
-            this.goodsList[index].number--
+            this.proArr[index].count--
             this.sum()
         },
         // 增加数量
         add(index) {
-            this.goodsList[index].number++
+            this.proArr[index].count++
             this.sum()
         },
         // 合计
         sum() {
             let sumPrice = 0
-            let len = this.goodsList.length
-            for (let i = 0, len = this.goodsList.length; i < len; i++) {
-                if (this.goodsList[i].selected) {
-                    sumPrice = sumPrice + (this.goodsList[i].number * this.goodsList[i].price)
+            let len = this.proArr.length
+            for (let i = 0, len = this.proArr.length; i < len; i++) {
+                if (this.proArr[i].selected) {
+                    sumPrice = sumPrice + (this.proArr[i].count * this.proArr[i].price)
                 }
             }
             this.sumPrice = sumPrice.toFixed(2)
@@ -246,7 +260,7 @@ export default {
     }
 }
 </script>
-<style lang="scss">
+<style scoped>
 .cart-tf{
     display: flex;
     width: 100%;
@@ -271,7 +285,7 @@ export default {
     display: flex;
 }
 .cart-tf__deal {
-    background-color: #f06c7a;
+    background-color: #d1a178;
     color: #fff;
     padding: 0 15px;
     height: 25px;
@@ -280,8 +294,8 @@ export default {
     font-size: 14px;
 }
 .cart-tf__del {
-    border: 1upx solid #f06c7a;
-    color: #f06c7a;
+    border: 1upx solid #d1a178;
+    color: #d1a178;
     padding: 0 15px;
     height: 25px;
     line-height: 25px;
@@ -351,7 +365,6 @@ export default {
 
 .cart{
     width: 100%;
-    // padding-bottom: 60px;
     margin: 40px 0;
 }
 .cart___item{
@@ -421,19 +434,18 @@ export default {
     font-size: 14px;
     font-weight: bold;
 }
-.pro__info-number{
+.pro__info-count{
     display: flex;
     justify-content: center;
-    // align-items: center;
     border: 1px solid #ccc;
     border-radius: 13px;
     height: 24px;
 }
-.pro__info-number-input{
+.pro__info-count-input{
     border-left: 1px solid #ccc;
     border-right: 1px solid #ccc;
 }
-.pro__info-number-input input {
+.pro__info-count-input input {
     display: block;
     width: 30px;
     height: 24px;
@@ -444,7 +456,7 @@ export default {
     text-align: center;
     font-size: 12px;
 }
-.pro__info-number-sub ,.pro__info-number-add{
+.pro__info-count-sub ,.pro__info-count-add{
     width: 24px;
     height: 24px;
     line-height: 20px;

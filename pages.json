@@ -73,6 +73,12 @@
             }
         },
         {
+            "path": "pages/success/success",
+            "style": {
+                "navigationBarTitleText": "支付成功"
+            }
+        },
+        {
             "path": "pages/service/service",
             "style": {
                 "navigationBarTitleText": "联系客服"
@@ -172,7 +178,7 @@
             {
                 "name": "confirm",
                 "path": "pages/confirm/confirm",
-                "query": "id=4000"
+                "query": "confirmArr=%5B%7B%22id%22%3A3%2C%22img%22%3A%22http%3A%2F%2Ffpoimg.com%2F100x100%22%2C%22name%22%3A%22%E5%95%86%E5%93%81%E6%A0%87%E9%A2%98%E5%95%86%E5%93%81%E6%A0%87%E9%A2%98%E5%95%86%E5%93%81%E6%A0%87%E9%A2%98%E5%95%86%E5%93%81%E6%A0%87%E9%A2%98%E5%95%86%E5%93%81%E6%A0%87%E9%A2%98%E5%95%86%E5%93%81%E6%A0%87%E9%A2%98%E5%95%86%E5%93%81%E6%A0%87%E9%A2%98%E5%95%86%E5%93%81%E6%A0%87%E9%A2%98%E5%95%86%E5%93%81%E6%A0%87%E9%A2%98%E5%95%86%E5%93%81%E6%A0%87%E9%A2%98%22%2C%22spec%22%3A%22%E8%A7%84%E6%A0%BC%20S%E7%A0%81%22%2C%22price%22%3A127.5%2C%22count%22%3A1%2C%22selected%22%3Atrue%7D%5D&proPrice=15.66"
             },
             {
                 "name": "product",

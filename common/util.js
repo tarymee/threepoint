@@ -5,24 +5,22 @@ const host = 'https://wxcms.net'
 // 本地
 // const host = 'http://localhost:8088'
 const api = {
-  test: `${host}/test.json`,
-  index: `${host}/api/shop/index/1`,
-  open: `${host}/api/applyinfo/list/1`,
-  wxlogin: `${host}/wxLogin`,
-  host
+    pay: `${host}/api/pay`,
+    getAddress: `${host}/api/getAddress`,
+    test: `${host}/api/test.json`,
+    index: `${host}/api/shop/index/1`,
+    open: `${host}/api/applyinfo/list/1`,
+    wxlogin: `${host}/api/wxLogin`,
+    host
 }
 console.log(api)
 
 
 function wxLogin(callback) {
-    // uni.setStorage({
-    //   key: 'openid',
-    //   data: '54654654654654654654654',
-    //   complete: function () {
-    //     console.log(uni.getStorageSync('openid'))
-    //   }
-    // })
-    let openid = uni.getStorage('openid') || '11111'
+    uni.setStorageSync('openid', '54654654654654654654654')
+
+
+    let openid = uni.getStorageSync('openid') || '11111'
     console.log('openid = ' + openid)
     if (openid) {
         callback && callback()
@@ -40,7 +38,7 @@ function wxLogin(callback) {
                     data: {
                         code: result.code
                     },
-                    success: function(res) {
+                    success: function (res) {
                         // console.log(res)
                         uni.hideLoading()
 
@@ -58,7 +56,7 @@ function wxLogin(callback) {
                             uni.setStorage({
                                 key: 'openid',
                                 data: res.data.openid,
-                                complete: function() {
+                                complete: function () {
                                     callback && callback()
                                 }
                             })
@@ -67,7 +65,7 @@ function wxLogin(callback) {
                             uni.setStorage({
                                 key: 'openid',
                                 data: res.data.openid,
-                                complete: function() {
+                                complete: function () {
                                     uni.redirectTo({
                                         url: '/pages/register/register'
                                     })
@@ -75,7 +73,7 @@ function wxLogin(callback) {
                             })
                         }
                     },
-                    fail: function(res) {
+                    fail: function (res) {
                         // alert('网络异常，请稍后重试')
                         console.error(res)
                         uni.hideLoading()
@@ -141,7 +139,9 @@ function request(config) {
 
     if (isVerifyLogin) {
         console.log('校验登录后发起请求')
-        wxLogin(function() {
+        wxLogin(function () {
+            let openid = uni.getStorageSync('openid')
+            data.openid = openid
             post()
         })
     } else {
