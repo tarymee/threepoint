@@ -296,16 +296,16 @@ export default {
 
         let res = {
             'id': '5188314',
-            'title': '青花瓷22CM',
+            'title': '青花瓷30CM',
             'swiperArr': [
                 {
-                    img: 'https://pic.36krcnd.com/201903/25021423/n0x2x3v809xijacy!heading',
+                    img: 'https://cbu01.alicdn.com/img/ibank/2018/317/567/9509765713_1899654620.400x400.jpg',
                 },
                 {
-                    img: 'https://pic.36krcnd.com/avatar/201903/25001720/s4nf1w16zgl4d4sd.png!heading',
+                    img: 'https://cbu01.alicdn.com/img/ibank/2018/122/260/9488062221_1899654620.400x400.jpg',
                 }
             ],
-            'content': '<p>编者按：本文来自36氪战略合作区块链媒体“Odaily星球日报”（公众号ID：o-daily，APP下载）</p><p><img style="max-width:100%" src="/static/img/open-art4.jpg" /></p><p><img style="max-width:100%" src="https://pic.36krcnd.com/201903/25021423/n0x2x3v809xijacy!heading" /></p><p>本周 BTC 价格本周比特币价格高低起伏明显，高点低点均出现在 3 月 22 日。美元和日元比特币交易市场份额较上周减少，占 83.71%；各家矿池份额占比较上周差距明显；闪电实验室发布比特币支付渠道新功能“闪电环”。</p>',
+            'content': '<p>青花瓷30CM</p><p><img style="max-width:100%" src="https://cbu01.alicdn.com/img/ibank/2018/553/678/9509876355_1899654620.jpg" /></p><p><img style="max-width:100%" src="https://cbu01.alicdn.com/img/ibank/2018/929/343/9464343929_1899654620.jpg" /></p><p><img style="max-width:100%" src="https://cbu01.alicdn.com/img/ibank/2018/568/071/9488170865_1899654620.jpg" /></p>',
             'categoryArr': [
                 {
                     'title': '尺码',
@@ -313,12 +313,16 @@ export default {
                     'select': null,
                     'items': [
                         {
-                            'id': '111111',
-                            'text': 'S'
+                            'id': '111',
+                            'text': '30CM'
                         },
                         {
-                            'id': '222222',
-                            'text': 'M'
+                            'id': '222',
+                            'text': '60CM'
+                        },
+                        {
+                            'id': '333',
+                            'text': '90CM'
                         }
                     ]
                 },
@@ -328,12 +332,16 @@ export default {
                     'select': null,
                     'items': [
                         {
-                            'id': '444444',
-                            'text': '黑色'
+                            'id': '444',
+                            'text': '魔法黑'
                         },
                         {
-                            'id': '555555',
-                            'text': '红色'
+                            'id': '555',
+                            'text': '青花素'
+                        },
+                        {
+                            'id': '666',
+                            'text': '陶瓷白'
                         }
                     ]
                 }
@@ -388,7 +396,7 @@ export default {
         font-size: 18px;
         font-weight: bold;
         padding-top: 15px;
-        color: #f60;
+        color: #d1a178;
         font-weight: bold;
     }
     .product__title {
@@ -458,8 +466,8 @@ export default {
         vertical-align: top;
     }
     .product__selcon-item--cur {
-        color: #f60;
-        border: 1px solid #f60;
+        color: #f00;
+        border: 1px solid #f00;
     }
     .product__selcon-num {
         overflow: hidden;
@@ -469,7 +477,7 @@ export default {
         overflow: hidden;
         height: 30px;
         line-height: 30px;
-        border: 1px solid #f60;
+        border: 1px solid #d1a178;
         border-radius: 20px;
         overflow: hidden;
         text-align: center;
@@ -479,16 +487,16 @@ export default {
     .product__selcon-btns-buy {
         float: left;
         width: 50%;
-        color: #f60;
+        color: #d1a178;
     }
     .product__selcon-btns-add {
-        background-color: #f60;
+        background-color: #d1a178;
         color: #ffffff;
         float: left;
         width: 50%;
     }
     .product__selcon-btns-confirm {
-        background-color: #f60;
+        background-color: #d1a178;
         color: #ffffff;
         width: 100%;
     }
@@ -517,7 +525,8 @@ export default {
         width: 25px;
         height: 25px;
         margin: 5px auto 0;
-        background-color: #05a;
+        background-color: #999;
+        border-radius: 50%;
     }
     .product-tf__item-tit {
         text-align: center;
@@ -530,7 +539,7 @@ export default {
         height: 30px;
         line-height: 30px;
         margin-top: 9px;
-        border: 1px solid #f60;
+        border: 1px solid #d1a178;
         border-radius: 20px;
         overflow: hidden;
         text-align: center;
@@ -539,10 +548,10 @@ export default {
     .product-tf__btns-buy {
         float: left;
         width: 50%;
-        color: #f60;
+        color: #d1a178;
     }
     .product-tf__btns-add {
-        background-color: #f60;
+        background-color: #d1a178;
         color: #ffffff;
         float: left;
         width: 50%;

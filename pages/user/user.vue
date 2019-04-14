@@ -128,7 +128,7 @@
             return {
                 query: {},
                 user: {
-                    logo: 'http://fpoimg.com/100x100',
+                    logo: '/static/img/open-item1.jpg',
                     name: 'tarymee'
                 },
                 is: true

@@ -3,7 +3,7 @@
         <!-- 商品列表 -->
         <view class="cart">
             <view class="cart__none" v-if="proArr.length==0">购物车是空的哦~</view>
-            <uni-swipe-action :options="options2" v-for="(item,index) in proArr" :key="index" @click="deleteGoods(item.id)">
+            <uni-swipe-action :options="dealOptions" v-for="(item,index) in proArr" :key="index" @click="deleteGoods(item.id)">
                 <view class="cart___item">
                     <!-- checkbox -->
                     <view class="cart___item-sel" @tap="selected(index)">
@@ -55,13 +55,11 @@
 </template>
 
 <script>
-import uniNumberBox from '@/components/uni-number-box/uni-number-box.vue'
 import uniSwipeAction from '@/components/uni-swipe-action/uni-swipe-action.vue'
 import ttCheckbox from '@/components/tt-checkbox/tt-checkbox.vue'
 export default {
     components: {
         uniSwipeAction,
-        uniNumberBox,
         ttCheckbox
     },
     data() {
@@ -70,7 +68,7 @@ export default {
             selectedList: [],
             isAllselected: false,
             isEdit: false,
-            options2: [
+            dealOptions: [
                 {
                     text: '删除',
                     style: {
@@ -81,8 +79,8 @@ export default {
             proArr: [
                 {
                     id: 1,
-                    img: 'http://fpoimg.com/100x100',
-                    name: '商品标题商品标题商品标',
+                    img: 'https://cbu01.alicdn.com/img/ibank/2018/466/073/9464370664_1899654620.220x220.jpg',
+                    name: '三分陶瓷 89*99 CM',
                     spec: '规格 S码',
                     price: 127.5,
                     count: 1,
@@ -90,8 +88,8 @@ export default {
                 },
                 {
                     id: 2,
-                    img: 'http://fpoimg.com/100x100',
-                    name: '商品标商品标题商品标题',
+                    img: 'https://cbu01.alicdn.com/img/ibank/2018/466/073/9464370664_1899654620.220x220.jpg',
+                    name: '三分陶瓷 89*99 CM',
                     spec: '规格 S码',
                     price: 127.5,
                     count: 1,
@@ -99,8 +97,8 @@ export default {
                 },
                 {
                     id: 3,
-                    img: 'http://fpoimg.com/100x100',
-                    name: '商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题',
+                    img: 'https://cbu01.alicdn.com/img/ibank/2018/466/073/9464370664_1899654620.220x220.jpg',
+                    name: '三分陶瓷 89*99 CM',
                     spec: '规格 S码',
                     price: 127.5,
                     count: 1,
@@ -108,26 +106,8 @@ export default {
                 },
                 {
                     id: 4,
-                    img: 'http://fpoimg.com/100x100',
-                    name: '商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题',
-                    spec: '规格 S码',
-                    price: 127.5,
-                    count: 1,
-                    selected: false
-                },
-                {
-                    id: 4,
-                    img: 'http://fpoimg.com/100x100',
-                    name: '商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题',
-                    spec: '规格 S码',
-                    price: 127.5,
-                    count: 1,
-                    selected: false
-                },
-                {
-                    id: 4,
-                    img: 'http://fpoimg.com/100x100',
-                    name: '商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题商品标题',
+                    img: 'https://cbu01.alicdn.com/img/ibank/2018/466/073/9464370664_1899654620.220x220.jpg',
+                    name: '三分陶瓷 89*99 CM',
                     spec: '规格 S码',
                     price: 127.5,
                     count: 1,
@@ -177,7 +157,6 @@ export default {
                     showCancel: false
                 })
             }
-
 
             // uni.setStorage({
             //     key: 'buylist',
@@ -342,16 +321,6 @@ export default {
 
 
 
-
-
-
-
-
-
-
-
-
-
 .cart__none{
     width: 100%;
     height: 30px;
@@ -463,25 +432,5 @@ export default {
     font-size: 16px;
     text-align: center;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 </style>

@@ -3,7 +3,7 @@
 
     <div class="site" @click="jump()">
         <div class="site-l-img">
-            <image src="http://fpoimg.com/100x100" mode="aspectFill"></image>
+            <image :src="site.img" mode="aspectFill"></image>
         </div>
         <div class="site-l-store">
             <div class="site-l-name">{{site.title}}</div>
@@ -52,10 +52,10 @@
     <div class="title" v-if="newArr.length">新品推荐</div>
     <div class="pro1">
         <scroll-view scroll-x>
-            <a class="pro1-item" v-for="(item, index) in newArr" :key="index" @click="jump()">
-                <image :src="item.logo" mode="aspectFill"></image>
-                <text class="pro1-item-tit">{{item.title}}</text>
-                <div class="pro1-item-price"><text>￥</text>{{item.marketPrice}}</div>
+            <a class="pro1-item" v-for="(item, index) in newArr" :key="index" @click="jump(item.url)">
+                <image :src="item.img" mode="aspectFill"></image>
+                <text class="pro1-item-tit">{{item.name}}</text>
+                <div class="pro1-item-price"><text>￥</text>{{item.price}}</div>
             </a>
         </scroll-view>
     </div>
@@ -95,7 +95,12 @@ export default {
             indicatorDots: true,
             interval: 5000,
             duration: 300,
-            site: {},
+            site: {
+                title: '三分陶瓷旗舰店',
+                img: 'https://cbu01.alicdn.com/img/ibank/2018/122/260/9488062221_1899654620.400x400.jpg',
+                address: '广州市天河区车陂文化大街',
+                phone: '400-4895-8451',
+            },
             sliderArr: [
                 {
                     img: '/static/img/home-slider.jpg',
@@ -111,30 +116,30 @@ export default {
                 }
             ],
             newArr: [
-                // {
-                //   img: 'http://fpoimg.com/400x400',
-                //   name: '青花瓷功夫茶杯',
-                //   price: '386',
-                //   url: '/pages/logs/main'
-                // },
-                // {
-                //   img: 'http://fpoimg.com/400x400',
-                //   name: '青花瓷功夫茶杯',
-                //   price: '386',
-                //   url: '/pages/logs/main'
-                // },
-                // {
-                //   img: 'http://fpoimg.com/400x400',
-                //   name: '青花瓷功夫茶杯',
-                //   price: '386',
-                //   url: '/pages/logs/main'
-                // },
-                // {
-                //   img: 'http://fpoimg.com/400x400',
-                //   name: '青花瓷功夫茶杯',
-                //   price: '386',
-                //   url: '/pages/logs/main'
-                // }
+                {
+                  img: 'https://cbu01.alicdn.com/img/ibank/2018/122/260/9488062221_1899654620.400x400.jpg',
+                  name: '青花瓷功夫茶杯',
+                  price: '386',
+                  url: '/pages/product/product'
+                },
+                {
+                  img: 'https://cbu01.alicdn.com/img/ibank/2018/466/073/9464370664_1899654620.220x220.jpg',
+                  name: '青花瓷功夫茶杯',
+                  price: '386',
+                  url: '/pages/product/product'
+                },
+                {
+                  img: 'https://cbu01.alicdn.com/img/ibank/2018/122/260/9488062221_1899654620.400x400.jpg',
+                  name: '青花瓷功夫茶杯',
+                  price: '386',
+                  url: '/pages/product/product'
+                },
+                {
+                  img: 'https://cbu01.alicdn.com/img/ibank/2018/466/073/9464370664_1899654620.220x220.jpg',
+                  name: '青花瓷功夫茶杯',
+                  price: '386',
+                  url: '/pages/product/product'
+                }
             ],
             cate1Arr: [
                 {
@@ -212,17 +217,16 @@ export default {
     mounted() {
         console.log('index mounted')
         var that = this
-        u.request({
-            url: u.api.index,
-            method: 'POST',
-            isVerifyLogin: false,
-            success(res) {
-                console.log(res)
-                that.site = res.site
-                that.newArr = res.newest
-                that.site = res.site
-            }
-        })
+        // u.request({
+        //     url: u.api.index,
+        //     method: 'POST',
+        //     isVerifyLogin: false,
+        //     success(res) {
+        //         console.log(res)
+        //         that.site = res.site
+        //         that.newArr = res.newest
+        //     }
+        // })
 
         // uni.navigateTo({
         //     url: '/pages/cate/main'

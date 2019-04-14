@@ -36,7 +36,7 @@ export default {
     width: 18px;
     height: 18px;
     border-radius: 100%;
-    border: 1px solid #333;
+    border: 1px solid #bbb;
     overflow: hidden;
 }
 .tt-checkbox--on::after{
@@ -46,6 +46,6 @@ export default {
     width: 12px;
     height: 12px;
     border-radius: 100%;
-    background-color: #f60;
+    background-color: #d1a178;
 }
 </style>

@@ -7,7 +7,7 @@ const host = 'https://wxcms.net'
 const api = {
     pay: `${host}/api/pay`,
     getAddress: `${host}/api/getAddress`,
-    test: `${host}/api/test.json`,
+    test: `${host}/api/test`,
     index: `${host}/api/shop/index/1`,
     open: `${host}/api/applyinfo/list/1`,
     wxlogin: `${host}/api/wxLogin`,
@@ -18,7 +18,6 @@ console.log(api)
 
 function wxLogin(callback) {
     uni.setStorageSync('openid', '54654654654654654654654')
-
 
     let openid = uni.getStorageSync('openid') || '11111'
     console.log('openid = ' + openid)

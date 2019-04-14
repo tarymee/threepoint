@@ -33,7 +33,6 @@
             </div>
         </div>
 
-
         <div class="" style="height: 40px;"></div>
         <div class="confirm-tf">
             <div class="confirm-tf__sum">实付金额: <span class="confirm-tf__sum-money">￥{{totalPrice}}</span></div>
@@ -104,7 +103,7 @@
 .confirm-list__item-r {
     font-size: 14px;
 }
-.confirm-tf{
+.confirm-tf {
     display: flex;
     width: 100%;
     padding: 0 15px;
@@ -118,10 +117,10 @@
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
 }
-.confirm-tf__sum{
+.confirm-tf__sum {
     font-size: 14px;
 }
-.confirm-tf__sum-money{
+.confirm-tf__sum-money {
     font-weight: bold;
 }
 .confirm-tf__set {
@@ -151,14 +150,14 @@
     flex: none;
     margin-right: 10px;
 }
-.pro__info{
+.pro__info {
     overflow: hidden;
     display: flex;
     flex: 1;
     flex-flow: column nowrap;
 }
 
-.pro__info-tit{
+.pro__info-tit {
     font-size: 14px;
     line-height: 18px;
     max-height: 36px;
@@ -167,7 +166,7 @@
     -webkit-line-clamp: 2;
     overflow: hidden;
 }
-.pro__info-spec{
+.pro__info-spec {
     font-size: 10px;
     background-color: #eee;
     color: #999999;
@@ -184,11 +183,11 @@
     justify-content: space-between;
     line-height: 20px;
 }
-.pro__info-price{
+.pro__info-price {
     font-size: 14px;
     font-weight: bold;
 }
-.pro__info-count{
+.pro__info-count {
     color: #999;
     font-size: 12px;
 }
@@ -199,14 +198,8 @@
 
 <script>
 import u from '@/common/util'
-    import uniList from '@/components/uni-list/uni-list.vue'
-    import uniListItem from '@/components/uni-list-item/uni-list-item.vue'
-
 export default {
-    components: {
-        uniList,
-        uniListItem
-    },
+    components: {},
     data() {
         return {
             confirmArr: [],
@@ -219,36 +212,37 @@ export default {
     methods: {
         // 提交订单 付款
         pay() {
-            uni.navigateTo({
-                url: '/pages/success/success?id=123456&price=95.36'
-            })
-            // u.request({
-            //     url: u.api.pay,
-            //     method: 'POST',
-            //     data: {
-            //         confirmArr,
-            //         proPrice,
-            //         expressPrice,
-            //         totalPrice,
-            //         address,
-            //     },
-            //     isVerifyLogin: true,
-            //     isShowLoading: true,
-            //     isShowError: true,
-            //     success(res) {
-            //         console.log(res)
-            //         res = {
-            //             id: '123456',
-            //             price: '68.25',
-            //         }
-            //         uni.navigateTo({
-            //             url: '/pages/success/success?id=' + res.id + '&price=' + res.price
-            //         })
-            //     },
-            //     fail(res) {
-            //         console.error(res)
-            //     }
+            let that = this
+            // uni.navigateTo({
+            //     url: '/pages/success/success?id=123456&price=95.36'
             // })
+            u.request({
+                url: u.api.test,
+                method: 'POST',
+                data: {
+                    confirmArr: that.confirmArr,
+                    proPrice: that.proPrice,
+                    expressPrice: that.expressPrice,
+                    totalPrice: that.totalPrice,
+                    address: that.address,
+                },
+                isVerifyLogin: true,
+                isShowLoading: true,
+                isShowError: true,
+                success(res) {
+                    console.log(res)
+                    res = {
+                        id: '123456',
+                        price: '68.25',
+                    }
+                    uni.navigateTo({
+                        url: '/pages/success/success?id=' + res.id + '&price=' + res.price
+                    })
+                },
+                fail(res) {
+                    console.error(res)
+                }
+            })
         },
         selectAddress() {
             uni.navigateTo({
@@ -257,8 +251,19 @@ export default {
         },
         addAddress() {
             uni.navigateTo({
-                url: '/pages/addAddress/addAddress?from=confirm'
+                url: '/pages/addressdetail/addressdetail?from=confirm'
             })
+        }
+    },
+    // 监听选择地址回调
+    onShow() {
+        console.log('onShow')
+        let that = this
+        let address = uni.getStorageSync('confirmAddress')
+        console.log('address', address)
+        if (address) {
+            that.address = address
+            uni.removeStorageSync('confirmAddress')
         }
     },
     onLoad(event) {
@@ -281,7 +286,7 @@ export default {
         that.confirmArr = [
             {
                 id: 1,
-                img: 'http://fpoimg.com/100x100',
+                img: 'https://cbu01.alicdn.com/img/ibank/2018/466/073/9464370664_1899654620.220x220.jpg',
                 name: '商品标题商品标题商品标',
                 spec: '规格 S码',
                 price: 127.5,
@@ -289,7 +294,7 @@ export default {
             },
             {
                 id: 2,
-                img: 'http://fpoimg.com/100x100',
+                img: 'https://cbu01.alicdn.com/img/ibank/2018/466/073/9464370664_1899654620.220x220.jpg',
                 name: '商品标商品标题商品标题商品标商品标题商品标题商品标商品标题商品标题',
                 spec: '规格 S码',
                 price: 127.5,
@@ -323,9 +328,6 @@ export default {
                 console.error(res)
             }
         })
-
-
-
     }
 }
 </script>

@@ -1,7 +1,7 @@
 <template>
 <div>
     <a class="store" @click="contact(item.phone)" v-for="(item, index) in storeArr" :key="index">
-        <image :src="item.logo" mode="aspectFill"></image>
+        <image :src="item.img" mode="aspectFill"></image>
         <div class="store-tit">{{item.title}}</div>
         <div class="store-price">
             <div class="store-price-price1">优选价: </div>
@@ -12,14 +12,14 @@
     </a>
 
 
-    <rich-text :nodes="htmlString"></rich-text>
+    <!-- <rich-text :nodes="htmlString"></rich-text> -->
 
-    <!-- <div class="con">
+    <div class="con" @click="applystore">
       <image src="/static/img/open-art1.jpg" mode="aspectFill" style="height: 430px"></image>
       <image src="/static/img/open-art2.jpg" mode="aspectFill" style="height: 314px"></image>
       <image src="/static/img/open-art3.jpg" mode="aspectFill" style="height: 515px"></image>
       <image src="/static/img/open-art4.jpg" mode="aspectFill" style="height: 441px"></image>
-    </div> -->
+    </div>
 
 </div>
 </template>
@@ -31,57 +31,62 @@ export default {
     data() {
         return {
             storeArr: [
-                // {
-                //   img: '/static/img/open-item1.jpg',
-                //   name: '三分联盟专卖店（工厂直供）',
-                //   price: '386',
-                //   delprice: '19999',
-                //   phone: '13666666666'
-                // },
-                // {
-                //   img: '/static/img/open-item2.jpg',
-                //   name: '三分联盟专卖店（工厂直供）',
-                //   price: '386',
-                //   delprice: '19999',
-                //   phone: '13666666666'
-                // },
-                // {
-                //   img: '/static/img/open-item3.jpg',
-                //   name: '三分联盟专卖店（工厂直供）',
-                //   price: '386',
-                //   delprice: '19999',
-                //   phone: '13666666666'
-                // }
+                {
+                  img: '/static/img/open-item1.jpg',
+                  name: '三分联盟专卖店（工厂直供）',
+                  discountPrice: '386',
+                  marketPrice: '19999',
+                  phone: '13666666666'
+                },
+                {
+                  img: '/static/img/open-item2.jpg',
+                  name: '三分联盟专卖店（工厂直供）',
+                  discountPrice: '386',
+                  marketPrice: '19999',
+                  phone: '13666666666'
+                },
+                {
+                  img: '/static/img/open-item3.jpg',
+                  name: '三分联盟专卖店（工厂直供）',
+                  discountPrice: '386',
+                  marketPrice: '19999',
+                  phone: '13666666666'
+                }
             ],
             htmlString: ''
         }
     },
     methods: {
         contact(number) {
-            mpvue.showModal({
+            uni.showModal({
                 title: '提示',
                 content: '请与店主联系',
                 success() {
-                    mpvue.makePhoneCall({
+                    uni.makePhoneCall({
                         phoneNumber: number
                     })
                 },
                 showCancel: false
+            })
+        },
+        applystore() {
+            uni.navigateTo({
+                url: '/pages/applystore/applystore'
             })
         }
     },
     mounted() {
         console.log('open mounted')
         var that = this
-        u.request({
-            url: u.api.open,
-            method: 'POST',
-            isVerifyLogin: false,
-            success(res) {
-                console.log(res)
-                that.storeArr = res.applyinfo
-            }
-        })
+        // u.request({
+        //     url: u.api.open,
+        //     method: 'POST',
+        //     isVerifyLogin: false,
+        //     success(res) {
+        //         console.log(res)
+        //         that.storeArr = res.applyinfo
+        //     }
+        // })
 
         that.htmlString = '<p><img style="width:100%" src="/static/img/open-art1.jpg" /></p><p><img style="width:100%" src="/static/img/open-art2.jpg" /></p><p><img style="width:100%" src="/static/img/open-art3.jpg" /></p><p><img style="width:100%" src="/static/img/open-art4.jpg" /></p>'
     }
@@ -89,6 +94,9 @@ export default {
 </script>
 
 <style scoped>
+.con image {
+    width: 750upx;
+}
 .store {
     margin: 15px;
 }

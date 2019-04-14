@@ -80,43 +80,43 @@ export default {
             console.log(res)
             res.newest = [
               {
-                logo: 'http://fpoimg.com/400x400',
+                logo: 'https://cbu01.alicdn.com/img/ibank/2018/466/073/9464370664_1899654620.220x220.jpg',
                 title: '青花瓷功夫茶杯',
                 marketPrice: '386',
                 url: '/pages/product/product?id=5188314&title=青花瓷89CM&price=16&cover=https://pic.36krcnd.com/201903/25021423/n0x2x3v809xijacy!heading'
               },
               {
-                logo: 'http://fpoimg.com/400x400',
+                logo: 'https://cbu01.alicdn.com/img/ibank/2018/466/073/9464370664_1899654620.220x220.jpg',
                 title: '青花瓷功夫茶杯',
                 marketPrice: '386',
                 url: '/pages/product/product?id=5188314&title=青花瓷89CM&price=16&cover=https://pic.36krcnd.com/201903/25021423/n0x2x3v809xijacy!heading'
               },
               {
-                logo: 'http://fpoimg.com/400x400',
+                logo: 'https://cbu01.alicdn.com/img/ibank/2018/466/073/9464370664_1899654620.220x220.jpg',
                 title: '青花瓷功夫茶杯',
                 marketPrice: '386',
                 url: '/pages/product/product?id=5188314&title=青花瓷89CM&price=16&cover=https://pic.36krcnd.com/201903/25021423/n0x2x3v809xijacy!heading'
               },
               {
-                logo: 'http://fpoimg.com/400x400',
+                logo: 'https://cbu01.alicdn.com/img/ibank/2018/466/073/9464370664_1899654620.220x220.jpg',
                 title: '青花瓷功夫茶杯',
                 marketPrice: '386',
                 url: '/pages/product/product?id=5188314&title=青花瓷89CM&price=16&cover=https://pic.36krcnd.com/201903/25021423/n0x2x3v809xijacy!heading'
               },
               {
-                logo: 'http://fpoimg.com/400x400',
+                logo: 'https://cbu01.alicdn.com/img/ibank/2018/466/073/9464370664_1899654620.220x220.jpg',
                 title: '青花瓷功夫茶杯',
                 marketPrice: '386',
                 url: '/pages/product/product?id=5188314&title=青花瓷89CM&price=16&cover=https://pic.36krcnd.com/201903/25021423/n0x2x3v809xijacy!heading'
               },
               {
-                logo: 'http://fpoimg.com/400x400',
+                logo: 'https://cbu01.alicdn.com/img/ibank/2018/466/073/9464370664_1899654620.220x220.jpg',
                 title: '青花瓷功夫茶杯',
                 marketPrice: '386',
                 url: '/pages/product/product?id=5188314&title=青花瓷89CM&price=16&cover=https://pic.36krcnd.com/201903/25021423/n0x2x3v809xijacy!heading'
               },
               {
-                logo: 'http://fpoimg.com/400x400',
+                logo: 'https://cbu01.alicdn.com/img/ibank/2018/466/073/9464370664_1899654620.220x220.jpg',
                 title: '青花瓷功夫茶杯',
                 marketPrice: '386',
                 url: '/pages/product/product?id=5188314&title=青花瓷89CM&price=16&cover=https://pic.36krcnd.com/201903/25021423/n0x2x3v809xijacy!heading'
