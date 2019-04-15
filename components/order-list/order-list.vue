@@ -78,7 +78,7 @@ export default {
                     totalprice: '300.00',
                     detail: [
                         {
-                            img: 'http://fpoimg.com/100x700',
+                            img: 'https://cbu01.alicdn.com/img/ibank/2018/122/260/9488062221_1899654620.400x400.jpg',
                             count: '1',
                             price: '100',
                             select: '天蓝色 S码',
@@ -93,14 +93,14 @@ export default {
                     totalprice: '100.00',
                     detail: [
                         {
-                            img: 'http://fpoimg.com/100x700',
+                            img: 'https://cbu01.alicdn.com/img/ibank/2018/122/260/9488062221_1899654620.400x400.jpg',
                             count: '1',
                             price: '100',
                             select: '天蓝色 S码',
                             name: '日系复古短袖T恤'
                         },
                         {
-                            img: 'http://fpoimg.com/100x700',
+                            img: 'https://cbu01.alicdn.com/img/ibank/2018/122/260/9488062221_1899654620.400x400.jpg',
                             count: '2',
                             price: '100',
                             select: '天蓝色 S码',

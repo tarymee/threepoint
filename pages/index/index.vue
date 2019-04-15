@@ -22,8 +22,8 @@
     <swiper v-if="sliderArr.length > 0" class="swiper" :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval"
         :duration="duration">
         <block v-for="(item, index) in sliderArr" :key="index">
-            <swiper-item>
-                <image lazy-load :src="item.img" mode="aspectFill" @click="jump(item.url)"></image>
+            <swiper-item class="swiper__item">
+                <image class="swiper__img" lazy-load :src="item.img" mode="aspectFill" @click="jump(item.url)"></image>
             </swiper-item>
         </block>
     </swiper>
@@ -98,7 +98,7 @@ export default {
             site: {
                 title: '三分陶瓷旗舰店',
                 img: 'https://cbu01.alicdn.com/img/ibank/2018/122/260/9488062221_1899654620.400x400.jpg',
-                address: '广州市天河区车陂文化大街',
+                address: '天河区车陂文化大街',
                 phone: '400-4895-8451',
             },
             sliderArr: [
@@ -311,35 +311,27 @@ export default {
 
 /* 焦点图 */
 .swiper {
-    width: 345px;
-    border-radius: 5px;
     overflow: hidden;
+    border-radius: 5px;
     margin: 0 15px 0 15px;
     height: 150px;
 }
-
-.swiper swiper-item {
-    background: #eee;
+.swiper__item {
+    background: url('~@/static/img/loading.gif') center center no-repeat;
 }
-
-.swiper image {
+.swiper__img {
     width: 100%;
     height: 150px;
 }
+
 
 /* 分类 */
 .cate {
     margin: 15px;
     overflow: hidden;
 }
-.cate1__place {
-    height: 0;
-}
-.cate1__place--holder {
-    height: 34px;
-}
 .cate-item {
-    width: 115px;
+    width: 33.33%;
     padding: 5px 0;
     float: left;
 }
@@ -439,6 +431,12 @@ export default {
     width: 100%;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
+}
+.cate1__place {
+    height: 0;
+}
+.cate1__place--holder {
+    height: 34px;
 }
 .cate1--fixed {
     position: fixed;
