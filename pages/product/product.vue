@@ -62,15 +62,15 @@
 
     <div class="product-tf">
         <div class="product-tf__item" @click="togglePopup('share')" data-position="bottom">
-            <div class="product-tf__item-icon"></div>
+            <div class="fa fa-share-alt product-tf__item-icon"></div>
             <div class="product-tf__item-tit">分享</div>
         </div>
         <div class="product-tf__item">
-            <div class="product-tf__item-icon"></div>
+            <div class="fa fa-commenting product-tf__item-icon"></div>
             <div class="product-tf__item-tit">客服</div>
         </div>
         <div class="product-tf__item" style="margin-right: 15px">
-            <div class="product-tf__item-icon"></div>
+            <div class="fa fa-shopping-cart product-tf__item-icon"></div>
             <div class="product-tf__item-tit">购物车</div>
         </div>
         <div class="product-tf__btns">
@@ -522,17 +522,20 @@ export default {
         height: 50px;
     }
     .product-tf__item-icon {
+        display: block;
         width: 25px;
         height: 25px;
+        line-height: 25px;
         margin: 5px auto 0;
-        background-color: #999;
-        border-radius: 50%;
+        text-align: center;
+        color: #333;
+        font-size: 20px;
     }
     .product-tf__item-tit {
         text-align: center;
         font-size: 10px;
         line-height: 15px;
-        color: #999;
+        color: #777;
     }
     .product-tf__btns {
         overflow: hidden;
