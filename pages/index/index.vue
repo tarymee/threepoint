@@ -2,20 +2,22 @@
 <div>
 
     <div class="site" @click="jump()">
-        <div class="site-l-img">
-            <image :src="site.img" mode="aspectFill"></image>
+        <div class="site__store">
+            <image :src="site.img" mode="aspectFill" class="site__store-img"></image>
+            <div class="site__store-info">
+                <div class="site__store-info-tit">{{site.title}}</div>
+                <div class="site__store-info-address">{{site.address}}</div>
+            </div>
         </div>
-        <div class="site-l-store">
-            <div class="site-l-name">{{site.title}}</div>
-            <div class="site-l-storename">{{site.address}}</div>
-        </div>
-        <div class="site-r" style="border-left: 1px solid #e9e9e9">
-            <image src="/static/img/home-icon2.png" mode="aspectFill"></image>
-            <div class="site-r-des">客服</div>
-        </div>
-        <div class="site-r" @click="phone(site.phone)">
-            <image src="/static/img/home-icon1.png" mode="aspectFill"></image>
-            <div class="site-r-des">电话</div>
+        <div class="site__r">
+            <div class="site__r-item" style="border-right: 1px solid #e9e9e9">
+                <image src="/static/img/home-icon2.png" mode="aspectFill" class="site__r-item-img"></image>
+                <div class="site__r-item-tit">客服</div>
+            </div>
+            <div class="site__r-item" @click="phone(site.phone)">
+                <image src="/static/img/home-icon1.png" mode="aspectFill" class="site__r-item-img"></image>
+                <div class="site__r-item-tit">电话</div>
+            </div>
         </div>
     </div>
 
@@ -60,14 +62,14 @@
         </scroll-view>
     </div>
     <div class="more" v-if="newArr.length">
-        <a class="more-btn" @click="jump('/pages/cate/cate?id=4000&title=最新产品')">查看更多</a>
+        <a class="more__btn" @click="jump('/pages/cate/cate?id=4000&title=最新产品')">查看更多</a>
     </div>
 
     <div class="title">精选商品</div>
     <div class="cate1__place" :class="cate1Fixed ? 'cate1__place--holder' : ''"></div>
     <div class="cate1" :class="cate1Fixed ? 'cate1--fixed' : ''">
         <scroll-view scroll-x>
-            <a class="cate1-item" :class="item.select ? 'cur' : ''" v-for="(item, index) in cate1Arr" :key="index" @click="reloadCate(index, item.id)">
+            <a class="cate1__item" :class="item.select ? 'cate1__item--cur' : ''" v-for="(item, index) in cate1Arr" :key="index" @click="reloadCate(index, item.id)">
                 <text>{{item.title}}</text>
             </a>
         </scroll-view>
@@ -98,7 +100,7 @@ export default {
             site: {
                 title: '三分陶瓷旗舰店',
                 img: 'https://cbu01.alicdn.com/img/ibank/2018/122/260/9488062221_1899654620.400x400.jpg',
-                address: '天河区车陂文化大街',
+                address: '广东省广州市天河区车陂文化大街',
                 phone: '400-4895-8451',
             },
             sliderArr: [
@@ -257,56 +259,66 @@ export default {
 .site {
     overflow: hidden;
     margin: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
-
-.site-l-img {
-    float: left;
-
+.site__store {
+    display: flex;
+    align-items: center;
 }
-
-.site-l-img image {
+.site__store-img {
+    flex: none;
     display: block;
     width: 50px;
     height: 50px;
     overflow: hidden;
     border-radius: 50%;
+    margin-right: 10px;
 }
-
-.site-l-store {
-    margin-left: 10px;
-    float: left;
+.site__store-info {
+    
 }
-
-.site-l-name {
+.site__store-info-tit {
     line-height: 25px;
     font-size: 16px;
     color: #333;
+    height: 25px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
 }
-
-.site-l-storename {
+.site__store-info-address {
     line-height: 20px;
     font-size: 12px;
     color: #999;
+    height: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
 }
-
-.site-r {
-    float: right;
-    padding-left: 15px;
-    margin-top: 5px;
-    margin-left: 15px;
+.site__r {
+    display: flex;
+    flex: none;
 }
-
-.site-r image {
+.site__r-item {
+    width: 45px;
+    text-align: center;
+}
+.site__r-item-img {
     display: block;
     width: 25px;
     height: 25px;
+    margin: 0px auto;
 }
-
-.site-r-des {
+.site__r-item-tit {
     font-size: 12px;
-    line-height: 15px;
+    line-height: 20px;
     color: #999;
-    line-height: 12px;
 }
 
 /* 焦点图 */
@@ -335,7 +347,6 @@ export default {
     padding: 5px 0;
     float: left;
 }
-
 .cate-item image {
     width: 50px;
     height: 50px;
@@ -344,7 +355,6 @@ export default {
     display: block;
     margin: 0px auto;
 }
-
 .cate-item text {
     display: block;
     font-size: 12px;
@@ -353,6 +363,7 @@ export default {
     color: #333;
 }
 
+/* 标题 */
 .title {
     height: 50px;
     width: 100%;
@@ -370,29 +381,24 @@ export default {
 .pro1 {
     margin: 5px 0 15px 15px;
 }
-
 .pro1 scroll-view {
     white-space: nowrap;
 }
-
 .pro1-item {
     display: inline-block;
     margin-right: 10px;
 }
-
 .pro1-item image {
     display: block;
     width: 125px;
     height: 125px;
 }
-
 .pro1-item-tit {
     display: block;
     font-size: 13px;
     color: #333;
     line-height: 25px;
 }
-
 .pro1-item-price {
     display: block;
     font-size: 16px;
@@ -400,7 +406,6 @@ export default {
     font-weight: bold;
     line-height: 20px;
 }
-
 .pro1-item-price text {
     font-size: 12px;
 }
@@ -410,8 +415,7 @@ export default {
     margin: 15px 0px;
     text-align: center;
 }
-
-.more-btn {
+.more__btn {
     display: inline-block;
     line-height: 30px;
     height: 30px;
@@ -446,21 +450,18 @@ export default {
 .cate1 scroll-view {
     white-space: nowrap;
 }
-
-.cate1-item {
+.cate1__item {
     display: inline-block;
     margin-right: 30px;
 }
-
-.cate1-item text {
+.cate1__item text {
     display: block;
     font-size: 14px;
     color: #333;
     line-height: 30px;
     border-bottom: 3px solid #fff;
 }
-
-.cate1-item.cur text {
+.cate1__item--cur text {
     display: block;
     font-size: 16px;
     font-weight: bold;
