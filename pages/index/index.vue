@@ -220,21 +220,25 @@ export default {
         console.log('index mounted')
         var that = this
         // u.request({
-        //     url: u.api.index,
+        //     url: u.api.getAddress,
         //     method: 'POST',
         //     isVerifyLogin: false,
         //     success(res) {
         //         console.log(res)
-        //         that.site = res.site
-        //         that.newArr = res.newest
         //     }
         // })
 
-        // uni.navigateTo({
-        //     url: '/pages/cate/main'
-        // })
-        // uni.switchTab({
-        //   url: '/pages/user/main'
+        // u.request({
+        //     url: `https://unidemo.dcloud.net.cn/api/news/36kr/5188314`,
+        //     method: 'GET',
+        //     data: {},
+        //     isVerifyLogin: false,
+        //     success(res) {
+        //         console.log(res)
+        //     },
+        //     fail(res) {
+        //         console.error(res)
+        //     }
         // })
 
         // let app = getApp()

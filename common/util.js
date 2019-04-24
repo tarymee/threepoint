@@ -1,10 +1,13 @@
-
-
 // 正式
-const host = 'https://wxcms.net'
+// const host = 'https://wxcms.net'
+const host = 'https://www.3ftc.com'
 // 本地
 // const host = 'http://localhost:8088'
+
+// 站点id 三分联盟默认是8
+const site = '8'
 const api = {
+    category: `${host}/api/category/list/${site}`,
     pay: `${host}/api/pay`,
     getAddress: `${host}/api/getAddress`,
     test: `${host}/api/test`,
@@ -149,6 +152,55 @@ function request(config) {
     }
 }
 
+/**
+ * 数据转换 接受源数据和配对规则 进行数据转换
+ * @param  {Array OR Object}   source      源数据
+ * @param  {Object}            matchup     配对规则
+ * @param  {Boolean}           isreverse   配对规则是否相反
+ * @return {Array OR Object}               返回转换后的数据
+ */
+function dataTransform(source, matchup, isreverse) {
+    let isArr = Array.isArray(source)
+    let isObj = Object.prototype.toString.call(source) === '[object Object]'
+    if (!isArr && !isObj) {
+        console.error('只接受对象或数组')
+        return
+    }
+
+    if (isreverse) {
+        for (let x in matchup) {
+            matchup[matchup[x]] = x
+            delete matchup[x]
+        }
+    }
+
+    if (isObj) {
+        source = [source]
+    }
+    let transformArr = []
+    source.forEach((item, i) => {
+        let data = {}
+        for (let x in item) {
+            if (matchup[x]) {
+                data[matchup[x]] = item[x]
+            } else {
+                if (typeof data[x] === 'undefined') {
+                    data[x] = item[x]
+                } else {
+                    // 如果数据源中某个属性值与配对关系相同 则被覆盖 原属性加_backup后缀
+                    // data[x + '_backup'] = item[x]
+                }
+            }
+        }
+        transformArr.push(data)
+    })
+    if (isObj) {
+        return transformArr[0]
+    } else {
+        return transformArr
+    }
+}
+
 function phone(number) {
     uni.makePhoneCall({
         phoneNumber: number
@@ -163,7 +215,6 @@ function jump(url) {
     } else {
         console.log('没有url')
     }
-
 }
 
 module.exports = {
@@ -171,7 +222,8 @@ module.exports = {
     phone,
     jump,
     wxLogin,
-    request
+    request,
+    dataTransform
     // alert,
     // uploadImage,
     // compressImage: compressImage
