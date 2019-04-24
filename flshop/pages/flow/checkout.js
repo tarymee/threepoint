@@ -64,14 +64,17 @@ Page({
         goods_id: options.goods_id,
         goods_num: options.goods_num,
         goods_sku_id: options.goods_sku_id,
+        token: wx.getStorageSync('token')
       }, function(result) {
+        //console.info("buyNow:" + JSON.stringify(result));
+
         callback(result);
       });
     }
 
     // 购物车结算
     else if (options.order_type === 'cart') {
-      App._get('order/cart', {}, function(result) {
+      App._get('order/cart', { token: wx.getStorageSync('token')}, function(result) {
         callback(result);
       });
     }
@@ -114,28 +117,54 @@ Page({
         });
         return false;
       }
-      // 发起微信支付
-      wx.requestPayment({
-        timeStamp: result.data.payment.timeStamp,
-        nonceStr: result.data.payment.nonceStr,
-        package: 'prepay_id=' + result.data.payment.prepay_id,
-        signType: 'MD5',
-        paySign: result.data.payment.paySign,
-        success: function(res) {
-          // 跳转到订单详情
-          wx.redirectTo({
-            url: '../order/detail?order_id=' + result.data.order_id,
-          });
-        },
-        fail: function() {
-          App.showError('订单未支付', function() {
-            // 跳转到未付款订单
-            wx.redirectTo({
-              url: '../order/index?type=payment',
+
+
+      wx.showActionSheet({
+        itemList: ['微信支付(推荐)', '线下银行转账', '货到付款'],
+        success(res) {
+          console.log(res.tapIndex)
+          if (res.tapIndex == 0) {
+            // 微信支付
+            // 发起微信支付
+            wx.requestPayment({
+              timeStamp: result.data.payment.timeStamp,
+              nonceStr: result.data.payment.nonceStr,
+              package: 'prepay_id=' + result.data.payment.prepay_id,
+              signType: 'MD5',
+              paySign: result.data.payment.paySign,
+              success: function (res) {
+                // 跳转到订单详情
+                wx.redirectTo({
+                  url: '../order/detail?order_id=' + result.data.order_id,
+                });
+              },
+              fail: function () {
+                App.showError('订单未支付', function () {
+                  // 跳转到未付款订单
+                  wx.redirectTo({
+                    url: '../order/index?type=payment',
+                  });
+                });
+              },
             });
-          });
+          } else if (res.tapIndex == 1) {
+            // 线下银行转账
+            wx.redirectTo({
+              url: '../order/index?type=all',
+            });
+          } else if (res.tapIndex == 2) {
+            // 货到付款
+            wx.redirectTo({
+              url: '../order/index?type=all',
+            });
+          }
         },
-      });
+        fail(res) {
+          console.log(res.errMsg)
+        }
+      })
+      return false
+
     };
 
     // 按钮禁用, 防止二次提交
@@ -151,10 +180,11 @@ Page({
       App._post_form('order/buyNow', {
         goods_id: options.goods_id,
         goods_num: options.goods_num,
-        goods_sku_id: options.goods_sku_id,
+        goods_sku_id: 1,
+        token: wx.getStorageSync('token')
       }, function(result) {
         // success
-        console.log('success');
+        console.log(result);
         callback(result);
       }, function(result) {
         // fail
@@ -169,7 +199,7 @@ Page({
 
     // 创建订单-购物车结算
     else if (options.order_type === 'cart') {
-      App._post_form('order/cart', {}, function(result) {
+      App._post_form('order/cart', { token: wx.getStorageSync('token')}, function(result) {
         // success
         console.log('success');
         callback(result);

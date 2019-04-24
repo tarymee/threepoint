@@ -136,13 +136,13 @@ App({
         },
         data: data,
         success(res) {
-          
+          console.info("get res:" + JSON.stringify(res.data));
           if (res.statusCode !== 200 || typeof res.data !== 'object') {
            
             App.showError('网络请求出错');
             return false;
           }
-          console.info("res:" + JSON.stringify(res));
+         
           if (res.data.code === -1) {
             // 登录态失效, 重新登录
             wx.hideNavigationBarLoading();

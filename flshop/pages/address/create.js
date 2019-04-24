@@ -10,7 +10,7 @@ Page({
     nav_select: false, // 快捷导航
 
     name: '',
-    region: '',
+   // region: '',
     phone: '',
     detail: '',
 
@@ -29,8 +29,8 @@ Page({
    */
   saveData: function(e) {
     let _this = this,
-      values = e.detail.value
-    values.region = this.data.region;
+      values = e.detail.value;
+    //values.region = this.data.region;
 
     // 记录formId
     // App.saveFormId(e.detail.formId);
@@ -47,7 +47,7 @@ Page({
     });
 
     // 提交到后端
-    App._post_form('address/add', values, function(result) {
+    App._post_form('address/add/1', values, function(result) {
       App.showSuccess(result.msg, function() {
         wx.navigateBack();
       });
@@ -80,12 +80,21 @@ Page({
       this.data.error = '手机号不符合要求';
       return false;
     }
-    if (!this.data.region) {
-      this.data.error = '省市区不能空';
-      return false;
-    }
+    
     if (values.detail === '') {
       this.data.error = '详细地址不能为空';
+      return false;
+    }
+    if (values.ctiy === '') {
+      this.data.error = '城市名不能为空';
+      return false;
+    }
+    if (values.postcode === '') {
+      this.data.error = '邮编不能为空';
+      return false;
+    }
+    if (values.country === '') {
+      this.data.error = '国家不能为空';
       return false;
     }
     return true;

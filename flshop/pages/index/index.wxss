@@ -3,10 +3,8 @@
 
 /* banner组件 */
 @import "components/banner/banner.wxss";
-
 /* cate组件 */
 @import "components/cate/cate.wxss";
-
 /* 猜您喜欢 */
 
 .title-hrbg {

@@ -215,8 +215,17 @@ Page({
       submitType = e.currentTarget.dataset.type;
 
     if (submitType === 'buyNow') {
-      // 立即购买
+      App._post_form('order/buyNow', {
+        goods_id: _this.data.goods_id,
+        goods_num: _this.data.goods_num,
+        goods_sku_id: _this.data.goods_sku_id,
+        token: wx.getStorageSync('token')
+      }, function (result) {
+        console.info(JSON.stringify(result))
+        if (result.code == 1) {
+          // 立即购买
       wx.navigateTo({
+
         url: '../flow/checkout?' + App.urlEncode({
           order_type: 'buyNow',
           goods_id: _this.data.goods_id,
@@ -224,14 +233,28 @@ Page({
           goods_sku_id: _this.data.goods_sku_id,
         })
       });
+        } else if (result.code == 0) {
+          App.showError(result.msg);
+        }
+
+      
+      });
+      
     } else if (submitType === 'addCart') {
+      //console.info('11111111111');
       // 加入购物车
-      App._post_form('cart/add', {
+      App._post_form('cart/add/1', {
         goods_id: _this.data.goods_id,
         goods_num: _this.data.goods_num,
         goods_sku_id: _this.data.goods_sku_id,
       }, function(result) {
-        App.showSuccess(result.msg);
+        //console.info(JSON.stringify(result))
+        if(result.code==1){
+          App.showSuccess(result.msg);
+        }else if(result.code==0){
+          App.showError(result.msg);
+        }
+        
         _this.setData(result.data);
       });
     }

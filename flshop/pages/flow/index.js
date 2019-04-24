@@ -49,10 +49,11 @@ Page({
       title: '加载中',
       mask: true
     })
-    App._post_form('cart/add', {
+    App._post_form('cart/add/1', {
       goods_id: goods.goods_id,
       goods_num: 1,
-      goods_sku_id: goodsSkuId
+      goods_sku_id: goodsSkuId,
+      token: wx.getStorageSync('token')
     }, function() {
       goods.total_num++;
       _this.setData({
@@ -78,9 +79,10 @@ Page({
         title: '加载中',
         mask: true
       })
-      App._post_form('cart/sub', {
+      App._post_form('cart/sub/1', {
         goods_id: goods.goods_id,
-        goods_sku_id: goodsSkuId
+        goods_sku_id: goodsSkuId,
+        token: wx.getStorageSync('token')
       }, function() {
         goods.total_num--;
         goods.total_num > 0 &&
@@ -104,9 +106,10 @@ Page({
       title: "提示",
       content: "您确定要移除当前商品吗?",
       success: function(e) {
-        e.confirm && App._post_form('cart/delete', {
+        e.confirm && App._post_form('cart/del/1', {
           goods_id,
-          goods_sku_id: goodsSkuId
+          goods_sku_id: goodsSkuId,
+          token: wx.getStorageSync('token')
         }, function(result) {
           _this.getCartList();
         });

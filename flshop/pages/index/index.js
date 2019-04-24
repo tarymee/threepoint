@@ -10,23 +10,7 @@ Page({
     imgCurrent: {}, // 当前banne所在滑块指针
 
     // 页面元素
-    items: {
-      // "n606196612728596": {
-      //   "id": "n606196612728596",
-      //   "type": "cate",
-      //   "style": {
-      //     "btnColor": "#ffffff",
-      //     "btnShape": "round"
-      //   },
-      //   "data": {
-      //     'n606196612723336': {
-      //       "imgUrl": "http://fpoimg.com/100x100",
-      //       "text": "手机",
-      //       "linkUrl": "pages/xxxxxxxs"
-      //     }
-      //   }
-      // }
-    },
+    items: {},
     newest: {},
     best: {},
 
@@ -110,7 +94,8 @@ Page({
     })
   },
 
-  scroll: function(t) {
+  scroll: function (t) {
+    console.log(t)
     this.setData({
       indexSearch: t.detail.scrollTop
     }), t.detail.scrollTop > 300 ? this.setData({
@@ -120,6 +105,18 @@ Page({
     });
   },
 
+  scrolltolower: function () {
+    wx.navigateTo({
+      url: '../category/list?search=',
+    })
+  },
+
+  // onReachBottom: function (t) {
+  //   wx.navigateTo({
+  //     url: '../category/list?search=',
+  //   })
+  // },
+
   onShareAppMessage: function() {
     return {
       title: "小程序首页",
@@ -128,3 +125,5 @@ Page({
     };
   }
 });
+
+

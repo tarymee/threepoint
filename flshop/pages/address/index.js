@@ -21,7 +21,7 @@ Page({
    */
   getAddressList: function() {
     let _this = this;
-    App._get('address/lists', {}, function(result) {
+    App._get('address/list/1', {}, function(result) {
       _this.setData(result.data);
     });
   },

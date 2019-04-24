@@ -1,22 +1,23 @@
 <view class="container">
 
-  <scroll-view bindscroll="scroll" scroll-top="{{scrollTop}}" scroll-y="true" style="position:absolute; top:0; left:0; right:0; bottom:0;">
+  <scroll-view bindscroll="scroll" bindscrolltolower="scrolltolower" scroll-top="{{scrollTop}}" scroll-y="true" style="position:absolute; top:0; left:0; right:0; bottom:0;">
     <block wx:for="{{items}}" wx:for-item="item" wx:for-index="item_key" wx:key="this">
     
       <!-- 搜索框 -->
       <block wx:if="{{item.type === 'search'}}">
+      
         <include src="components/search/search.wxml" />
       </block>
       <!-- banner轮播 -->
       <block wx:if="{{item.type === 'banner'}}">
         <include src="components/banner/banner.wxml" />
       </block>
-
-      <!-- banner轮播 -->
+       <!-- banner轮播 -->
       <block wx:if="{{item.type === 'cate'}}">
         <include src="components/cate/cate.wxml" />
       </block>
     </block>
+    
     <!-- 商品推荐 -->
     <view class="recommended-index-list m-top20">
       <view class="title-header b-f t-c f-32 col-3">新品推荐</view>
