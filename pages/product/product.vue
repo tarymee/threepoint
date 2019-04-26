@@ -2,7 +2,7 @@
   <div>
     <swiper v-if="swiperArr.length > 0" class="proswiper" :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
         <swiper-item v-for="(item, index) in swiperArr" :key="index" class="proswiper__item">
-            <image lazy-load :src="item.img" mode="aspectFill" class="proswiper__img"></image>
+            <image lazy-load :src="item" mode="aspectFill" class="proswiper__img"></image>
         </swiper-item>
     </swiper>
 
@@ -274,36 +274,45 @@ export default {
         that.title = event.title
         that.id = event.id
         that.price = event.price
-        that.swiperArr = [{
-            img: event.cover
-        }]
+        that.swiperArr = [event.cover]
         uni.setNavigationBarTitle({
             title: that.title
         })
 
-        // u.request({
-        //     url: `https://unidemo.dcloud.net.cn/api/news/36kr/${that.id}`,
-        //     method: 'GET',
-        //     data: {},
-        //     isVerifyLogin: false,
-        //     success(res) {
-        //         console.log(res)
-        //     },
-        //     fail(res) {
-        //         console.error(res)
-        //     }
-        // })
+        u.request({
+            // url: u.api.goods + that.id,
+            url: u.api.goods + '39',
+            method: 'POST',
+            data: {},
+            isVerifyLogin: false,
+            success(res) {
+                console.log(res)
+                if (res && res.goods) {
+                    that.title = res.goods.title
+                    uni.setNavigationBarTitle({
+                        title: that.title
+                    })
+                    that.price = res.goods.vipPrice
+                    that.swiperArr = [res.goods.logo]
 
+                    // that.htmlString = res.content.replace(/\\/g, "").replace(/<img/g, "<img style=\"display:none;\"")
+                    // that.htmlString = res.content
+                    // that.categoryArr = res.categoryArr
+
+                }
+            },
+            fail(res) {
+                console.error(res)
+            }
+        })
+
+        // return false
         let res = {
             'id': '5188314',
             'title': '青花瓷30CM',
             'swiperArr': [
-                {
-                    img: 'https://cbu01.alicdn.com/img/ibank/2018/317/567/9509765713_1899654620.400x400.jpg',
-                },
-                {
-                    img: 'https://cbu01.alicdn.com/img/ibank/2018/122/260/9488062221_1899654620.400x400.jpg',
-                }
+                'https://cbu01.alicdn.com/img/ibank/2018/317/567/9509765713_1899654620.400x400.jpg',
+                'https://cbu01.alicdn.com/img/ibank/2018/122/260/9488062221_1899654620.400x400.jpg',
             ],
             'content': '<p>青花瓷30CM</p><p><img style="max-width:100%" src="https://cbu01.alicdn.com/img/ibank/2018/553/678/9509876355_1899654620.jpg" /></p><p><img style="max-width:100%" src="https://cbu01.alicdn.com/img/ibank/2018/929/343/9464343929_1899654620.jpg" /></p><p><img style="max-width:100%" src="https://cbu01.alicdn.com/img/ibank/2018/568/071/9488170865_1899654620.jpg" /></p>',
             'categoryArr': [
@@ -350,12 +359,12 @@ export default {
         if (res) {
             // that.htmlString = res.content.replace(/\\/g, "").replace(/<img/g, "<img style=\"display:none;\"")
             that.htmlString = res.content
-            that.swiperArr = res.swiperArr
+            // that.swiperArr = res.swiperArr
             that.categoryArr = res.categoryArr
-            that.title = res.title
-            uni.setNavigationBarTitle({
-                title: that.title
-            })
+            // that.title = res.title
+            // uni.setNavigationBarTitle({
+            //     title: that.title
+            // })
         }
 
     }

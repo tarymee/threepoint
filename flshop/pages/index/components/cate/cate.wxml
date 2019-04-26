@@ -1,6 +1,8 @@
 <!-- cate -->
-  <view class="cate">
+<scroll-view class="cate" scroll-x="true">
+
       <navigator class="cate-item" wx:for-item="cate" url="/{{cate.linkUrl}}" wx:for="{{item.data}}" wx:key="this">
           <image src="{{cate.imgUrl}}" mode="aspectFill"></image><text>{{cate.text}}</text>
       </navigator>
-  </view>
+
+</scroll-view>

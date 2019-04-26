@@ -1,0 +1,11 @@
+十器良品
+
+首页接口：
+https://www.3ftc.com/api/shop/index/8
+请求方式 post
+8为siteId
+
+商品详情接口：
+https://www.3ftc.com/api/goods/view/39
+请求方式 post
+39为商品ID

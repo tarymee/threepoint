@@ -43,8 +43,8 @@ const bottomLoad = {
             if (bottomLoad_pageindex <= bottomLoad_pagetotal && bottomLoad_isload) {
                 bottomLoad_isload = false
                 let postData = {
-                    pagesize: Number(that.bottomLoad_pagesize),
-                    pageindex: bottomLoad_pageindex,
+                    limit: Number(that.bottomLoad_pagesize),
+                    page: bottomLoad_pageindex,
                     ...that.bottomLoad_params
                 }
                 u.request({
@@ -103,6 +103,7 @@ const bottomLoad = {
                             // that.bottomLoad_data = [that.bottomLoad_data, ...res.newest]
                         }
                         console.log(that.bottomLoad_data)
+                        bottomLoad_pagetotal = Number(res.pagetotal)
                         bottomLoad_pagetotal = 3
                         bottomLoad_pageindex++
 

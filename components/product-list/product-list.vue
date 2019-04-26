@@ -1,6 +1,6 @@
 <template>
     <div class="pro">
-        <div class="pro__item" v-for="(item, index) in data" :key="index" @click="jump(item.url)">
+        <div class="pro__item" v-for="(item, index) in prodata" :key="index" @click="jump(item.url)">
             <image class="pro__item-img" :src="item.logo" lazy-load="true" mode="aspectFill"></image>
             <text class="pro__item-tit">{{item.title}}</text>
             <div class="pro__item-price"><text class="pro__item-symbol">￥</text>{{item.marketPrice}}</div>
@@ -16,7 +16,7 @@ export default {
         return {}
     },
     props: {
-        data: {
+        prodata: {
             type: Array,
             default: []
         }

@@ -7,11 +7,15 @@ const host = 'https://www.3ftc.com'
 // 站点id 三分联盟默认是8
 const site = '8'
 const api = {
+    goods: `${host}/api/goods/view/`,
+    list: `${host}/api/goods/list/${site}`,
+    index: `${host}/api/shop/index/${site}`,
     category: `${host}/api/category/list/${site}`,
+
     pay: `${host}/api/pay`,
     getAddress: `${host}/api/getAddress`,
     test: `${host}/api/test`,
-    index: `${host}/api/shop/index/1`,
+    // index: `${host}/api/shop/index/1`,
     open: `${host}/api/applyinfo/list/1`,
     wxlogin: `${host}/api/wxLogin`,
     host
@@ -206,7 +210,7 @@ function dataTransform(source, matchup, isreverse) {
                     data[x] = item[x]
                 } else {
                     // 如果数据源中某个属性值与配对关系相同 则被覆盖 原属性加_backup后缀
-                    // data[x + '_backup'] = item[x]
+                    data[x + '_backup'] = item[x]
                 }
             }
         }

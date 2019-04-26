@@ -1,8 +1,8 @@
 <template>
 <div>
 
-    <div class="site" @click="jump()">
-        <div class="site__store">
+    <div class="site">
+        <div class="site__store" @click="jump()">
             <image :src="site.img" mode="aspectFill" class="site__store-img"></image>
             <div class="site__store-info">
                 <div class="site__store-info-tit">{{site.title}}</div>
@@ -10,7 +10,7 @@
             </div>
         </div>
         <div class="site__r">
-            <div class="site__r-item" style="border-right: 1px solid #e9e9e9">
+            <div class="site__r-item" style="border-right: 1px solid #e9e9e9" @click="contact(site.phone)">
                 <image src="/static/img/home-icon2.png" mode="aspectFill" class="site__r-item-img"></image>
                 <div class="site__r-item-tit">客服</div>
             </div>
@@ -20,9 +20,8 @@
             </div>
         </div>
     </div>
-
-    <swiper v-if="sliderArr.length > 0" class="swiper" :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval"
-        :duration="duration">
+    <!-- <button open-type="contact" sessionFrom="weapp" size="27" style="opacity: 0;position:absolute;top:0px;left:0px;display:block;width:100%;height:100%;" type="default-light">测试客服</button> -->
+    <swiper v-if="sliderArr.length > 0" class="swiper" :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
         <block v-for="(item, index) in sliderArr" :key="index">
             <swiper-item class="swiper__item">
                 <image class="swiper__img" lazy-load :src="item.img" mode="aspectFill" @click="jump(item.url)"></image>
@@ -31,10 +30,11 @@
     </swiper>
 
     <div class="cate">
-        <a class="cate-item" url="/pages/cate/cate?id=1&title=竹木类">
-            <image src="/static/img/home-cate1.png" mode="aspectFill"></image><text>竹木类</text>
+        <!-- <a class="cate-item" url="/pages/cate/cate?id={{item.id}}&title={{item.title}}" v-for="(item, index) in cateArr" :key="index"> -->
+        <a class="cate-item" @click="jump(`/pages/cate/cate?id=${item.id}&title=${item.title}`)" v-for="(item, index) in cateArr" :key="index">
+            <image :src="item.img" mode="aspectFill"></image><text>{{item.title}}</text>
         </a>
-        <a class="cate-item" url="/pages/cate/cate?id=2&title=陶瓷类">
+        <!-- <a class="cate-item" url="/pages/cate/cate?id=2&title=陶瓷类">
             <image src="/static/img/home-cate2.png" mode="aspectFill"></image><text>陶瓷类</text>
         </a>
         <a class="cate-item" url="/pages/cate/cate?id=3&title=玻璃类">
@@ -48,13 +48,14 @@
         </a>
         <a class="cate-item" url="/pages/cate/cate?id=6&title=布料">
             <image src="/static/img/home-cate6.png" mode="aspectFill"></image><text>布料</text>
-        </a>
+        </a> -->
     </div>
 
     <div class="title" v-if="newArr.length">新品推荐</div>
     <div class="pro1">
         <scroll-view scroll-x>
-            <a class="pro1-item" v-for="(item, index) in newArr" :key="index" @click="jump(item.url)">
+            <!-- <a class="pro1-item" url="/pages/product/product?id={{item.id}}&title={{item.name}}&price={{item.price}}&cover={{item.img}}" v-for="(item, index) in newArr" :key="index" @click="jump(item.url)"> -->
+            <a class="pro1-item" @click="jump(`/pages/product/product?id=${item.id}&title=${item.name}&price=${item.price}&cover=${item.img}`)" v-for="(item, index) in newArr" :key="index">
                 <image :src="item.img" mode="aspectFill"></image>
                 <text class="pro1-item-tit">{{item.name}}</text>
                 <div class="pro1-item-price"><text>￥</text>{{item.price}}</div>
@@ -62,7 +63,7 @@
         </scroll-view>
     </div>
     <div class="more" v-if="newArr.length">
-        <a class="more__btn" @click="jump('/pages/cate/cate?id=4000&title=最新产品')">查看更多</a>
+        <a class="more__btn" @click="jump('/pages/cate/cate?id=&title=最新产品&type=1')">查看更多</a>
     </div>
 
     <div class="title">精选商品</div>
@@ -74,7 +75,7 @@
             </a>
         </scroll-view>
     </div>
-    <productList :data="bottomLoad_data"></productList>
+    <productList :prodata="bottomLoad_data"></productList>
     <tip :text="bottomLoad_tip" :none-icon="false"></tip>
 
 </div>
@@ -98,85 +99,117 @@ export default {
             interval: 5000,
             duration: 300,
             site: {
-                title: '三分陶瓷旗舰店',
-                img: 'https://cbu01.alicdn.com/img/ibank/2018/122/260/9488062221_1899654620.400x400.jpg',
-                address: '广东省广州市天河区车陂文化大街',
-                phone: '400-4895-8451',
+                // title: '三分陶瓷旗舰店',
+                // img: 'https://cbu01.alicdn.com/img/ibank/2018/122/260/9488062221_1899654620.400x400.jpg',
+                // address: '广东省广州市天河区车陂文化大街',
+                // phone: '400-4895-8451',
             },
             sliderArr: [
-                {
-                    img: '/static/img/home-slider.jpg',
-                    url: '/pages/product/product'
-                },
-                {
-                    img: '/static/img/home-slider.jpg',
-                    url: '/pages/product/product'
-                },
-                {
-                    img: '/static/img/home-slider.jpg',
-                    url: '/pages/product/product'
-                }
+                // {
+                //     img: '/static/img/home-slider.jpg',
+                //     url: '/pages/product/product'
+                // },
+                // {
+                //     img: '/static/img/home-slider.jpg',
+                //     url: '/pages/product/product'
+                // },
+                // {
+                //     img: '/static/img/home-slider.jpg',
+                //     url: '/pages/product/product'
+                // }
+            ],
+            cateArr: [
+                // {
+                //     title: '青瓷',
+                //     img: '/static/img/home-cate1.png',
+                //     id: '1'
+                // },
+                // {
+                //     title: '白瓷',
+                //     img: '/static/img/home-cate2.png',
+                //     id: '2'
+                // },
+                // {
+                //     title: '对帖',
+                //     img: '/static/img/home-cate3.png',
+                //     id: '3'
+                // },
+                // {
+                //     title: '荷花',
+                //     img: '/static/img/home-cate4.png',
+                //     id: '4'
+                // },
+                // {
+                //     title: '印花',
+                //     img: '/static/img/home-cate5.png',
+                //     id: '5'
+                // },
+                // {
+                //     title: '玻璃',
+                //     img: '/static/img/home-cate6.png',
+                //     id: '6'
+                // }
             ],
             newArr: [
-                {
-                  img: 'https://cbu01.alicdn.com/img/ibank/2018/122/260/9488062221_1899654620.400x400.jpg',
-                  name: '青花瓷功夫茶杯',
-                  price: '386',
-                  url: '/pages/product/product'
-                },
-                {
-                  img: 'https://cbu01.alicdn.com/img/ibank/2018/466/073/9464370664_1899654620.220x220.jpg',
-                  name: '青花瓷功夫茶杯',
-                  price: '386',
-                  url: '/pages/product/product'
-                },
-                {
-                  img: 'https://cbu01.alicdn.com/img/ibank/2018/122/260/9488062221_1899654620.400x400.jpg',
-                  name: '青花瓷功夫茶杯',
-                  price: '386',
-                  url: '/pages/product/product'
-                },
-                {
-                  img: 'https://cbu01.alicdn.com/img/ibank/2018/466/073/9464370664_1899654620.220x220.jpg',
-                  name: '青花瓷功夫茶杯',
-                  price: '386',
-                  url: '/pages/product/product'
-                }
+                // {
+                //   img: 'https://cbu01.alicdn.com/img/ibank/2018/122/260/9488062221_1899654620.400x400.jpg',
+                //   name: '青花瓷功夫茶杯',
+                //   price: '386',
+                //   url: '/pages/product/product'
+                // },
+                // {
+                //   img: 'https://cbu01.alicdn.com/img/ibank/2018/466/073/9464370664_1899654620.220x220.jpg',
+                //   name: '青花瓷功夫茶杯',
+                //   price: '386',
+                //   url: '/pages/product/product'
+                // },
+                // {
+                //   img: 'https://cbu01.alicdn.com/img/ibank/2018/122/260/9488062221_1899654620.400x400.jpg',
+                //   name: '青花瓷功夫茶杯',
+                //   price: '386',
+                //   url: '/pages/product/product'
+                // },
+                // {
+                //   img: 'https://cbu01.alicdn.com/img/ibank/2018/466/073/9464370664_1899654620.220x220.jpg',
+                //   name: '青花瓷功夫茶杯',
+                //   price: '386',
+                //   url: '/pages/product/product'
+                // }
             ],
             cate1Arr: [
-                {
-                    title: '青瓷',
-                    select: true,
-                    id: '1'
-                },
-                {
-                    title: '白瓷',
-                    id: '2'
-                },
-                {
-                    title: '对帖',
-                    id: '3'
-                },
-                {
-                    title: '荷花',
-                    id: '4'
-                },
-                {
-                    title: '印花',
-                    id: '5'
-                },
-                {
-                    title: '玻璃',
-                    id: '6'
-                },
-                {
-                    title: '布料',
-                    id: '7'
-                }
+                // {
+                //     title: '青瓷',
+                //     select: true,
+                //     id: '1'
+                // },
+                // {
+                //     title: '白瓷',
+                //     id: '2'
+                // },
+                // {
+                //     title: '对帖',
+                //     id: '3'
+                // },
+                // {
+                //     title: '荷花',
+                //     id: '4'
+                // },
+                // {
+                //     title: '印花',
+                //     id: '5'
+                // },
+                // {
+                //     title: '玻璃',
+                //     id: '6'
+                // },
+                // {
+                //     title: '布料',
+                //     id: '7'
+                // }
             ],
             cate1Fixed: false,
             bottomLoad_data: [],
-            bottomLoad_api: u.api.index,
+            bottomLoad_api: u.api.list,
             bottomLoad_params: {
                 id: '1'
             }
@@ -185,6 +218,20 @@ export default {
     methods: {
         phone(number) {
             u.phone(number)
+        },
+        contact: function (wechat) {
+            uni.showModal({
+                title: '请添加微信 联系客服',
+                content: '微信号：' + wechat,
+                showCancel: false,
+                success(res) {
+                    if (res.confirm) {
+                        console.log('用户点击确定')
+                    } else if (res.cancel) {
+                        console.log('用户点击取消')
+                    }
+                }
+            })
         },
         jump(url) {
             u.jump(url)
@@ -229,14 +276,48 @@ export default {
         // })
 
         u.request({
-            url: u.api.category,
-            method: 'GET',
+            url: u.api.index,
+            method: 'POST',
             data: {},
             isVerifyLogin: false,
             success(res) {
                 console.log(res)
+                that.site = u.dataTransform(res.site, {
+                    logo: 'img',
+                    address: 'address',
+                    title: 'title',
+                    phone: 'phone',
+                })
+
+                that.sliderArr = u.dataTransform(res.ppt, {
+                    logo: 'img',
+                    url: 'url',
+                })
+
+                that.newArr = u.dataTransform(res.newest, {
+                    logo: 'img',
+                    title: 'name',
+                    vipPrice: 'price',
+                })
+
+                that.cateArr = u.dataTransform(res.classify, {
+                    logo: 'img',
+                    title: 'title',
+                    id: 'id',
+                })
+
+                that.cate1Arr = u.dataTransform(res.classify, {
+                    title: 'title',
+                    id: 'id',
+                })
+                that.cate1Arr[0].select = true
+
+
+
+
             },
             fail(res) {
+                console.error('错误!!!!!!!!!!!!')
                 console.error(res)
             }
         })
@@ -390,6 +471,7 @@ export default {
 }
 .pro1-item {
     display: inline-block;
+    width: 125px;
     margin-right: 10px;
 }
 .pro1-item image {
@@ -402,6 +484,10 @@ export default {
     font-size: 13px;
     color: #333;
     line-height: 25px;
+    white-space: nowrap;
+    word-wrap: normal;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 .pro1-item-price {
     display: block;

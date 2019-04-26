@@ -1,6 +1,6 @@
 <template>
     <div>
-        <productList :data="bottomLoad_data"></productList>
+        <productList :prodata="bottomLoad_data"></productList>
         <tip :text="bottomLoad_tip" :none-icon="false"></tip>
     </div>
 </template>
@@ -17,9 +17,11 @@ export default {
     mixins: [bottomLoad],
     data() {
         return {
-            bottomLoad_api: u.api.index,
+            bottomLoad_api: u.api.list,
             bottomLoad_params: {
-                id: '123456'
+                category_id: '',
+                type: '',
+                search: '',
             }
         }
     },
@@ -33,7 +35,9 @@ export default {
         console.log("cate onLoad")
         let that = this
         console.log(event)
-        that.bottomLoad_params.id = event.id
+        that.bottomLoad_params.category_id = event.id
+        that.bottomLoad_params.type = event.type
+        that.bottomLoad_params.search = event.search
         uni.setNavigationBarTitle({
             title: event.title
         })

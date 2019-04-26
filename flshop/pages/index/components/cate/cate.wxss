@@ -1,13 +1,16 @@
 /* 分类 */
 .cate {
-    margin: 10px;
+    width: 100%
     overflow: hidden;
+    white-space:nowrap;
+    margin: 20px 0;
 }
 
 .cate-item {
+    display: inline-block;
     width: 25%;
-    float: left;
-    margin-bottom: 10px;
+    white-space: normal;
+    vertical-align: top;
 }
 
 .cate-item image {
@@ -24,4 +27,5 @@
     line-height: 20px;
     text-align: center;
     color: #333;
+    white-space: normal
 }
