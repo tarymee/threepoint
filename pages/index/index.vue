@@ -228,18 +228,18 @@ export default {
         //     }
         // })
 
-        // u.request({
-        //     url: `https://unidemo.dcloud.net.cn/api/news/36kr/5188314`,
-        //     method: 'GET',
-        //     data: {},
-        //     isVerifyLogin: false,
-        //     success(res) {
-        //         console.log(res)
-        //     },
-        //     fail(res) {
-        //         console.error(res)
-        //     }
-        // })
+        u.request({
+            url: u.api.category,
+            method: 'GET',
+            data: {},
+            isVerifyLogin: false,
+            success(res) {
+                console.log(res)
+            },
+            fail(res) {
+                console.error(res)
+            }
+        })
 
         // let app = getApp()
         // console.log(app)

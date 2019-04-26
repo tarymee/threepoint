@@ -17,7 +17,7 @@
 /* @import './common/uni.css'; */
 
 /* 微信小程序中引用FontAwesome字体 https://blog.csdn.net/qq_28988969/article/details/76633921 */
-@import './static/font-awesome/css/font-awesome.css';
+@import './common/font-awesome.css';
 
 /* 表单模块 */
 .tt-form {
