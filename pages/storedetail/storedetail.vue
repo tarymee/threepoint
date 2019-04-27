@@ -23,7 +23,7 @@ export default {
             console.log('test')
         }
     },
-    mounted() {
+    onLoad() {
         var that = this
 
     },

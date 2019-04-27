@@ -1,9 +1,9 @@
 <template>
     <div class="pro">
-        <div class="pro__item" v-for="(item, index) in prodata" :key="index" @click="jump(item.url)">
+        <div class="pro__item" v-for="(item, index) in productArr" :key="index" @click="jump(`/pages/product/product?id=${item.id}&title=${item.title}&price=${item.vipPrice}&cover=${item.logo}`)">
             <image class="pro__item-img" :src="item.logo" lazy-load="true" mode="aspectFill"></image>
             <text class="pro__item-tit">{{item.title}}</text>
-            <div class="pro__item-price"><text class="pro__item-symbol">￥</text>{{item.marketPrice}}</div>
+            <div class="pro__item-price"><text class="pro__item-symbol">￥</text>{{item.vipPrice}}</div>
         </div>
     </div>
 </template>
@@ -16,7 +16,7 @@ export default {
         return {}
     },
     props: {
-        prodata: {
+        productArr: {
             type: Array,
             default: []
         }

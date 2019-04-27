@@ -29,14 +29,12 @@ export default {
                 return false
             }
             u.request({
-                url: `${u.api.host}/api/savesuggestion`,
+                url: u.api.feedback,
                 method: 'POST',
                 data: {
                     suggestion: that.suggestion
                 },
                 isVerifyLogin: true,
-                isShowLoading: true,
-                isShowError: true,
                 success(res) {
                     uni.showModal({
                         title: '提示',
@@ -56,6 +54,7 @@ export default {
     onLoad(event) {
         console.log("feedback onLoad")
         let that = this
+        u.checkLogin()
     }
 }
 </script>

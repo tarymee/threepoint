@@ -65,8 +65,8 @@ export default {
             })
         }
     },
-    mounted() {
-        console.log('store mounted')
+    onLoad() {
+        console.log('store onLoad')
     }
 }
 </script>

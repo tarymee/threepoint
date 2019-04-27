@@ -27,7 +27,6 @@ export default {
     methods: {
         save() {
             let that = this
-            console.log(that.address)
             if (!that.phone) {
                 uni.showToast({
                     title: '请输入手机号码',
@@ -42,15 +41,13 @@ export default {
                 return false
             }
             u.request({
-                url: `${u.api.host}/api/bindphone`,
+                url: u.api.bindphone,
                 method: 'POST',
                 data: {
                     phone: that.phone,
-                    verification: that.region
+                    verification: that.verification
                 },
                 isVerifyLogin: true,
-                isShowLoading: true,
-                isShowError: true,
                 success(res) {
                     uni.showModal({
                         title: '提示',
@@ -67,13 +64,11 @@ export default {
             })
         }
     },
-    mounted() {
-        let that = this
-    },
     onLoad(event) {
-        console.log("address onLoad")
+        console.log("bindphone onLoad")
         let that = this
         console.log(event)
+        u.checkLogin()
     }
 }
 </script>

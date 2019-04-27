@@ -38,14 +38,12 @@ export default {
         load() {
             let that = this
             u.request({
-                url: `${u.api.host}/api/getaddress`,
+                url: u.api.addressdetail,
                 method: 'POST',
                 data: {
                     id: that.id
                 },
                 isVerifyLogin: true,
-                isShowLoading: true,
-                isShowError: true,
                 success(res) {
                     console.log(res)
                     // 默认第一个地址
@@ -96,7 +94,7 @@ export default {
                 return false
             }
             u.request({
-                url: `${u.api.host}/api/saveaddress`,
+                url: u.api.addresssave,
                 method: 'POST',
                 data: {
                     id: that.id,
@@ -107,8 +105,6 @@ export default {
                     detail: that.address.detail
                 },
                 isVerifyLogin: true,
-                isShowLoading: true,
-                isShowError: true,
                 success(res) {
                     res = {
                         id: '9',
@@ -134,9 +130,6 @@ export default {
                 }
             })
         }
-    },
-    mounted() {
-        let that = this
     },
     onLoad(event) {
         console.log("address onLoad")

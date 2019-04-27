@@ -14,13 +14,14 @@
                 <image src="/static/img/home-icon2.png" mode="aspectFill" class="site__r-item-img"></image>
                 <div class="site__r-item-tit">客服</div>
             </div>
+            <!-- <button open-type="contact" sessionFrom="weapp" size="27" style="opacity: 0;position:absolute;top:0px;left:0px;display:block;width:100%;height:100%;" type="default-light">测试客服</button> -->
             <div class="site__r-item" @click="phone(site.phone)">
                 <image src="/static/img/home-icon1.png" mode="aspectFill" class="site__r-item-img"></image>
                 <div class="site__r-item-tit">电话</div>
             </div>
         </div>
     </div>
-    <!-- <button open-type="contact" sessionFrom="weapp" size="27" style="opacity: 0;position:absolute;top:0px;left:0px;display:block;width:100%;height:100%;" type="default-light">测试客服</button> -->
+
     <swiper v-if="sliderArr.length > 0" class="swiper" :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
         <block v-for="(item, index) in sliderArr" :key="index">
             <swiper-item class="swiper__item">
@@ -30,7 +31,6 @@
     </swiper>
 
     <div class="cate">
-        <!-- <a class="cate-item" url="/pages/cate/cate?id={{item.id}}&title={{item.title}}" v-for="(item, index) in cateArr" :key="index"> -->
         <a class="cate-item" @click="jump(`/pages/cate/cate?id=${item.id}&title=${item.title}`)" v-for="(item, index) in cateArr" :key="index">
             <image :src="item.img" mode="aspectFill"></image><text>{{item.title}}</text>
         </a>
@@ -54,7 +54,6 @@
     <div class="title" v-if="newArr.length">新品推荐</div>
     <div class="pro1">
         <scroll-view scroll-x>
-            <!-- <a class="pro1-item" url="/pages/product/product?id={{item.id}}&title={{item.name}}&price={{item.price}}&cover={{item.img}}" v-for="(item, index) in newArr" :key="index" @click="jump(item.url)"> -->
             <a class="pro1-item" @click="jump(`/pages/product/product?id=${item.id}&title=${item.name}&price=${item.price}&cover=${item.img}`)" v-for="(item, index) in newArr" :key="index">
                 <image :src="item.img" mode="aspectFill"></image>
                 <text class="pro1-item-tit">{{item.name}}</text>
@@ -65,7 +64,7 @@
     <div class="more" v-if="newArr.length">
         <a class="more__btn" @click="jump('/pages/cate/cate?id=&title=最新产品&type=1')">查看更多</a>
     </div>
-
+    
     <div class="title">精选商品</div>
     <div class="cate1__place" :class="cate1Fixed ? 'cate1__place--holder' : ''"></div>
     <div class="cate1" :class="cate1Fixed ? 'cate1--fixed' : ''">
@@ -75,7 +74,7 @@
             </a>
         </scroll-view>
     </div>
-    <productList :prodata="bottomLoad_data"></productList>
+    <productList :productArr="bottomLoad_data"></productList>
     <tip :text="bottomLoad_tip" :none-icon="false"></tip>
 
 </div>
@@ -211,11 +210,14 @@ export default {
             bottomLoad_data: [],
             bottomLoad_api: u.api.list,
             bottomLoad_params: {
-                id: '1'
+                // category_id: '1'
             }
         }
     },
     methods: {
+        aaa(info) {
+            console.log(info)
+        },
         phone(number) {
             u.phone(number)
         },
@@ -245,7 +247,7 @@ export default {
                     item.select = false
                 }
             })
-            that.bottomLoad_params.id = id
+            that.bottomLoad_params.category_id = id
             that.bottomLoad_reload()
         }
     },
@@ -263,18 +265,9 @@ export default {
             }
         }).exec()
     },
-    mounted() {
-        console.log('index mounted')
+    onLoad() {
+        console.log('index onLoad')
         var that = this
-        // u.request({
-        //     url: u.api.getAddress,
-        //     method: 'POST',
-        //     isVerifyLogin: false,
-        //     success(res) {
-        //         console.log(res)
-        //     }
-        // })
-
         u.request({
             url: u.api.index,
             method: 'POST',
@@ -306,35 +299,18 @@ export default {
                     id: 'id',
                 })
 
-                that.cate1Arr = u.dataTransform(res.classify, {
+                that.cate1Arr = u.dataTransform(res.classify2, {
                     title: 'title',
                     id: 'id',
                 })
-                that.cate1Arr[0].select = true
-
-
-
-
+                that.reloadCate(0, that.cate1Arr[0].id)
             },
             fail(res) {
-                console.error('错误!!!!!!!!!!!!')
+                console.error('错误')
                 console.error(res)
             }
         })
 
-        // let app = getApp()
-        // console.log(app)
-        // console.log(this)
-        // console.log(u)
-        // u.wxLogin()
-        // u.request({
-        //   url: u.api.test,
-        //   method: 'GET',
-        //   data: {},
-        //   success(res) {
-        //     console.log(res)
-        //   }
-        // })
     }
 }
 </script>
@@ -417,6 +393,7 @@ export default {
     background: url('~@/static/img/loading.gif') center center no-repeat;
 }
 .swiper__img {
+    border-radius: 5px;
     width: 100%;
     height: 150px;
 }

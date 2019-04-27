@@ -1,6 +1,6 @@
 <template>
     <div class="order">
-        <div class="order__item" v-for="(item, index) in data" :key="index" @click="detail(item.id)">
+        <div class="order__item" v-for="(item, index) in orderArr" :key="index" @click="detail(item.id)">
             <div class="order__th">
                 <div class="order__th-number">订单编号: {{item.id}}</div>
                 <div class="order__th-status" v-if="item.status === '1'">已关闭</div>
@@ -14,7 +14,7 @@
                 <div class="order__tb-l"><img :src="item1.img" mode="aspectFill" class="order__tb-img" alt="" /></div>
                 <div class="order__tb-m">
                     <div class="order__tb-m-name">{{item1.name}}</div>
-                    <div class="order__tb-m-select">{{item1.select}}</div>
+                    <div class="order__tb-m-select">{{item1.specTip}}</div>
                 </div>
                 <div class="order__tb-r">
                     <div class="order__tb-price">¥{{item1.price}}</div>
@@ -28,35 +28,6 @@
                 <div class="order__status-btn order__status-btn--1" @click="pay(item.id)" v-if="item.status === '3'">立即付款</div>
             </div>
         </div>
-        <!-- <div class="order__item">
-            <div class="order__th">
-                <div class="order__th-number">订单编号: 888888888888888888</div>
-                <div class="order__th-status order__th-status--1">已关闭</div>
-            </div>
-            <div class="order__tb">
-                <div class="order__tb-l"><img src="http://fpoimg.com/400x400" class="order__tb-img" alt="" /></div>
-                <div class="order__tb-m">青花瓷20CM</div>
-                <div class="order__tb-m">
-                    <div class="order__tb-m-name">青花瓷20CM</div>
-                    <div class="order__tb-m-select">天蓝色 S</div>
-                </div>
-                <div class="order__tb-r">
-                    <div class="order__tb-price">¥109</div>
-                    <div class="order__tb-number">x1</div>
-                </div>
-            </div>
-            <div class="order__tf">共 1 件 合计： <span class="order__tf-price">¥109</span></div>
-            <div class="order__status">
-                <div class="order__status-btn">查看物流</div>
-                <div class="order__status-btn order__status-btn--1">确认收获</div>
-                <div class="order__status-btn order__status-btn--1">立即付款</div>
-            </div>
-        </div> -->
-        <!-- <div class="order__item" v-for="(item, index) in data" :key="index" @click="jump(item.url)">
-            <image class="order__item-img" :src="item.logo" lazy-load="true" mode="aspectFill"></image>
-            <text class="order__item-tit">{{item.title}}</text>
-            <div class="order__item-price"><text class="order__item-symbol">￥</text>{{item.marketPrice}}</div>
-        </div> -->
     </div>
 </template>
 <script>
@@ -68,47 +39,9 @@ export default {
         }
     },
     props: {
-        data: {
+        orderArr: {
             type: Array,
-            default: [
-                {
-                    id: '1234567890',
-                    status: '1',
-                    totalcount: '3',
-                    totalprice: '300.00',
-                    detail: [
-                        {
-                            img: 'https://cbu01.alicdn.com/img/ibank/2018/122/260/9488062221_1899654620.400x400.jpg',
-                            count: '1',
-                            price: '100',
-                            select: '天蓝色 S码',
-                            name: '日系复古短袖T恤日系复古短袖T恤日系复古短袖T恤日系复古短袖T恤'
-                        }
-                    ]
-                },
-                {
-                    id: '1234567890',
-                    status: '3',
-                    totalcount: '1',
-                    totalprice: '100.00',
-                    detail: [
-                        {
-                            img: 'https://cbu01.alicdn.com/img/ibank/2018/122/260/9488062221_1899654620.400x400.jpg',
-                            count: '1',
-                            price: '100',
-                            select: '天蓝色 S码',
-                            name: '日系复古短袖T恤'
-                        },
-                        {
-                            img: 'https://cbu01.alicdn.com/img/ibank/2018/122/260/9488062221_1899654620.400x400.jpg',
-                            count: '2',
-                            price: '100',
-                            select: '天蓝色 S码',
-                            name: '日系复古短袖T恤'
-                        }
-                    ]
-                }
-            ]
+            default: []
         }
     },
     mounted() {

@@ -9,27 +9,27 @@
         </div>
         <div class="user">
             <div class="user__list-item--noborder">
-                <uni-list-item title="我的订单" @click="jump('/pages/order/order?id=0&title=全部订单')" show-badge="true" badge-text="查看全部" badge-type="default" badge-inverted="true"></uni-list-item>
+                <uni-list-item title="我的订单" @click="jump('/pages/order/order?type=all&title=全部订单')" show-badge="true" badge-text="查看全部" badge-type="default" badge-inverted="true"></uni-list-item>
             </div>
 
             <div class="status">
-                <a class="status__item" @click="jump('/pages/order/order?id=0&title=待付款')">
+                <a class="status__item" @click="jump('/pages/order/order?type=1&title=待付款')">
                     <image src="/static/img/user-icon1.png" mode="aspectFill" class="status__item-img"></image>
                     <text class="status__item-text">待付款</text>
                 </a>
-                <a class="status__item" @click="jump('/pages/order/order?id=0&title=待发货')">
+                <a class="status__item" @click="jump('/pages/order/order?type=2&title=待发货')">
                     <image src="/static/img/user-icon2.png" mode="aspectFill" class="status__item-img"></image>
                     <text class="status__item-text">待发货</text>
                 </a>
-                <a class="status__item" @click="jump('/pages/order/order?id=0&title=待收款')">
+                <a class="status__item" @click="jump('/pages/order/order?type=3&title=待收款')">
                     <image src="/static/img/user-icon3.png" mode="aspectFill" class="status__item-img"></image>
                     <text class="status__item-text">待收款</text>
                 </a>
-                <a class="status__item" @click="jump('/pages/order/order?id=0&title=已完成')">
+                <a class="status__item" @click="jump('/pages/order/order?type=4&title=已完成')">
                     <image src="/static/img/user-icon4.png" mode="aspectFill" class="status__item-img"></image>
                     <text class="status__item-text">已完成</text>
                 </a>
-                <a class="status__item" @click="jump('/pages/order/order?id=0&title=退换/售后')">
+                <a class="status__item" @click="jump('/pages/order/order?type=5&title=退换/售后')">
                     <image src="/static/img/user-icon5.png" mode="aspectFill" class="status__item-img"></image>
                     <text class="status__item-text">退换/售后</text>
                 </a>
@@ -49,6 +49,60 @@
         </div>
     </div>
 </template>
+
+<script>
+    import u from '@/common/util'
+    import uniList from '@/components/uni-list/uni-list.vue'
+    import uniListItem from '@/components/uni-list-item/uni-list-item.vue'
+
+    export default {
+        components: {
+            uniList,
+            uniListItem
+        },
+        data() {
+            return {
+                user: {
+                    logo: '/static/img/open-item1.jpg',
+                    name: 'tarymee'
+                },
+                is: true
+            }
+        },
+        methods: {
+            test() {
+                console.log('test')
+            },
+            jump(url, isSwitchTab) {
+                u.jump(url, isSwitchTab)
+            }
+        },
+        onShow(event) {
+            console.log('user onLoad')
+            let that = this
+
+            u.checkLogin(function (token, userid, userInfo) {
+                that.user.logo = userInfo.avatarUrl
+                that.user.name = userInfo.nickName
+                u.request({
+                    url: u.api.user,
+                    method: 'POST',
+                    data: {},
+                    isVerifyLogin: true,
+                    success(res) {
+                        console.log(res)
+
+                    },
+                    fail(res) {
+                        console.error(res)
+                    }
+                })
+            })
+
+
+        }
+    }
+</script>
 <style>
     .user__list-item--noborder .uni-list-item__container:after {
         display: none;
@@ -113,64 +167,3 @@
     }
 
 </style>
-
-<script>
-    import u from '@/common/util'
-    import uniList from '@/components/uni-list/uni-list.vue'
-    import uniListItem from '@/components/uni-list-item/uni-list-item.vue'
-
-    export default {
-        components: {
-            uniList,
-            uniListItem
-        },
-        data() {
-            return {
-                query: {},
-                user: {
-                    logo: '/static/img/open-item1.jpg',
-                    name: 'tarymee'
-                },
-                is: true
-            }
-        },
-        methods: {
-            test() {
-                console.log('test')
-            },
-            jump(url) {
-                if (url) {
-                    uni.navigateTo({
-                        url: url
-                    })
-                } else {
-                    console.log('没有url')
-                }
-            }
-        },
-        onLoad(event) {
-            console.log('user mounted')
-            let that = this
-//             // 目前在某些平台参数会被主动 decode，暂时这样处理。
-//             try {
-//                 that.query = JSON.parse(decodeURIComponent(event.detailDate))
-//             } catch (error) {
-//                 that.query = JSON.parse(event.detailDate)
-//             }
-            console.log(event)
-
-            // u.request({
-            //   url: u.api.index,
-            //   method: 'POST',
-            //   isVerifyLogin: false,
-            //   success(res) {
-            //     console.log(res)
-            //     that.site = res.site
-            //     that.newArr = res.newest
-            //     that.site = res.site
-            //   }
-            // })
-
-        }
-    }
-</script>

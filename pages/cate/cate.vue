@@ -1,6 +1,6 @@
 <template>
     <div>
-        <productList :prodata="bottomLoad_data"></productList>
+        <productList :productArr="bottomLoad_data"></productList>
         <tip :text="bottomLoad_tip" :none-icon="false"></tip>
     </div>
 </template>
@@ -41,6 +41,7 @@ export default {
         uni.setNavigationBarTitle({
             title: event.title
         })
+        that.bottomLoad_reload()
     }
 }
 </script>

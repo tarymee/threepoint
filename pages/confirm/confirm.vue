@@ -14,7 +14,7 @@
             <image :src="item.img" class="pro__img"></image>
             <div class="pro__info">
                 <div class="pro__info-tit">{{item.name}}</div>
-                <div class="pro__info-spec">{{item.spec}}</div>
+                <div class="pro__info-spec">{{item.specTip}}</div>
                 <div class="pro__info-tf">
                     <div class="pro__info-price">￥{{item.price}}</div>
                     <div class="pro__info-count">￥{{item.count}}</div>
@@ -42,6 +42,142 @@
         </div>
     </div>
 </template>
+
+<script>
+import u from '@/common/util'
+export default {
+    components: {},
+    data() {
+        return {
+            confirmArr: [],
+            proPrice: '0.00',
+            expressPrice: '10.00',
+            totalPrice: '0.00',
+            address: null
+        }
+    },
+    methods: {
+        // 提交订单 付款
+        pay() {
+            let that = this
+            // uni.navigateTo({
+            //     url: '/pages/success/success?id=123456&price=95.36'
+            // })
+            u.request({
+                url: u.api.test,
+                method: 'POST',
+                data: {
+                    confirmArr: that.confirmArr,
+                    proPrice: that.proPrice,
+                    expressPrice: that.expressPrice,
+                    totalPrice: that.totalPrice,
+                    address: that.address,
+                },
+                isVerifyLogin: true,
+                success(res) {
+                    console.log(res)
+                    res = {
+                        id: '123456',
+                        price: '68.25',
+                    }
+                    uni.navigateTo({
+                        url: '/pages/success/success?id=' + res.id + '&price=' + res.price
+                    })
+                },
+                fail(res) {
+                    console.error(res)
+                }
+            })
+        },
+        selectAddress() {
+            uni.navigateTo({
+                url: '/pages/address/address?from=confirm'
+            })
+        },
+        addAddress() {
+            uni.navigateTo({
+                url: '/pages/addressdetail/addressdetail?from=confirm'
+            })
+        }
+    },
+    // 监听选择地址回调
+    onShow() {
+        console.log('onShow')
+        let that = this
+        let address = uni.getStorageSync('confirmAddress')
+        console.log('address', address)
+        if (address) {
+            that.address = address
+            uni.removeStorageSync('confirmAddress')
+        }
+    },
+    onLoad(event) {
+        console.log("confirm onLoad")
+        let that = this
+        console.log(event)
+        that.proPrice = event.proPrice
+        let totalPrice = Number(that.proPrice) + Number(that.expressPrice)
+        that.totalPrice = totalPrice.toFixed(2)
+
+        // 目前在某些平台参数会被主动 decode，暂时这样处理。
+        if (event.confirmArr) {
+            try {
+                that.confirmArr = JSON.parse(decodeURIComponent(event.confirmArr))
+            } catch (error) {
+                that.confirmArr = JSON.parse(event.confirmArr)
+            }
+        }
+
+        // that.confirmArr = [
+        //     {
+        //         id: 1,
+        //         img: 'https://cbu01.alicdn.com/img/ibank/2018/466/073/9464370664_1899654620.220x220.jpg',
+        //         name: '商品标题商品标题商品标',
+        //         specTip: '规格 S码',
+        //         price: 127.5,
+        //         count: 1
+        //     },
+        //     {
+        //         id: 2,
+        //         img: 'https://cbu01.alicdn.com/img/ibank/2018/466/073/9464370664_1899654620.220x220.jpg',
+        //         name: '商品标商品标题商品标题商品标商品标题商品标题商品标商品标题商品标题',
+        //         specTip: '规格 S码',
+        //         price: 127.5,
+        //         count: 1
+        //     }
+        // ]
+
+        // 请求地址
+        u.request({
+            url: u.api.getAddress,
+            method: 'POST',
+            data: {},
+            isVerifyLogin: true,
+            isShowLoading: false,
+            isShowError: false,
+            success(res) {
+                console.log(res)
+                // 默认第一个地址
+                res = [
+                    {
+                        name: '林多多',
+                        phone: '15845454545',
+                        detail: '广东省广州市天河区车陂文化大街27号'
+                    }
+                ]
+                if (res.length) {
+                    that.address = res[0]
+                }
+            },
+            fail(res) {
+                console.error(res)
+            }
+        })
+    }
+}
+</script>
+
+
 <style scoped>
 .address {
     /* padding: 15px 20px; */
@@ -80,9 +216,6 @@
     font-weight: bold;
     padding: 15px 15px 0;
 }
-
-
-
 
 
 .confirm-list {
@@ -195,139 +328,3 @@
 
 
 </style>
-
-<script>
-import u from '@/common/util'
-export default {
-    components: {},
-    data() {
-        return {
-            confirmArr: [],
-            proPrice: '0.00',
-            expressPrice: '10.00',
-            totalPrice: '0.00',
-            address: null
-        }
-    },
-    methods: {
-        // 提交订单 付款
-        pay() {
-            let that = this
-            // uni.navigateTo({
-            //     url: '/pages/success/success?id=123456&price=95.36'
-            // })
-            u.request({
-                url: u.api.test,
-                method: 'POST',
-                data: {
-                    confirmArr: that.confirmArr,
-                    proPrice: that.proPrice,
-                    expressPrice: that.expressPrice,
-                    totalPrice: that.totalPrice,
-                    address: that.address,
-                },
-                isVerifyLogin: true,
-                isShowLoading: true,
-                isShowError: true,
-                success(res) {
-                    console.log(res)
-                    res = {
-                        id: '123456',
-                        price: '68.25',
-                    }
-                    uni.navigateTo({
-                        url: '/pages/success/success?id=' + res.id + '&price=' + res.price
-                    })
-                },
-                fail(res) {
-                    console.error(res)
-                }
-            })
-        },
-        selectAddress() {
-            uni.navigateTo({
-                url: '/pages/address/address?from=confirm'
-            })
-        },
-        addAddress() {
-            uni.navigateTo({
-                url: '/pages/addressdetail/addressdetail?from=confirm'
-            })
-        }
-    },
-    // 监听选择地址回调
-    onShow() {
-        console.log('onShow')
-        let that = this
-        let address = uni.getStorageSync('confirmAddress')
-        console.log('address', address)
-        if (address) {
-            that.address = address
-            uni.removeStorageSync('confirmAddress')
-        }
-    },
-    onLoad(event) {
-        console.log("confirm onLoad")
-        let that = this
-        console.log(event)
-        that.proPrice = event.proPrice
-        let totalPrice = Number(that.proPrice) + Number(that.expressPrice)
-        that.totalPrice = totalPrice.toFixed(2)
-
-        // 目前在某些平台参数会被主动 decode，暂时这样处理。
-        if (event.confirmArr) {
-            try {
-                that.confirmArr = JSON.parse(decodeURIComponent(event.confirmArr))
-            } catch (error) {
-                that.confirmArr = JSON.parse(event.confirmArr)
-            }
-        }
-
-        that.confirmArr = [
-            {
-                id: 1,
-                img: 'https://cbu01.alicdn.com/img/ibank/2018/466/073/9464370664_1899654620.220x220.jpg',
-                name: '商品标题商品标题商品标',
-                spec: '规格 S码',
-                price: 127.5,
-                count: 1
-            },
-            {
-                id: 2,
-                img: 'https://cbu01.alicdn.com/img/ibank/2018/466/073/9464370664_1899654620.220x220.jpg',
-                name: '商品标商品标题商品标题商品标商品标题商品标题商品标商品标题商品标题',
-                spec: '规格 S码',
-                price: 127.5,
-                count: 1
-            }
-        ]
-
-        // 请求地址
-        u.request({
-            url: u.api.getAddress,
-            method: 'POST',
-            data: {},
-            isVerifyLogin: true,
-            isShowLoading: false,
-            isShowError: false,
-            success(res) {
-                console.log(res)
-                // 默认第一个地址
-                res = [
-                    {
-                        name: '林多多',
-                        phone: '15845454545',
-                        detail: '广东省广州市天河区车陂文化大街27号'
-                    }
-                ]
-                if (res.length) {
-                    that.address = res[0]
-                }
-            },
-            fail(res) {
-                console.error(res)
-            }
-        })
-    }
-}
-</script>

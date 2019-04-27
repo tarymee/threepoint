@@ -2,29 +2,32 @@
     <view>
         <!-- 商品列表 -->
         <view class="cart">
-            <view class="cart__none" v-if="proArr.length==0">购物车是空的哦~</view>
-            <uni-swipe-action :options="dealOptions" v-for="(item,index) in proArr" :key="index" @click="deleteGoods(item.id)">
+            <div class="cart__none" v-if="proArr.length==0">
+                <tip text="亲 购物车还没有商品哦" :none-icon="true"></tip>
+                <a class="cart__none-btn" @click="jump('/pages/index/index', true)">去逛逛</a>
+            </div>
+            <uni-swipe-action :options="saOption" v-for="(item,index) in proArr" :key="index" @click="delPro(index)">
                 <view class="cart___item">
                     <!-- checkbox -->
-                    <view class="cart___item-sel" @tap="selected(index)">
-                        <tt-checkbox :checked="item.selected">/</tt-checkbox>
+                    <view class="cart___item-sel" @tap="selPro(index)">
+                        <tt-checkbox :checked="item.select">/</tt-checkbox>
                     </view>
                     <!-- 商品信息 -->
-                    <view class="pro" @tap="toGoods(item)">
+                    <view class="pro" @tap="jump(`/pages/product/product?id=${item.id}&title=${item.name}&price=${item.price}&cover=${item.img}`)">
                         <image :src="item.img" class="pro__img"></image>
                         <view class="pro__info">
                             <view class="pro__info-tit">{{item.name}}</view>
-                            <view class="pro__info-spec">{{item.spec}}</view>
+                            <view class="pro__info-spec">{{item.specTip}}</view>
                             <view class="pro__info-tf">
                                 <view class="pro__info-price">￥{{item.price}}</view>
                                 <view class="pro__info-count">
-                                    <view class="pro__info-count-sub" @tap.stop="sub(index)">
+                                    <view class="pro__info-count-sub" @tap.stop="subCount(index)">
                                         <view>-</view>
                                     </view>
                                     <view class="pro__info-count-input" @tap.stop="discard">
-                                        <input type="number" v-model="item.count" @input="sum" />
+                                        <input type="number" v-model="item.count" @input="changeCount" />
                                     </view>
-                                    <view class="pro__info-count-add"  @tap.stop="add(index)">
+                                    <view class="pro__info-count-add"  @tap.stop="addCount(index)">
                                         <view>+</view>
                                     </view>
                                 </view>
@@ -37,7 +40,7 @@
 
         <div class="cart-th">
             <div class="cart-th__sel" @tap="allSelect">
-                <tt-checkbox :checked="isAllselected">/</tt-checkbox>
+                <tt-checkbox :checked="isAllSel">/</tt-checkbox>
                 <span class="cart-th__sel-txt">全选</span>
             </div>
             <div class="cart-th__edit" @tap="edit">{{isEdit ? '完成' : '编辑'}}</div>
@@ -47,194 +50,258 @@
         <div class="cart-tf">
             <div class="cart-tf__sum">合计:<span class="cart-tf__sum-money">￥{{sumPrice}}</span></div>
             <div class="cart-tf__set">
-                <div class="cart-tf__del" @tap="deleteList" v-if="isEdit">删除</div>
-                <div class="cart-tf__deal" @tap="toConfirm" v-if="!isEdit">结算({{selectedList.length}})</div>
+                <div class="cart-tf__del" @tap="delSelPros" v-if="isEdit">删除</div>
+                <div class="cart-tf__deal" @tap="toConfirm" v-if="!isEdit">结算({{selProCount}})</div>
             </div>
         </div>
     </view>
 </template>
 
 <script>
+import u from "@/common/util"
 import uniSwipeAction from '@/components/uni-swipe-action/uni-swipe-action.vue'
 import ttCheckbox from '@/components/tt-checkbox/tt-checkbox.vue'
+import tip from '@/components/tip/tip.vue'
 export default {
     components: {
         uniSwipeAction,
-        ttCheckbox
+        ttCheckbox,
+        tip
     },
     data() {
         return {
             sumPrice: '0.00',
-            selectedList: [],
-            isAllselected: false,
+            selProCount: 0,
+            isAllSel: false,
             isEdit: false,
-            dealOptions: [
+            saOption: [
                 {
                     text: '删除',
                     style: {
-                        backgroundColor: '#f60'
+                        backgroundColor: '#f00'
                     }
                 }
             ],
-            proArr: [
-                {
-                    id: 1,
-                    img: 'https://cbu01.alicdn.com/img/ibank/2018/466/073/9464370664_1899654620.220x220.jpg',
-                    name: '三分陶瓷 89*99 CM',
-                    spec: '规格 S码',
-                    price: 127.5,
-                    count: 1,
-                    selected: false
-                },
-                {
-                    id: 2,
-                    img: 'https://cbu01.alicdn.com/img/ibank/2018/466/073/9464370664_1899654620.220x220.jpg',
-                    name: '三分陶瓷 89*99 CM',
-                    spec: '规格 S码',
-                    price: 127.5,
-                    count: 1,
-                    selected: false
-                },
-                {
-                    id: 3,
-                    img: 'https://cbu01.alicdn.com/img/ibank/2018/466/073/9464370664_1899654620.220x220.jpg',
-                    name: '三分陶瓷 89*99 CM',
-                    spec: '规格 S码',
-                    price: 127.5,
-                    count: 1,
-                    selected: false
-                },
-                {
-                    id: 4,
-                    img: 'https://cbu01.alicdn.com/img/ibank/2018/466/073/9464370664_1899654620.220x220.jpg',
-                    name: '三分陶瓷 89*99 CM',
-                    spec: '规格 S码',
-                    price: 127.5,
-                    count: 1,
-                    selected: false
-                }
-            ]
+            proArr: []
         }
     },
-    //下拉刷新，需要自己在page.json文件中配置开启页面下拉刷新 "enablePullDownRefresh": true
-    onPullDownRefresh() {
-        setTimeout(function () {
-            uni.stopPullDownRefresh()
-        }, 1000)
-    },
-    onLoad() {
-
-    },
+    computed: {},
     methods: {
         edit() {
             this.isEdit = !this.isEdit
         },
-        // 商品跳转
-        toGoods(e) {
-            // uni.showToast({title: '商品'+e.id,icon:"none"})
-            // uni.navigateTo({
-            //     url: '/pages/product/product'
-            // })
+        // 滑动删除商品
+        delPro(index) {
+            let that = this
+            let leftProArr = []
+            that.proArr.forEach((item, i) => {
+                if (i != index) {
+                    leftProArr.push(item)
+                }
+            })
+            that.proArr = leftProArr
+            that.sum()
+            that.updateCart()
+        },
+        // 按钮删除商品
+        delSelPros() {
+            let that = this
+            if (that.proArr.length) {
+                let leftProArr = []
+                that.proArr.forEach((item, i) => {
+                    if (!item.select) {
+                        leftProArr.push(item)
+                    }
+                })
+                that.proArr = leftProArr
+                that.sum()
+                that.updateCart()
+            } else {
+                that.isEdit = false
+            }
+        },
+        // 选中商品
+        selPro(index) {
+            let that = this
+            that.proArr[index].select = !that.proArr[index].select
+            that.sum()
+        },
+        // 全选
+        allSelect() {
+            let that = this
+            that.proArr.forEach((item, i) => {
+                item.select = !that.isAllSel
+            })
+            that.sum()
+        },
+        // 减少数量
+        subCount(index) {
+            let that = this
+            if (that.proArr[index].count <= 1) {
+                return
+            }
+            that.proArr[index].count--
+            that.sum()
+            that.updateCart()
+        },
+        // 增加数量
+        addCount(index) {
+            let that = this
+            that.proArr[index].count++
+            that.sum()
+            that.updateCart()
+        },
+        // input改变数量
+        changeCount() {
+            let that = this
+            that.sum()
+            that.updateCart()
+        },
+        // 合计
+        sum() {
+            let that = this
+            let sumPrice = 0
+            let selProCount = 0
+            that.proArr.forEach((item, i) => {
+                if (item.select) {
+                    selProCount++
+                    sumPrice = sumPrice + u.math.multimul(item.count, item.price)
+                }
+            })
+            that.selProCount = selProCount
+            if (selProCount === 0) {
+                that.isAllSel = false
+            } else {
+                that.isAllSel = (selProCount === that.proArr.length)
+            }
+            that.sumPrice = sumPrice.toFixed(2)
+        },
+        discard() {
+            //丢弃
+        },
+        jump(url, isSwitchTab) {
+            u.jump(url, isSwitchTab)
         },
         // 跳转确认订单页面
         toConfirm() {
             let that = this
             let confirmArr = []
             that.proArr.forEach((item, i) => {
-                if (item.selected) {
+                if (item.select) {
                     confirmArr.push(item)
                 }
             })
             console.log(confirmArr)
             if (confirmArr.length) {
-                uni.navigateTo({
-                    url: '/pages/confirm/confirm?confirmArr=' + encodeURIComponent(JSON.stringify(confirmArr)) + '&proPrice=' + that.sumPrice
+                u.checkLogin(function () {
+                    console.log('跳去订单确认页')
+                    uni.navigateTo({
+                        url: '/pages/confirm/confirm?confirmArr=' + encodeURIComponent(JSON.stringify(confirmArr)) + '&proPrice=' + that.sumPrice
+                    })
                 })
             } else {
-                uni.showModal({
-                    title: '提示',
-                    content: '请先选择产品',
-                    showCancel: false
+                uni.showToast({
+                    title: '请先选择产品',
+                    mask: true,
+                    icon: 'none',
                 })
             }
+        },
+        // 更新购物车列表
+        updateCart() {
+            console.log('更新购物车列表')
+            let that = this
+            u.checkLogin(function () {
+                let newArr = []
+                that.proArr.forEach((item, i) => {
+                    newArr.push(item)
+                })
+                u.request({
+                    url: u.api.cartupdate,
+                    method: 'POST',
+                    data: {
+                        cartlist: newArr
+                    },
+                    isVerifyLogin: true,
+                    isShowLoading: false,
+                    isShowError: false,
+                    success(res) {
+                        console.log(res)
+                    },
+                    fail(res) {
+                        console.error(res)
+                    }
+                })
+            })
+        }
+    },
+    onShow() {
+        let that = this
 
-            // uni.setStorage({
-            //     key: 'buylist',
-            //     data: tmpList,
-            //     success: () => {
-            //         uni.navigateTo({
-            //             url: '../order/confirmation'
-            //         })
-            //     }
-            // })
-        },
-        // 删除商品
-        deleteGoods(id) {
-            let len = this.proArr.length
-            for (let i = 0; i < len; i++) {
-                if (id == this.proArr[i].id) {
-                    this.proArr.splice(i, 1)
-                    break
+        // u.request({
+        //     url: u.api.cartlist,
+        //     method: 'POST',
+        //     data: {},
+        //     isVerifyLogin: true,
+        //     success(res) {
+        //         console.log(res)
+        //         if (res && res.data) {
+        //             that.proArr = res.data
+        //             that.sum()
+
+        //         }
+        //     },
+        //     fail(res) {
+        //         console.error(res)
+        //     }
+        // })
+        // return false
+
+
+
+        let res = {
+            data: [
+                {
+                    id: '15646',
+                    img: 'https://cbu01.alicdn.com/img/ibank/2018/466/073/9464370664_1899654620.220x220.jpg',
+                    name: '青花瓷 89*99 CM',
+                    spec: {
+                        '112233': '111',
+                        '334455': '345',
+                    },
+                    specTip: '规格 S码 黑色',
+                    price: 10.5,
+                    count: 1
+                },
+                {
+                    id: '249816',
+                    img: 'https://cbu01.alicdn.com/img/ibank/2018/466/073/9464370664_1899654620.220x220.jpg',
+                    name: '清朝陶瓷碗 89*99 CM',
+                    spec: {
+                        '112233': '111',
+                        '334455': '345',
+                    },
+                    specTip: '规格 S码 黑色',
+                    price: 20.5,
+                    count: 1
+                },
+                {
+                    id: '3062165',
+                    img: 'https://cbu01.alicdn.com/img/ibank/2018/466/073/9464370664_1899654620.220x220.jpg',
+                    name: '秦朝甲骨文片 89*99 CM',
+                    spec: {
+                        '112233': '111',
+                        '334455': '345',
+                    },
+                    specTip: '规格 S码 黑色',
+                    price: 30.5,
+                    count: 1
                 }
-            }
-            this.sum()
-        },
-        // 删除商品
-        deleteList() {
-            let that = this
-            that.selectedList.forEach((item, i) => {
-                that.deleteGoods(item)
-            })
-            that.selectedList = []
-            that.isAllselected = that.selectedList.length == that.proArr.length && that.proArr.length > 0
+            ]
+        }
+        if (res && res.data) {
+            that.proArr = res.data
             that.sum()
-        },
-        // 选中商品
-        selected(index) {
-            this.proArr[index].selected = this.proArr[index].selected ? false : true
-            let i = this.selectedList.indexOf(this.proArr[index].id)
-            i > -1 ? this.selectedList.splice(i, 1) : this.selectedList.push(this.proArr[index].id)
-            this.isAllselected = this.selectedList.length == this.proArr.length
-            this.sum()
-        },
-        // 全选
-        allSelect() {
-            let that = this
-            let arr = []
-            that.proArr.forEach((item, i) => {
-                item.selected = that.isAllselected ? false : true
-                arr.push(item.id)
-            })
-            that.selectedList = that.isAllselected ? [] : arr
-            that.isAllselected = that.isAllselected || that.proArr.length == 0 ? false : true
-            that.sum()
-        },
-        // 减少数量
-        sub(index) {
-            if (this.proArr[index].count <= 1) {
-                return
-            }
-            this.proArr[index].count--
-            this.sum()
-        },
-        // 增加数量
-        add(index) {
-            this.proArr[index].count++
-            this.sum()
-        },
-        // 合计
-        sum() {
-            let sumPrice = 0
-            let len = this.proArr.length
-            for (let i = 0, len = this.proArr.length; i < len; i++) {
-                if (this.proArr[i].selected) {
-                    sumPrice = sumPrice + (this.proArr[i].count * this.proArr[i].price)
-                }
-            }
-            this.sumPrice = sumPrice.toFixed(2)
-        },
-        discard() {
-            //丢弃
         }
     }
 }
@@ -244,7 +311,7 @@ export default {
     display: flex;
     width: 100%;
     padding: 0 15px;
-    height: 40px;
+    height: 50px;
     background-color: #fff;
     justify-content: space-between;
     align-items: center;
@@ -264,11 +331,12 @@ export default {
     display: flex;
 }
 .cart-tf__deal {
+    border: 1upx solid #d1a178;
     background-color: #d1a178;
     color: #fff;
     padding: 0 15px;
-    height: 25px;
-    line-height: 25px;
+    height: 30px;
+    line-height: 30px;
     border-radius: 15px;
     font-size: 14px;
 }
@@ -276,8 +344,8 @@ export default {
     border: 1upx solid #d1a178;
     color: #d1a178;
     padding: 0 15px;
-    height: 25px;
-    line-height: 25px;
+    height: 30px;
+    line-height: 30px;
     border-radius: 15px;
     font-size: 14px;
 }
@@ -319,22 +387,24 @@ export default {
 
 
 
-
-
-.cart__none{
-    width: 100%;
-    height: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 16px;
-}
-
-
-
 .cart{
     width: 100%;
-    margin: 40px 0;
+    margin: 40px 0 50px;
+}
+.cart__none {
+    padding: 50px 0;
+    text-align: center;
+}
+.cart__none-btn {
+    display: inline-block;
+    line-height: 30px;
+    height: 30px;
+    border: 1upx solid #ccc;
+    border-radius: 15px;
+    padding: 0 25px;
+    font-size: 12px;
+    text-align: center;
+    color: #777;
 }
 .cart___item{
     display: flex;

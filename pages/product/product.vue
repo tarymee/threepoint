@@ -2,7 +2,7 @@
   <div>
     <swiper v-if="swiperArr.length > 0" class="proswiper" :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
         <swiper-item v-for="(item, index) in swiperArr" :key="index" class="proswiper__item">
-            <image lazy-load :src="item" mode="aspectFill" class="proswiper__img"></image>
+            <image lazy-load :src="item.img" mode="aspectFill" class="proswiper__img"></image>
         </swiper-item>
     </swiper>
 
@@ -11,7 +11,7 @@
 
     <div class="product__sel" @click="openSelect" data-position="bottom">
         <div class="product__sel-tit">选择</div>
-        <div class="product__sel-des">{{selectText}}</div>
+        <div class="product__sel-des">{{specTip}}</div>
     </div>
 
     <div style="height: 10px; background: #eee;"></div>
@@ -20,18 +20,18 @@
         <div class="product__selcon">
             <div class="product__selcon-close" @click="togglePopup('')">X</div>
 
-            <div v-for="(item, index) in categoryArr" :key="index">
+            <div v-for="(item, index) in specArr" :key="index">
                 <div class="product__selcon-tit">{{ item.title }}</div>
                 <div class="product__selcon-list">
-                    <div v-for="(item2, index2) in item.items" :key="index2">
-                        <div class="product__selcon-item" :class="item.items[item.select].id === item2.id ? 'product__selcon-item--cur' : ''" @click="selItem(index, index2)">{{ item2.text }}</div>
+                    <div v-for="(item2, index2) in item.specs" :key="index2">
+                        <div class="product__selcon-item" :class="item.specs[item.select].id === item2.id ? 'product__selcon-item--cur' : ''" @click="selItem(index, index2)">{{ item2.title }}</div>
                     </div>
                 </div>
             </div>
 
             <div class="product__selcon-tit">购买数量</div>
             <div class="product__selcon-num">
-                <uni-number-box :min="1" :max="1000" :value="count"></uni-number-box>
+                <uni-number-box :min="1" :max="1000" :value="count" @change="watchCountChange"></uni-number-box>
             </div>
             <div class="product__selcon-btns" v-if="selectPopupFrom === 1">
                 <div class="product__selcon-btns-buy" @click="popupBuy">立即购买</div>
@@ -101,10 +101,11 @@ export default {
             id: '',
             price: 0,
             title: '',
+            img: '',
             htmlString: "",
             swiperArr: [],
-            // 产品分类数据
-            categoryArr: [],
+            // 规格数据
+            specArr: [],
             count: 1,
             // 弹出框类型 share: 分享, select： 选择产品颜色大小等
             popupType: '',
@@ -112,6 +113,7 @@ export default {
             // 1 如果是标题下面的选择打开则显示立即购买和加入购物车
             // 2 如果是通过底部的立即购买和加入购物车打开的 则显示确定按钮
             selectPopupFrom: 1,
+            isAddCart: true,
             shareData: [{
                     text: '微信',
                     icon: '\ue6a4',
@@ -146,59 +148,89 @@ export default {
         }
     },
     computed: {
-        selectText () {
+        specTip () {
             let that = this
-            return that.checkSelect().selectText
-        }
-    },
-    // 干嘛用？
-    onBackPress() {
-        if (this.popupType !== '') {
-            this.popupType = ''
-            return true
+            return that.checkSpec().specTip
         }
     },
     methods: {
+        watchCountChange(val) {
+            this.count = val
+            console.log(val)
+        },
         togglePopup(popupType) {
             this.popupType = popupType
         },
         selItem(index, index2) {
-            if (this.categoryArr[index].select != index2) {
-                this.categoryArr[index].select = index2
+            if (this.specArr[index].select != index2) {
+                this.specArr[index].select = index2
             } else {
-                this.categoryArr[index].select = null
+                this.specArr[index].select = null
             }
         },
-        // 检测是否选择尺码颜色了
-        checkSelect() {
+        // 检测规格
+        checkSpec() {
             let that = this
-            let isNeedSelect = that.categoryArr.length ? true : false
-            let isSelect = true
-            let selectArr = []
-            let noSelectArr = []
-            for (let i = 0, len = that.categoryArr.length; i < len; i++) {
-                if (that.categoryArr[i].select === null) {
-                    isSelect = false
-                    noSelectArr.push(that.categoryArr[i].title)
+            let isNeedSpec = that.specArr.length ? true : false
+            let isSelAllSpec = true
+            let selSpecArr = []
+            let noSelSpecArr = []
+            for (let i = 0, len = that.specArr.length; i < len; i++) {
+                if (that.specArr[i].select === null) {
+                    isSelAllSpec = false
+                    noSelSpecArr.push(that.specArr[i])
                 } else {
-                    selectArr.push(`"${that.categoryArr[i].items[that.categoryArr[i].select].text}"`)
+                    selSpecArr.push(that.specArr[i])
+                }
+            }
+            let specTip = ''
+            if (isNeedSpec) {
+                if (isSelAllSpec) {
+                    let tipArr = []
+                    selSpecArr.forEach((item, i) => {
+                        tipArr.push(item.specs[item.select].title)
+                    })
+                    specTip = `规格: ${tipArr.join(' ')}`
+                } else {
+                    let tipArr = []
+                    noSelSpecArr.forEach((item, i) => {
+                        tipArr.push(item.title)
+                    })
+                    specTip = `请选择 ${tipArr.join(' ')}`
                 }
             }
 
             return {
-                isNeedSelect,
-                isSelect,
-                selectArr,
-                selectText: isSelect ? `已选择${selectArr.join(' ')}` : `请选择${noSelectArr.join(' ')}`,
-                noSelectArr,
+                isNeedSpec,
+                isSelAllSpec,
+                selSpecArr,
+                specTip,
+                noSelSpecArr,
             }
         },
         // 整合数据
         dealData() {
             let that = this
+            let a = that.checkSpec()
+            let selSpec = {}
+            if (a.isSelAllSpec) {
+                a.selSpecArr.forEach((item, i) => {
+                    selSpec[item.id] = item.specs[item.select].id
+                })
+            } else {
+                uni.showToast({
+                    title: a.specTip,
+                    icon: 'none'
+                })
+            }
             let postData = {
+                name: that.title,
+                img: that.img,
+                id: that.id,
+                price: that.price,
                 count: that.count,
-                categoryArr: that.categoryArr
+                selSpec: selSpec,
+                specTip: a.specTip,
             }
             return postData
         },
@@ -212,46 +244,65 @@ export default {
             // 打开选择框
             that.togglePopup('select')
             that.selectPopupFrom = 2
+            that.isAddCart = false
         },
         addcart() {
             let that = this
             // 打开选择框
             that.togglePopup('select')
             that.selectPopupFrom = 2
+            that.isAddCart = true
         },
         popupBuy() {
             let that = this
-            let a = that.checkSelect()
-            if (a.isSelect) {
-                // 跳去订单确认页
-            } else {
-                // 弹出提示
-                uni.showToast({
-                    title: a.selectText,
-                    icon: 'none'
-                })
-            }
+            that.isAddCart = false
+            that.popupComfirm()
         },
         popupAddcart() {
             let that = this
-            if (that.checkSelect().isSelect) {
-                // 跳去订单确认页
-            } else {
-                // 弹出提示
-                uni.showToast({
-                    title: a.selectText,
-                    icon: 'none'
-                })
-            }
+            that.isAddCart = true
+            that.popupComfirm()
         },
         popupComfirm() {
             let that = this
-            if (that.checkSelect().isSelect) {
-                // 跳去订单确认页
+            let a = that.checkSpec()
+            console.log('checkSpec', a)
+            if (a.isSelAllSpec) {
+                let postData = that.dealData()
+                console.log('postData', postData)
+                if (that.isAddCart) {
+                    u.checkLogin(function () {
+                        console.log('添加成功 在购物车等亲')
+                        u.request({
+                            url: u.api.addcart,
+                            method: 'POST',
+                            data: postData,
+                            isVerifyLogin: true,
+                            success(res) {
+                                console.log(res)
+                                uni.showToast({
+                                    title: '添加成功 在购物车等亲',
+                                    icon: 'none'
+                                })
+                            },
+                            fail(res) {
+                                console.error(res)
+                            }
+                        })
+                    })
+                } else {
+                    u.checkLogin(function () {
+                        console.log('跳去订单确认页')
+                        let confirmArr = [postData]
+                        let proPrice = u.math.multimul(confirmArr[0].price, confirmArr[0].count)
+                        uni.navigateTo({
+                            url: '/pages/confirm/confirm?confirmArr=' + encodeURIComponent(JSON.stringify(confirmArr)) + '&proPrice=' + proPrice
+                        })
+                    })
+                }
             } else {
-                // 弹出提示
                 uni.showToast({
-                    title: a.selectText,
+                    title: a.specTip,
                     icon: 'none'
                 })
             }
@@ -281,24 +332,33 @@ export default {
 
         u.request({
             // url: u.api.goods + that.id,
-            url: u.api.goods + '39',
+            url: u.api.goods + '27',
             method: 'POST',
             data: {},
             isVerifyLogin: false,
             success(res) {
                 console.log(res)
                 if (res && res.goods) {
-                    that.title = res.goods.title
+                    res = res.goods
+
+                    that.title = res.title
                     uni.setNavigationBarTitle({
                         title: that.title
                     })
-                    that.price = res.goods.vipPrice
-                    that.swiperArr = [res.goods.logo]
-
-                    // that.htmlString = res.content.replace(/\\/g, "").replace(/<img/g, "<img style=\"display:none;\"")
-                    // that.htmlString = res.content
-                    // that.categoryArr = res.categoryArr
-
+                    that.price = res.vipPrice
+                    that.img = res.logo
+                    that.swiperArr = u.dataTransform(res.pics, {
+                        path: 'img',
+                    })
+                    let dealSpecArr = []
+                    res.spec.forEach((item, i) => {
+                        item.select = null
+                        if (item.specs && item.specs.length) {
+                            dealSpecArr.push(item)
+                        }
+                    })
+                    that.specArr = dealSpecArr
+                    that.htmlString = res.remark
                 }
             },
             fail(res) {
@@ -306,65 +366,78 @@ export default {
             }
         })
 
-        // return false
+        return false
         let res = {
             'id': '5188314',
             'title': '青花瓷30CM',
+            'price': '8',
             'swiperArr': [
-                'https://cbu01.alicdn.com/img/ibank/2018/317/567/9509765713_1899654620.400x400.jpg',
-                'https://cbu01.alicdn.com/img/ibank/2018/122/260/9488062221_1899654620.400x400.jpg',
+                {
+                    img: 'https://cbu01.alicdn.com/img/ibank/2018/317/567/9509765713_1899654620.400x400.jpg'
+                },
+                {
+                    img: 'https://cbu01.alicdn.com/img/ibank/2018/122/260/9488062221_1899654620.400x400.jpg'
+                }
             ],
+            'img': 'https://cbu01.alicdn.com/img/ibank/2018/317/567/9509765713_1899654620.400x400.jpg',
             'content': '<p>青花瓷30CM</p><p><img style="max-width:100%" src="https://cbu01.alicdn.com/img/ibank/2018/553/678/9509876355_1899654620.jpg" /></p><p><img style="max-width:100%" src="https://cbu01.alicdn.com/img/ibank/2018/929/343/9464343929_1899654620.jpg" /></p><p><img style="max-width:100%" src="https://cbu01.alicdn.com/img/ibank/2018/568/071/9488170865_1899654620.jpg" /></p>',
-            'categoryArr': [
+            'spec': [
                 {
                     'title': '尺码',
                     'id': '112233',
-                    'select': null,
-                    'items': [
+                    'specs': [
                         {
                             'id': '111',
-                            'text': '30CM'
+                            'title': '30CM'
                         },
                         {
                             'id': '222',
-                            'text': '60CM'
+                            'title': '60CM'
                         },
                         {
                             'id': '333',
-                            'text': '90CM'
+                            'title': '90CM'
                         }
                     ]
                 },
                 {
                     'title': '颜色',
                     'id': '445566',
-                    'select': null,
-                    'items': [
+                    'specs': [
                         {
                             'id': '444',
-                            'text': '魔法黑'
+                            'title': '魔法黑'
                         },
                         {
                             'id': '555',
-                            'text': '青花素'
+                            'title': '青花素'
                         },
                         {
                             'id': '666',
-                            'text': '陶瓷白'
+                            'title': '陶瓷白'
                         }
                     ]
                 }
             ]
         }
         if (res) {
-            // that.htmlString = res.content.replace(/\\/g, "").replace(/<img/g, "<img style=\"display:none;\"")
+            that.title = res.title
+            uni.setNavigationBarTitle({
+                title: that.title
+            })
+            that.price = res.price
+            that.img = res.img
+            that.swiperArr = res.swiperArr
+            let dealSpecArr = []
+            res.spec.forEach((item, i) => {
+                item.select = null
+                if (item.specs && item.specs.length) {
+                    dealSpecArr.push(item)
+                }
+            })
+            that.specArr = res.specArr
             that.htmlString = res.content
-            // that.swiperArr = res.swiperArr
-            that.categoryArr = res.categoryArr
-            // that.title = res.title
-            // uni.setNavigationBarTitle({
-            //     title: that.title
-            // })
+            // that.htmlString = res.content.replace(/\\/g, "").replace(/<img/g, "<img style=\"display:none;\"")
         }
 
     }

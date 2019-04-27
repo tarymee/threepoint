@@ -97,8 +97,6 @@ export default {
                     verification: that.verification,
                 },
                 isVerifyLogin: true,
-                isShowLoading: true,
-                isShowError: true,
                 success(res) {
                     uni.showModal({
                         title: '提示',
@@ -115,7 +113,7 @@ export default {
             })
         }
     },
-    mounted() {
+    onLoad() {
         let that = this
     },
     onLoad(event) {

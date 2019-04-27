@@ -75,8 +75,8 @@ export default {
             })
         }
     },
-    mounted() {
-        console.log('open mounted')
+    onLoad() {
+        console.log('open onLoad')
         var that = this
         // u.request({
         //     url: u.api.open,

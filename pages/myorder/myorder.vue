@@ -1,6 +1,6 @@
 <template>
     <div>
-        <orderList></orderList>
+        <orderList :orderArr="bottomLoad_data"></orderList>
         <tip :text="bottomLoad_tip" :none-icon="false"></tip>
     </div>
 </template>
@@ -17,9 +17,10 @@ export default {
     mixins: [bottomLoad],
     data() {
         return {
-            bottomLoad_api: u.api.index,
+            bottomLoad_type: 'order',
+            bottomLoad_api: u.api.myorder,
             bottomLoad_params: {
-                id: '123456'
+                type: 'all'
             }
         }
     },
@@ -33,10 +34,11 @@ export default {
         console.log("order onLoad")
         let that = this
         console.log(event)
-        that.bottomLoad_params.id = event.id
+        that.bottomLoad_params.type = event.type
         uni.setNavigationBarTitle({
             title: event.title
         })
+        that.bottomLoad_reload()
     }
 }
 </script>
