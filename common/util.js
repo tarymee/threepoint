@@ -203,16 +203,16 @@ function jump(url, isSwitchTab) {
 
 /**
  * 处理js浮点数精度问题
- * console.log(math.add(0.1, 0.2))
- * console.log(math.multiadd(0.1, 0.2, 0.3, 0.4))
- * console.log(math.curryadd(0.1)(0.2)())
+ * console.log(mathutil.add(0.1, 0.2))
+ * console.log(mathutil.multiadd(0.1, 0.2, 0.3, 0.4))
+ * console.log(mathutil.curryadd(0.1)(0.2)())
  */
 const math = {
     /**
      * 加法函数，用来得到精确的加法结果
      * 说明：javascript的加法结果会有误差，在两个浮点数相加的时候会比较明显。这个函数返回较为精确的加法结果。
-     * 调用：math.add(arg1, arg2)
-     * 返回值：arg1加上arg2的精确结果
+     * 调用：mathutil.add(arg1, arg2)
+     * 返回值：arg1加arg2的精确结果
      */
     add: function (arg1, arg2) {
         var r1, r2, m, c
@@ -247,20 +247,23 @@ const math = {
     },
     /**
      * 累加函数
-     * 调用：math.multiadd(arg1, arg2, ...)
+     * 调用：mathutil.multiadd(arg1, arg2, ...)
      * 返回值：arg1加arg2加arg3加...的精确结果
      */
     multiadd: function (...args) {
-        let result = 0
-        args.forEach((item) => {
-            result = math.add(result, item)
+        // let args = Array.prototype.slice.call(arguments)
+        let result = args[0]
+        args.forEach((item, i) => {
+            if (i < (args.length - 1)) {
+                result = mathutil.add(result, args[i + 1])
+            }
         })
         return result
     },
     /**
      * 柯里化累加函数
-     * 说明：运用柯里化调用math.add方法
-     * 调用：math.curryadd(arg1)(arg2)(arg3)()
+     * 说明：运用柯里化调用mathutil.add方法
+     * 调用：mathutil.curryadd(arg1)(arg2)(arg3)()
      * 返回值：arg1加arg2加arg3加...的精确结果
      */
     curryadd: function () {
@@ -272,7 +275,7 @@ const math = {
                 // console.log(_args.length)
                 var result = 0
                 for (var i = 0; i < _args.length; i++) {
-                    result = math.add(result, _args[i])
+                    result = mathutil.add(result, _args[i])
                 }
                 return result
             } else {
@@ -284,8 +287,8 @@ const math = {
     /**
      * 减法函数，用来得到精确的减法结果
      * 说明：javascript的减法结果会有误差，在两个浮点数相减的时候会比较明显。这个函数返回较为精确的减法结果。
-     * 调用：math.sub(arg1,arg2)
-     * 返回值：arg1加上arg2的精确结果
+     * 调用：mathutil.sub(arg1,arg2)
+     * 返回值：arg1减arg2的精确结果
      */
     sub: function (arg1, arg2) {
         var r1, r2, m, n
@@ -301,15 +304,30 @@ const math = {
         catch (e) {
             r2 = 0
         }
-        m = Math.pow(10, Math.max(r1, r2)) //last modify by deeka //动态控制精度长度
+        m = Math.pow(10, Math.max(r1, r2)) // last modify by deeka // 动态控制精度长度
         n = (r1 >= r2) ? r1 : r2
         return ((arg1 * m - arg2 * m) / m).toFixed(n)
     },
     /**
+     * 累减函数
+     * 调用：mathutil.multisub(arg1, arg2, ...)
+     * 返回值：arg1减arg2减arg3减...的精确结果
+     */
+    multisub: function (...args) {
+        // let args = Array.prototype.slice.call(arguments)
+        let result = args[0]
+        args.forEach((item, i) => {
+            if (i < (args.length - 1)) {
+                result = mathutil.sub(result, args[i + 1])
+            }
+        })
+        return result
+    },
+    /**
      * 乘法函数，用来得到精确的乘法结果
      * 说明：javascript的乘法结果会有误差，在两个浮点数相乘的时候会比较明显。这个函数返回较为精确的乘法结果。
-     * 调用：math.mul(arg1,arg2)
-     * 返回值：arg1乘以 arg2的精确结果
+     * 调用：mathutil.mul(arg1,arg2)
+     * 返回值：arg1乘arg2的精确结果
      */
     mul: function (arg1, arg2) {
         var m = 0, s1 = arg1.toString(), s2 = arg2.toString()
@@ -327,20 +345,23 @@ const math = {
     },
     /**
      * 累乘函数
-     * 调用：math.multimul(arg1, arg2, ...)
+     * 调用：mathutil.multimul(arg1, arg2, ...)
      * 返回值：arg1乘arg2乘arg3乘...的精确结果
      */
     multimul: function (...args) {
-        let result = 1
-        args.forEach((item) => {
-            result = math.mul(result, item)
+        // let args = Array.prototype.slice.call(arguments)
+        let result = args[0]
+        args.forEach((item, i) => {
+            if (i < (args.length - 1)) {
+                result = mathutil.mul(result, args[i + 1])
+            }
         })
         return result
     },
     /**
      * 柯里化累乘函数
-     * 说明：运用柯里化调用math.mul方法
-     * 调用：math.currymul(arg1)(arg2)(arg3)()
+     * 说明：运用柯里化调用mathutil.mul方法
+     * 调用：mathutil.currymul(arg1)(arg2)(arg3)()
      * 返回值：arg1乘arg2乘arg3乘...的精确结果
      */
     currymul: function () {
@@ -349,7 +370,7 @@ const math = {
             if (!arguments.length) {
                 var result = 1
                 for (var i = 0; i < _args.length; i++) {
-                    result = math.mul(result, _args[i])
+                    result = mathutil.mul(result, _args[i])
                 }
                 return result
             } else {
@@ -361,26 +382,39 @@ const math = {
     /**
      * 除法函数，用来得到精确的除法结果
      * 说明：javascript的除法结果会有误差，在两个浮点数相除的时候会比较明显。这个函数返回较为精确的除法结果。
-     * 调用：math.div(arg1,arg2)
-     * 返回值：arg1除以arg2的精确结果
+     * 调用：mathutil.div(arg1,arg2)
+     * 返回值：arg1除arg2的精确结果
      */
     div: function (arg1, arg2) {
-        var t1 = 0, t2 = 0, r1, r2
+        var t1, t2, r1, r2
         try {
             t1 = arg1.toString().split('.')[1].length
-        }
-        catch (e) {
+        } catch (e) {
+            t1 = 0
         }
         try {
             t2 = arg2.toString().split('.')[1].length
+        } catch (e) {
+            t2 = 0
         }
-        catch (e) {
-        }
-        // with (Math) {
-            r1 = Number(arg1.toString().replace('.', ''))
-            r2 = Number(arg2.toString().replace('.', ''))
-            return (r1 / r2) * pow(10, t2 - t1)
-        // }
+        r1 = Number(arg1.toString().replace('.', ''))
+        r2 = Number(arg2.toString().replace('.', ''))
+        return (r1 / r2) * Math.pow(10, t2 - t1)
+    },
+    /**
+     * 累除函数
+     * 调用：mathutil.multidiv(arg1, arg2, ...)
+     * 返回值：arg1除arg2除arg3除...的精确结果
+     */
+    multidiv: function (...args) {
+        // let args = Array.prototype.slice.call(arguments)
+        let result = args[0]
+        args.forEach((item, i) => {
+            if (i < (args.length - 1)) {
+                result = mathutil.div(result, args[i + 1])
+            }
+        })
+        return result
     }
 }
 
