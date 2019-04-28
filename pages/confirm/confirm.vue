@@ -4,7 +4,7 @@
             <div class="address__add" @click="addAddress" v-if="!address">点击填写收货地址</div>
             <div class="address__item" @click="selectAddress" v-if="address">
                 <div class="address__item-info">{{address.name}} {{address.phone}}</div>
-                <div class="address__item-detail">{{address.detail}}</div>
+                <div class="address__item-detail">{{address.region[0]}} {{address.region[1]}} {{address.region[2]}} {{address.detail}}</div>
             </div>
             <div class="address__letter"></div>
         </div>
@@ -149,24 +149,42 @@ export default {
 
         // 请求地址
         u.request({
-            url: u.api.getAddress,
+            url: u.api.addresslist,
             method: 'POST',
+            header: {
+                'content-type': 'application/x-www-form-urlencoded'
+            },
             data: {},
             isVerifyLogin: true,
-            isShowLoading: false,
-            isShowError: false,
             success(res) {
                 console.log(res)
-                // 默认第一个地址
                 res = [
                     {
+                        id: '18887',
                         name: '林多多',
                         phone: '15845454545',
-                        detail: '广东省广州市天河区车陂文化大街27号'
+                        region: ['北京市', '北京市', '东城区'],
+                        detail: '车陂文化大街1号',
+                        isDefault: false
+                    },
+                    {
+                        id: '1886547',
+                        name: '李先生',
+                        phone: '15845454545',
+                        region: ['广东省', '广州市', '天河区'],
+                        detail: '黄埔大道车陂文化大街1号15乡6号楼7层105室',
+                        isDefault: true
                     }
                 ]
-                if (res.length) {
-                    that.address = res[0]
+                res = []
+                if (res && res.length) {
+                    let defaultIndex = 0
+                    res.forEach((item, i) => {
+                        if (item.isDefault) {
+                            defaultIndex = i
+                        }
+                    })
+                    that.address = res[defaultIndex]
                 }
             },
             fail(res) {

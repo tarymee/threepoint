@@ -16,12 +16,14 @@ const api = {
     category: `${host}/api/category/list/${site}`,
     wxlogin: `${host}/api/user/login/${site}`,
 
-    bindphone: `${host}/api/bindphone/save/${site}`,
-    feedback: `${host}/api/feedback/save/${site}`,
+
     addressdetail: `${host}/api/address/detail/${site}`,
     addresslist: `${host}/api/address/list/${site}`,
     addresssave: `${host}/api/address/save/${site}`,
     addressdel: `${host}/api/address/del/${site}`,
+    addressdefault: `${host}/api/address/default/${site}`,
+    bindphone: `${host}/api/bindphone/save/${site}`,
+    feedback: `${host}/api/feedback/save/${site}`,
     cartupdate: `${host}/api/cart/update/${site}`,
     cartadd: `${host}/api/cart/add/${site}`,
     cartlist: `${host}/api/cart/list/${site}`,

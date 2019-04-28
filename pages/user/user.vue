@@ -39,7 +39,7 @@
 
             <uni-list>
                 <uni-list-item title="收获地址" @click="jump('/pages/address/address')"></uni-list-item>
-                <uni-list-item title="绑定手机" @click="jump('/pages/bindphone/bindphone')" show-badge="true" badge-text="未绑定" badge-type="default" badge-inverted="true"></uni-list-item>
+                <uni-list-item title="绑定手机" @click="jump('/pages/bindphone/bindphone')" show-badge="true" :badge-text="isbindphone ? '已绑定' : '未绑定'" badge-type="default" badge-inverted="true"></uni-list-item>
                 <uni-list-item title="联系客服" @click="jump('/pages/service/service')"></uni-list-item>
                 <uni-list-item title="用户反馈" @click="jump('/pages/feedback/feedback')"></uni-list-item>
                 <uni-list-item title="关于" @click="jump('/pages/about/about')"></uni-list-item>
@@ -66,7 +66,7 @@
                     logo: '/static/img/open-item1.jpg',
                     name: 'tarymee'
                 },
-                is: true
+                isbindphone: 'false'
             }
         },
         methods: {
@@ -82,16 +82,26 @@
             let that = this
 
             u.checkLogin(function (token, userid, userInfo) {
-                that.user.logo = userInfo.avatarUrl
-                that.user.name = userInfo.nickName
                 u.request({
                     url: u.api.user,
                     method: 'POST',
+                    header: {
+                        'content-type': 'application/x-www-form-urlencoded'
+                        // 'content-type': 'application/json'
+                    },
                     data: {},
                     isVerifyLogin: true,
                     success(res) {
                         console.log(res)
-
+                        if (res.code == 1) {
+                            res = res.data.userInfo
+                            that.user.logo = res.avatarUrl
+                            that.user.name = res.nickName
+                            that.isbindphone = res.isbindphone
+                        } else {
+                            that.user.logo = userInfo.avatarUrl
+                            that.user.name = userInfo.nickName
+                        }
                     },
                     fail(res) {
                         console.error(res)

@@ -10,12 +10,18 @@
         </div>
         <div class="tt-form__item">
             <div class="tt-form__item-l">选择地区</div>
-            <div class="tt-form__item-r"><input type="text" v-model="address.region" placeholder="地区信息" /></div>
+            <div class="tt-form__item-r">
+                <picker mode="region" @change="bindRegionChange" :value="address.region">
+                    <view class="tt-form__item-r-text" v-if="address.region.length">{{address.region[0]}} {{address.region[1]}} {{address.region[2]}}</view>
+                    <view class="tt-form__item-r-text--placeholder" v-else>选择省 市 区</view>
+                </picker>
+            </div>
         </div>
         <div class="tt-form__item">
             <div class="tt-form__item-l">详细地址</div>
-            <div class="tt-form__item-r"><input type="text" v-model="address.street" placeholder="街道门牌信息" /></div>
+            <div class="tt-form__item-r"><input type="text" v-model="address.detail" placeholder="街道门牌信息" /></div>
         </div>
+
         <a class="tt-form__tf" @click="save">保存</a>
     </div>
 
@@ -28,20 +34,33 @@ export default {
     components: {},
     data() {
         return {
-            id: '',
             from: '',
-            address: {}
+            address: {
+                id: '',
+                name: '',
+                phone: '',
+                region: [],
+                detail: '',
+                isDefault: false
+            }
         }
     },
     methods: {
+        bindRegionChange(e) {
+            console.log(e)
+            this.address.region = e.target.value
+        },
         // 请求地址
         load() {
             let that = this
             u.request({
                 url: u.api.addressdetail,
                 method: 'POST',
+                header: {
+                    'content-type': 'application/x-www-form-urlencoded'
+                },
                 data: {
-                    id: that.id
+                    id: that.address.id
                 },
                 isVerifyLogin: true,
                 success(res) {
@@ -51,10 +70,9 @@ export default {
                         id: '18887',
                         name: '林多多',
                         phone: '15845454545',
-                        region: '广东省广州市天河区',
-                        street: '车陂文化大街1号',
-                        detail: '广东省广州市天河区车陂文化大街1号',
-                        isDefault: true
+                        region: ['北京市', '北京市', '东城区'],
+                        detail: '车陂文化大街1号',
+                        isDefault: false
                     }
                     if (res) {
                         that.address = res
@@ -80,13 +98,13 @@ export default {
                     icon: 'none'
                 })
                 return false
-            } else if (!that.address.region) {
+            } else if (!that.address.region || !that.address.region.length) {
                 uni.showToast({
-                    title: '请先填写地区信息',
+                    title: '请先选择地区信息',
                     icon: 'none'
                 })
                 return false
-            } else if (!that.address.street) {
+            } else if (!that.address.detail) {
                 uni.showToast({
                     title: '请先填写详细地址',
                     icon: 'none'
@@ -96,21 +114,24 @@ export default {
             u.request({
                 url: u.api.addresssave,
                 method: 'POST',
+                header: {
+                    'content-type': 'application/x-www-form-urlencoded'
+                },
                 data: {
-                    id: that.id,
+                    id: that.address.id,
                     name: that.address.name,
                     phone: that.address.phone,
                     region: that.address.region,
-                    street: that.address.street,
                     detail: that.address.detail
                 },
                 isVerifyLogin: true,
                 success(res) {
                     res = {
-                        id: '9',
-                        name: '林多多',
-                        phone: '15845454545',
-                        detail: '广东省广州市天河区车陂文化大街99号',
+                        id: '18887',
+                        name: that.address.name,
+                        phone: that.address.phone,
+                        region: that.address.region,
+                        detail: that.address.detail,
                         isDefault: false
                     }
                     uni.showModal({
@@ -136,9 +157,9 @@ export default {
         let that = this
         console.log(event)
         that.from = event.from
-        that.id = event.id
+        that.address.id = event.id
         let title = '新增地址'
-        if (that.id) {
+        if (that.address.id) {
             title = '编辑地址'
             that.load()
         }

@@ -46,7 +46,13 @@
 .tt-form__item-r input {
     font-size: 16px;
 }
-
+.tt-form__item-r-text {
+    font-size: 16px;
+}
+.tt-form__item-r-text--placeholder {
+    font-size: 16px;
+    color: #999;
+}
 .tt-form__textarea {
     overflow: hidden;
     display: flex;

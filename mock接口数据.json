@@ -1,0 +1,190 @@
+购物车列表: /api/cart/list/8
+参数: {
+    "token": "oFsP15awki92XwAqVryE6r7xL2Zg"
+}
+返回: {
+    "msg": "操作成功",
+    "code": 1,
+    "data": [
+        {
+            "id": "15646", // 商品id
+            "img": "https://cbu01.alicdn.com/img/ibank/2018/466/073/9464370664_1899654620.220x220.jpg",
+            "name": "青花瓷 89*99 CM",
+            "spec": {
+                "112233": "111", // "规格项id": "规则项中所选id"
+                "334455": "345",
+            },
+            "specTip": "规格: S码 黑色", // 根据参数spec规格数据 整合成的文字
+            "price": "10.5",
+            "count": "1" // 商品数量
+        }
+    ]
+}
+
+
+立即购买: /api/order/buyNow
+参数: {
+    "token": "oFsP15awki92XwAqVryE6r7xL2Zg",
+    "id": "15646", // 商品id
+    "count": "1", // 商品数量
+    "spec": {
+        "112233": "111", // "规格项id": "规则项中所选id"
+        "334455": "345",
+    }
+}
+返回: {
+    "msg": "操作成功",
+    "code": 1
+}
+
+
+
+加入购物车(参数和返回值 跟 立即购买接口 一样): /api/cart/add/8
+
+
+
+修改商品数量: /api/cart/changenum/8
+参数: {
+    "token": "oFsP15awki92XwAqVryE6r7xL2Zg",
+    "id": "15646",
+    "count": "1"
+}
+返回: {
+    "msg": "操作成功",
+    "code": 1
+}
+
+删除购物车商品: /api/cart/del/8
+参数: {
+    "token": "oFsP15awki92XwAqVryE6r7xL2Zg",
+    "id": "15646"
+}
+返回: {
+    "msg": "操作成功",
+    "code": 1
+}
+
+
+
+
+
+新增或编辑地址: /api/address/save/8
+参数: {
+    "token": "oFsP15awki92XwAqVryE6r7xL2Zg",
+    "id": "18887", // 如果id为空视为新增 不为空视为编辑
+    "name": "林多多",
+    "phone": "15845454545",
+    "region": [
+        "北京市",
+        "北京市",
+        "东城区"
+    ],
+    "detail": "车陂文化大街1号"
+}
+返回(注意: 保存成功之后还要返回保存的数据): {
+    "msg": "操作成功",
+    "code": 1,
+    "data": {
+        "id": "18887",
+        "name": "林多多",
+        "phone": "15845454545",
+        "region": [
+            "北京市",
+            "北京市",
+            "东城区"
+        ],
+        "detail": "车陂文化大街1号",
+        "isDefault": false
+    }
+}
+
+
+
+
+
+删除地址: /api/address/del/8
+参数: {
+    "token": "oFsP15awki92XwAqVryE6r7xL2Zg",
+    "id": "18887"
+}
+返回: {
+    "msg": "操作成功",
+    "code": 1
+}
+
+
+
+
+
+地址列表: /api/address/list/8
+参数: {
+    "token": "oFsP15awki92XwAqVryE6r7xL2Zg",
+}
+返回: {
+    "msg": "操作成功",
+    "code": 1,
+    "data": [
+        {
+            "id": "18887",
+            "name": "林多多",
+            "phone": "15845454545",
+            "region": [
+                "北京市",
+                "北京市",
+                "东城区"
+            ],
+            "detail": "车陂文化大街1号",
+            "isDefault": false // 是否默认地址
+        },
+        {
+            "id": "546",
+            "name": "李先生",
+            "phone": "15845454545",
+            "region": [
+                "广东省",
+                "广州市",
+                "天河区"
+            ],
+            "detail": "车陂文化大街1号",
+            "isDefault": true // 是否默认地址
+        }
+    ]
+}
+
+
+
+把某个地址设为默认: /api/address/default/8
+后端应该自动把其他地址改为非默认
+参数: {
+    "token": "oFsP15awki92XwAqVryE6r7xL2Zg",
+    "id": "18887"
+}
+返回: {
+    "msg": "操作成功",
+    "code": 1
+}
+
+
+
+
+查看某个地址详情: /api/address/detail/8
+参数: {
+    "token": "oFsP15awki92XwAqVryE6r7xL2Zg",
+    "id": "18887"
+}
+返回: {
+    "msg": "操作成功",
+    "code": 1,
+    "data": {
+        "id": "18887",
+        "name": "林多多",
+        "phone": "15845454545",
+        "region": [
+            "北京市",
+            "北京市",
+            "东城区"
+        ],
+        "detail": "车陂文化大街1号",
+        "isDefault": false // 是否默认地址
+    }
+}

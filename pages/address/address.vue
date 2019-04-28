@@ -4,7 +4,7 @@
             <uni-swipe-action :options="swipeOption" v-for="(item, index) in addressArr" :key="index" @click="bindClick()" @opened="bindOpened(index)" @closed="bindClosed(index)">
                 <div class="address__item" @click="select(item)">
                     <div class="address__item-info">{{item.name}} {{item.phone}} <span v-if="item.isDefault" class="address__item-default">默认</span></div>
-                    <div class="address__item-detail">{{item.detail}}</div>
+                    <div class="address__item-detail">{{item.region[0]}} {{item.region[1]}} {{item.region[2]}} {{item.detail}}</div>
                 </div>
             </uni-swipe-action>
         </div>
@@ -50,6 +50,9 @@ export default {
                 u.request({
                     url: u.api.addressdel,
                     method: 'POST',
+                    header: {
+                        'content-type': 'application/x-www-form-urlencoded'
+                    },
                     data: {
                         id: id
                     },
@@ -91,6 +94,9 @@ export default {
             u.request({
                 url: u.api.addresslist,
                 method: 'POST',
+                header: {
+                    'content-type': 'application/x-www-form-urlencoded'
+                },
                 data: {},
                 isVerifyLogin: true,
                 success(res) {
@@ -101,15 +107,17 @@ export default {
                             id: '18887',
                             name: '林多多',
                             phone: '15845454545',
-                            detail: '广东省广州市天河区车陂文化大街1号',
-                            isDefault: true
+                            region: ['北京市', '北京市', '东城区'],
+                            detail: '车陂文化大街1号',
+                            isDefault: false
                         },
                         {
-                            id: '9',
-                            name: '林多多',
+                            id: '1886547',
+                            name: '李先生',
                             phone: '15845454545',
-                            detail: '广东省广州市天河区车陂文化大街2号',
-                            isDefault: false
+                            region: ['广东省', '广州市', '天河区'],
+                            detail: '黄埔大道车陂文化大街1号15乡6号楼7层105室',
+                            isDefault: true
                         }
                     ]
                     if (res && res.length) {

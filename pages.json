@@ -221,7 +221,7 @@
             {
                 "name": "addressdetail",
                 "path": "pages/addressdetail/addressdetail",
-                "query": "id=555&from="
+                "query": "id=&from="
             },
             {
                 "name": "product",
