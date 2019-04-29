@@ -24,6 +24,12 @@ export default {
             from: '',
             swipeOption: [
                 {
+                    text: '设为默认',
+                    style: {
+                        backgroundColor: '#f00'
+                    }
+                },
+                {
                     text: '编辑',
                     style: {
                         backgroundColor: '#d1a178'
@@ -44,8 +50,8 @@ export default {
         bindClick(value) {
             let that = this
             // console.log(value)
-            let id = that.addressArr[that.swipeIndex].id
-            console.log(id)
+            let address_id = that.addressArr[that.swipeIndex].address_id
+            console.log(address_id)
             if (value.text === '删除') {
                 u.request({
                     url: u.api.addressdel,
@@ -54,12 +60,14 @@ export default {
                         'content-type': 'application/x-www-form-urlencoded'
                     },
                     data: {
-                        id: id
+                        address_id: address_id
                     },
                     isVerifyLogin: true,
                     success(res) {
                         console.log(res)
-                        that.load()
+                        if (res && res.code == 1) {
+                            that.load()
+                        }
                     },
                     fail(res) {
                         console.error(res)
@@ -67,7 +75,28 @@ export default {
                 })
             } else if (value.text === '编辑') {
                 uni.navigateTo({
-                    url: '/pages/addressdetail/addressdetail?id=' + id
+                    url: '/pages/addressdetail/addressdetail?address_id=' + address_id
+                })
+            } else if (value.text === '设为默认') {
+                u.request({
+                    url: u.api.addressdefault,
+                    method: 'POST',
+                    header: {
+                        'content-type': 'application/x-www-form-urlencoded'
+                    },
+                    data: {
+                        address_id: address_id
+                    },
+                    isVerifyLogin: true,
+                    success(res) {
+                        console.log(res)
+                        if (res && res.code == 1) {
+                            that.load()
+                        }
+                    },
+                    fail(res) {
+                        console.error(res)
+                    }
                 })
             }
         },
@@ -100,28 +129,31 @@ export default {
                 data: {},
                 isVerifyLogin: true,
                 success(res) {
+                    // res = [
+                    //     {
+                    //         address_id: '18887',
+                    //         name: '林多多',
+                    //         phone: '15845454545',
+                    //         region: ['北京市', '北京市', '东城区'],
+                    //         detail: '车陂文化大街1号',
+                    //         isDefault: false
+                    //     },
+                    //     {
+                    //         address_id: '1886547',
+                    //         name: '李先生',
+                    //         phone: '15845454545',
+                    //         region: ['广东省', '广州市', '天河区'],
+                    //         detail: '黄埔大道车陂文化大街1号15乡6号楼7层105室',
+                    //         isDefault: true
+                    //     }
+                    // ]
+                    // if (res && res.length) {
+                    //     that.addressArr = res
+                    // }
+
                     console.log(res)
-                    // 默认第一个地址
-                    res = [
-                        {
-                            id: '18887',
-                            name: '林多多',
-                            phone: '15845454545',
-                            region: ['北京市', '北京市', '东城区'],
-                            detail: '车陂文化大街1号',
-                            isDefault: false
-                        },
-                        {
-                            id: '1886547',
-                            name: '李先生',
-                            phone: '15845454545',
-                            region: ['广东省', '广州市', '天河区'],
-                            detail: '黄埔大道车陂文化大街1号15乡6号楼7层105室',
-                            isDefault: true
-                        }
-                    ]
-                    if (res && res.length) {
-                        that.addressArr = res
+                    if (res && res.code == 1 && res.data && res.data.length) {
+                        that.addressArr = res.data
                     }
                 },
                 fail(res) {

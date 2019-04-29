@@ -36,7 +36,7 @@ export default {
         return {
             from: '',
             address: {
-                id: '',
+                address_id: '',
                 name: '',
                 phone: '',
                 region: [],
@@ -60,22 +60,25 @@ export default {
                     'content-type': 'application/x-www-form-urlencoded'
                 },
                 data: {
-                    id: that.address.id
+                    address_id: that.address.address_id
                 },
                 isVerifyLogin: true,
                 success(res) {
+                    // res = {
+                    //     address_id: '18887',
+                    //     name: '林多多',
+                    //     phone: '15845454545',
+                    //     region: ['北京市', '北京市', '东城区'],
+                    //     detail: '车陂文化大街1号',
+                    //     isDefault: false
+                    // }
+                    // if (res) {
+                    //     that.address = res
+                    // }
+
                     console.log(res)
-                    // 默认第一个地址
-                    res = {
-                        id: '18887',
-                        name: '林多多',
-                        phone: '15845454545',
-                        region: ['北京市', '北京市', '东城区'],
-                        detail: '车陂文化大街1号',
-                        isDefault: false
-                    }
-                    if (res) {
-                        that.address = res
+                    if (res && res.code == 1 && res.data) {
+                        that.address = res.data
                     }
                 },
                 fail(res) {
@@ -118,33 +121,37 @@ export default {
                     'content-type': 'application/x-www-form-urlencoded'
                 },
                 data: {
-                    id: that.address.id,
+                    address_id: that.address.address_id,
                     name: that.address.name,
                     phone: that.address.phone,
-                    region: that.address.region,
+                    region: JSON.stringify(that.address.region),
                     detail: that.address.detail
                 },
                 isVerifyLogin: true,
                 success(res) {
-                    res = {
-                        id: '18887',
-                        name: that.address.name,
-                        phone: that.address.phone,
-                        region: that.address.region,
-                        detail: that.address.detail,
-                        isDefault: false
-                    }
-                    uni.showModal({
-                        title: '提示',
-                        content: '保存成功',
-                        showCancel: false,
-                        success: function () {
-                            if (that.from === 'confirm') {
-                                uni.setStorageSync('confirmAddress', res)
+                    // res = {
+                    //     address_id: '18887',
+                    //     name: that.address.name,
+                    //     phone: that.address.phone,
+                    //     region: that.address.region,
+                    //     detail: that.address.detail,
+                    //     isDefault: false
+                    // }
+                    console.log(res)
+                    if (res && res.code == 1) {
+                        uni.showModal({
+                            title: '提示',
+                            content: '保存成功',
+                            showCancel: false,
+                            success: function () {
+                                if (that.from === 'confirm') {
+                                    uni.setStorageSync('confirmAddress', res.data)
+                                }
+                                uni.navigateBack()
                             }
-                            uni.navigateBack()
-                        }
-                    })
+                        })
+                    }
+
                 },
                 fail(res) {
                     console.error(res)
@@ -157,9 +164,9 @@ export default {
         let that = this
         console.log(event)
         that.from = event.from
-        that.address.id = event.id
+        that.address.address_id = event.address_id
         let title = '新增地址'
-        if (that.address.id) {
+        if (that.address.address_id) {
             title = '编辑地址'
             that.load()
         }

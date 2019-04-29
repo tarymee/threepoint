@@ -15,13 +15,13 @@ const api = {
     index: `${host}/api/shop/index/${site}`,
     category: `${host}/api/category/list/${site}`,
     wxlogin: `${host}/api/user/login/${site}`,
-
-
     addressdetail: `${host}/api/address/detail/${site}`,
     addresslist: `${host}/api/address/list/${site}`,
     addresssave: `${host}/api/address/save/${site}`,
     addressdel: `${host}/api/address/del/${site}`,
     addressdefault: `${host}/api/address/default/${site}`,
+
+
     bindphone: `${host}/api/bindphone/save/${site}`,
     feedback: `${host}/api/feedback/save/${site}`,
     cartupdate: `${host}/api/cart/update/${site}`,
@@ -45,13 +45,27 @@ function checkLogin(success, fail) {
     // console.log('token', token)
     // console.log('userid', userid)
     // console.log('userInfo', userInfo)
-    if (token) {
-        success && success(token, userid, userInfo)
-    } else {
+
+    let failFn = function () {
         fail && fail()
         uni.navigateTo({
             url: '/pages/login/login'
         })
+    }
+
+    if (token) {
+        wx.checkSession({
+            success() {
+                console.log('session_key 未过期，并且在本生命周期一直有效')
+                success && success(token, userid, userInfo)
+            },
+            fail() {
+                console.error('session_key 已经失效，需要重新执行登录流程')
+                failFn()
+            }
+        })
+    } else {
+        failFn()
         // // 获取用户数据
         // uni.getUserInfo({
         //     success: function (userInfo) {

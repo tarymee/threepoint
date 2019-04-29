@@ -9,8 +9,92 @@
     <view class="auth-title">申请获取以下权限</view>
     <view class="auth-subtitle">获得你的公开信息（昵称、头像等）</view>
     <button type="primary" open-type="getUserInfo" @getuserinfo="authorLogin">授权登录</button>
+    <button type="primary" open-type='getPhoneNumber' @getphonenumber="getPhoneNumber">获取用户手机号</button>
     </view>
 </template>
+
+
+<script>
+import u from "@/common/util"
+export default {
+    components: {},
+    data() {
+        return {
+            test: ''
+        }
+    },
+    methods: {
+        getPhoneNumber(e) {
+            console.log(e)
+        },
+        authorLogin(e) {
+            if (e.detail.errMsg !== 'getUserInfo:ok') {
+                return false
+            }
+            let userInfo = e.detail
+            console.log(userInfo)
+
+            uni.showLoading({
+                title: '正在授权登录...',
+                mask: true
+            })
+            uni.login({
+                success(result) {
+                    console.log(result)
+                    uni.request({
+                        url: u.api.wxlogin,
+                        header: {
+                            'content-type': 'application/x-www-form-urlencoded',
+                        },
+                        method: 'post',
+                        data: {
+                            code: result.code,
+                            user_info: userInfo.rawData,
+                            encrypted_data: userInfo.encryptedData,
+                            iv: userInfo.iv,
+                            signature: userInfo.signature
+                        },
+                        success: function (res) {
+                            uni.hideLoading()
+                            if (res.data.code === 1) {
+                                console.log(res)
+                                uni.showToast({
+                                    title: '授权登录成功',
+                                    mask: true,
+                                    duration: 5000,
+                                    success: function () {
+                                        // 保存用户信息
+                                        uni.setStorageSync('token', res.data.data.token)
+                                        uni.setStorageSync('userid', res.data.data.user_id)
+                                        uni.setStorageSync('userInfo', userInfo.userInfo)
+                                        // 返回
+                                        uni.navigateBack()
+                                    }
+                                })
+                            } else {
+                                uni.showToast({
+                                    title: '登录不成功 请重新登录',
+                                    mask: true,
+                                    icon: 'none',
+                                    duration: 5000
+                                })
+                            }
+                        },
+                        fail: function (res) {
+                            console.error(res)
+                            uni.hideLoading()
+                        }
+                    })
+                }
+            })
+        }
+    },
+    onLoad() {
+        console.log('login onLoad')
+        var that = this
+    }
+}
+</script>
 <style scoped>
 .container {
   padding: 0 60upx;
@@ -63,82 +147,3 @@
 }
 
 </style>
-
-<script>
-import u from "@/common/util"
-export default {
-    components: {},
-    data() {
-        return {
-            test: ''
-        }
-    },
-    methods: {
-        authorLogin(e) {
-            if (e.detail.errMsg !== 'getUserInfo:ok') {
-                return false
-            }
-            let userInfo = e.detail
-            console.log(userInfo)
-
-            uni.showLoading({
-                title: '正在授权登录...',
-                mask: true
-            })
-            uni.login({
-                success(result) {
-                    uni.request({
-                        url: u.api.wxlogin,
-                        header: {
-                            'content-type': 'application/x-www-form-urlencoded',
-                        },
-                        method: 'post',
-                        data: {
-                            code: result.code,
-                            user_info: userInfo.rawData,
-                            encrypted_data: userInfo.encryptedData,
-                            iv: userInfo.iv,
-                            signature: userInfo.signature
-                        },
-                        success: function (res) {
-                            uni.hideLoading()
-                            if (res.data.code === 1) {
-                                console.log(res)
-                                uni.showToast({
-                                    title: '授权登录成功',
-                                    mask: true,
-                                    duration: 5000,
-                                    success: function () {
-                                        // 保存用户信息
-                                        uni.setStorageSync('token', res.data.data.token)
-                                        uni.setStorageSync('userid', res.data.data.user_id)
-                                        uni.setStorageSync('userInfo', userInfo.userInfo)
-                                        // 返回
-                                        uni.navigateBack()
-                                    }
-                                })
-                            } else {
-                                uni.showToast({
-                                    title: '登录不成功 请重新登录',
-                                    mask: true,
-                                    icon: 'none',
-                                    duration: 5000
-                                })
-                            }
-                        },
-                        fail: function (res) {
-                            console.error(res)
-                            uni.hideLoading()
-                        }
-                    })
-                }
-            })
-        }
-    },
-    onLoad() {
-        console.log('login onLoad')
-        var that = this
-
-    }
-}
-</script>

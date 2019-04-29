@@ -238,24 +238,29 @@ export default {
     onShow() {
         let that = this
 
-        // u.request({
-        //     url: u.api.cartlist,
-        //     method: 'POST',
-        //     data: {},
-        //     isVerifyLogin: true,
-        //     success(res) {
-        //         console.log(res)
-        //         if (res && res.data) {
-        //             that.proArr = res.data
-        //             that.sum()
+        u.request({
+            url: u.api.cartlist,
+            method: 'POST',
+            header: {
+                'content-type': 'application/x-www-form-urlencoded'
+            },
+            data: {},
+            isVerifyLogin: true,
+            isShowLoading: false,
+            isShowError: false,
+            success(res) {
+                console.log(res)
+                if (res && res.data) {
+                    that.proArr = res.data
+                    that.sum()
 
-        //         }
-        //     },
-        //     fail(res) {
-        //         console.error(res)
-        //     }
-        // })
-        // return false
+                }
+            },
+            fail(res) {
+                console.error(res)
+            }
+        })
+        return false
 
 
 
