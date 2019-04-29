@@ -91,6 +91,8 @@
                     },
                     data: {},
                     isVerifyLogin: true,
+                    isShowLoading: false,
+                    isShowError: false,
                     success(res) {
                         console.log(res)
                         if (res.code == 1) {
