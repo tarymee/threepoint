@@ -219,6 +219,11 @@
                 "query": "from="
             },
             {
+                "name": "open",
+                "path": "pages/open/open",
+                "query": ""
+            },
+            {
                 "name": "addressdetail",
                 "path": "pages/addressdetail/addressdetail",
                 "query": "address_id=&from="

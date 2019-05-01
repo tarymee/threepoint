@@ -1,19 +1,15 @@
 <template>
-    <view class="container">
-    <view class="wechatapp">
-        <!-- <image class="header" src="/images/wechatapp.png"></image> -->
-        <view class="header">
-        <open-data class="" type="userAvatarUrl"></open-data>
+    <view class="auth">
+        <view class="auth__th">
+            <view class="auth__th-avt">
+                <open-data class="" type="userAvatarUrl"></open-data>
+            </view>
         </view>
-    </view>
-    <view class="auth-title">申请获取以下权限</view>
-    <view class="auth-subtitle">获得你的公开信息（昵称、头像等）</view>
-    <button type="primary" open-type="getUserInfo" @getuserinfo="authorLogin">授权登录</button>
-    <button type="primary" open-type='getPhoneNumber' @getphonenumber="getPhoneNumber">获取用户手机号</button>
+        <view class="auth__title">十器良品 申请以下权限</view>
+        <view class="auth__subtitle">获得你的公开信息（昵称、头像等）</view>
+        <button type="primary" open-type="getUserInfo" @getuserinfo="authorLogin">授权登录</button>
     </view>
 </template>
-
-
 <script>
 import u from "@/common/util"
 export default {
@@ -24,9 +20,6 @@ export default {
         }
     },
     methods: {
-        getPhoneNumber(e) {
-            console.log(e)
-        },
         authorLogin(e) {
             if (e.detail.errMsg !== 'getUserInfo:ok') {
                 return false
@@ -95,55 +88,35 @@ export default {
     }
 }
 </script>
+
+
 <style scoped>
-.container {
-  padding: 0 60upx;
+.auth {
+    padding: 30px 20px 0;
 }
-
-.wechatapp {
-  padding: 80upx 0 48upx;
-  border-bottom: 1upx solid #e3e3e3;
-  margin-bottom: 72upx;
-  text-align: center;
+.auth__th {
+    padding-bottom: 30px;
+    margin-bottom: 30px;
+    border-bottom: 1upx solid #e3e3e3;
+    text-align: center;
 }
-
-.wechatapp .header {
-  width: 190upx;
-  height: 190upx;
-  border: 2px solid #fff;
-  margin: 0upx auto 0;
-  border-radius: 50%;
-  overflow: hidden;
-  box-shadow: 1px 0px 5px rgba(50, 50, 50, 0.3);
+.auth__th-avt {
+    width: 90px;
+    height: 90px;
+    border: 2px solid #fff;
+    margin: 0 auto 0;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 1px 0px 5px rgba(50, 50, 50, 0.3);
 }
-
-.auth-title {
-  color: #585858;
-  font-size: 40upx;
-  margin-bottom: 40upx;
+.auth__title {
+    color: #585858;
+    font-size: 18px;
+    margin-bottom: 10px;
 }
-
-.auth-subtitle {
-  color: #888;
-  margin-bottom: 88upx;
+.auth__subtitle {
+    font-size: 16px;
+    color: #888;
+    margin-bottom: 40px;
 }
-
-.login-btn {
-  border: none;
-  height: 88upx;
-  line-height: 88upx;
-  background: #04be01;
-  color: #fff;
-  font-size: 11pt;
-  border-radius: 999upx;
-}
-
-.login-btn::after {
-  display: none;
-}
-
-.login-btn.button-hover {
-  box-shadow: inset 0 5upx 30upx rgba(0, 0, 0, 0.15);
-}
-
 </style>

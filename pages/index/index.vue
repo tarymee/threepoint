@@ -10,13 +10,14 @@
             </div>
         </div>
         <div class="site__r">
-            <div class="site__r-item" style="border-right: 1px solid #e9e9e9" @click="contact(site.phone)">
-                <image src="/static/img/home-icon2.png" mode="aspectFill" class="site__r-item-img"></image>
+            <div class="site__r-item" style="border-right: 1px solid #e9e9e9">
+            <!-- <div class="site__r-item" style="border-right: 1px solid #e9e9e9" @tap="contact(site.phone)"> -->
+                <image src="/static/img/home/icon2.png" mode="aspectFill" class="site__r-item-img"></image>
                 <div class="site__r-item-tit">客服</div>
+                <button open-type="contact" @contact="handleContact">客服</button>
             </div>
-            <!-- <button open-type="contact" sessionFrom="weapp" size="27" style="opacity: 0;position:absolute;top:0px;left:0px;display:block;width:100%;height:100%;" type="default-light">测试客服</button> -->
             <div class="site__r-item" @click="phone(site.phone)">
-                <image src="/static/img/home-icon1.png" mode="aspectFill" class="site__r-item-img"></image>
+                <image src="/static/img/home/icon1.png" mode="aspectFill" class="site__r-item-img"></image>
                 <div class="site__r-item-tit">电话</div>
             </div>
         </div>
@@ -35,19 +36,19 @@
             <image :src="item.img" mode="aspectFill"></image><text>{{item.title}}</text>
         </a>
         <!-- <a class="cate-item" url="/pages/cate/cate?id=2&title=陶瓷类">
-            <image src="/static/img/home-cate2.png" mode="aspectFill"></image><text>陶瓷类</text>
+            <image src="/static/img/home/cate2.png" mode="aspectFill"></image><text>陶瓷类</text>
         </a>
         <a class="cate-item" url="/pages/cate/cate?id=3&title=玻璃类">
-            <image src="/static/img/home-cate3.png" mode="aspectFill"></image><text>玻璃类</text>
+            <image src="/static/img/home/cate3.png" mode="aspectFill"></image><text>玻璃类</text>
         </a>
         <a class="cate-item" url="/pages/cate/cate?id=4&title=不锈钢">
-            <image src="/static/img/home-cate4.png" mode="aspectFill"></image><text>不锈钢</text>
+            <image src="/static/img/home/cate4.png" mode="aspectFill"></image><text>不锈钢</text>
         </a>
         <a class="cate-item" url="/pages/cate/cate?id=5&title=装饰类">
-            <image src="/static/img/home-cate5.png" mode="aspectFill"></image><text>装饰类</text>
+            <image src="/static/img/home/cate5.png" mode="aspectFill"></image><text>装饰类</text>
         </a>
         <a class="cate-item" url="/pages/cate/cate?id=6&title=布料">
-            <image src="/static/img/home-cate6.png" mode="aspectFill"></image><text>布料</text>
+            <image src="/static/img/home/cate6.png" mode="aspectFill"></image><text>布料</text>
         </a> -->
     </div>
 
@@ -64,7 +65,7 @@
     <div class="more" v-if="newArr.length">
         <a class="more__btn" @click="jump('/pages/cate/cate?id=&title=最新产品&type=1')">查看更多</a>
     </div>
-    
+
     <div class="title">精选商品</div>
     <div class="cate1__place" :class="cate1Fixed ? 'cate1__place--holder' : ''"></div>
     <div class="cate1" :class="cate1Fixed ? 'cate1--fixed' : ''">
@@ -105,47 +106,47 @@ export default {
             },
             sliderArr: [
                 // {
-                //     img: '/static/img/home-slider.jpg',
+                //     img: '/static/img/home/slider.jpg',
                 //     url: '/pages/product/product'
                 // },
                 // {
-                //     img: '/static/img/home-slider.jpg',
+                //     img: '/static/img/home/slider.jpg',
                 //     url: '/pages/product/product'
                 // },
                 // {
-                //     img: '/static/img/home-slider.jpg',
+                //     img: '/static/img/home/slider.jpg',
                 //     url: '/pages/product/product'
                 // }
             ],
             cateArr: [
                 // {
                 //     title: '青瓷',
-                //     img: '/static/img/home-cate1.png',
+                //     img: '/static/img/home/cate1.png',
                 //     id: '1'
                 // },
                 // {
                 //     title: '白瓷',
-                //     img: '/static/img/home-cate2.png',
+                //     img: '/static/img/home/cate2.png',
                 //     id: '2'
                 // },
                 // {
                 //     title: '对帖',
-                //     img: '/static/img/home-cate3.png',
+                //     img: '/static/img/home/cate3.png',
                 //     id: '3'
                 // },
                 // {
                 //     title: '荷花',
-                //     img: '/static/img/home-cate4.png',
+                //     img: '/static/img/home/cate4.png',
                 //     id: '4'
                 // },
                 // {
                 //     title: '印花',
-                //     img: '/static/img/home-cate5.png',
+                //     img: '/static/img/home/cate5.png',
                 //     id: '5'
                 // },
                 // {
                 //     title: '玻璃',
-                //     img: '/static/img/home-cate6.png',
+                //     img: '/static/img/home/cate6.png',
                 //     id: '6'
                 // }
             ],
@@ -220,6 +221,9 @@ export default {
         },
         phone(number) {
             u.phone(number)
+        },
+        handleContact(e) {
+            console.log(e)
         },
         contact: function (wechat) {
             uni.showModal({
@@ -369,6 +373,16 @@ export default {
 .site__r-item {
     width: 45px;
     text-align: center;
+    position: relative;
+}
+.site__r-item button {
+    opacity: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
 }
 .site__r-item-img {
     display: block;

@@ -9,12 +9,13 @@
     <div class="product__price">¥{{price}}</div>
     <div class="product__title">{{title}}</div>
 
-    <div class="product__sel" @click="openSelect" data-position="bottom">
+    <div class="product__sel" @click="openSelect">
         <div class="product__sel-tit">选择</div>
         <div class="product__sel-des">{{specTip}}</div>
     </div>
 
     <div style="height: 10px; background: #eee;"></div>
+
 
     <uni-popup :show="popupType === 'select'" position="bottom" @hidePopup="togglePopup('')">
         <div class="product__selcon">
@@ -43,6 +44,7 @@
         </div>
     </uni-popup>
 
+
     <uni-popup :show="popupType === 'share'" position="bottom" @hidePopup="togglePopup('')">
         <view class="share__tit">分享到</view>
         <view class="share__con">
@@ -61,15 +63,18 @@
     </div>
 
     <div class="product-tf">
-        <div class="product-tf__item" @click="togglePopup('share')" data-position="bottom">
+        <!-- <div class="product-tf__item" @click="togglePopup('share')"> -->
+        <div class="product-tf__item" @click="share()">
             <div class="fa fa-share-alt product-tf__item-icon"></div>
             <div class="product-tf__item-tit">分享</div>
+            <button open-type="share">转发</button>
         </div>
         <div class="product-tf__item">
             <div class="fa fa-commenting product-tf__item-icon"></div>
             <div class="product-tf__item-tit">客服</div>
+            <button open-type="contact" @contact="handleContact">客服</button>
         </div>
-        <div class="product-tf__item" style="margin-right: 15px">
+        <div class="product-tf__item" style="margin-right: 15px" @tap="jump('/pages/cart/cart', true)">
             <div class="fa fa-shopping-cart product-tf__item-icon"></div>
             <div class="product-tf__item-tit">购物车</div>
         </div>
@@ -158,6 +163,17 @@ export default {
             this.count = val
             console.log(val)
         },
+        share() {
+            // uni.showShareMenu({
+            //     withShareTicket: true
+            // })
+        },
+        handleContact(e) {
+            console.log(e)
+        },
+        jump(url, isSwitchTab) {
+            u.jump(url, isSwitchTab)
+        },
         togglePopup(popupType) {
             this.popupType = popupType
         },
@@ -212,10 +228,16 @@ export default {
         dealData() {
             let that = this
             let a = that.checkSpec()
-            let selSpec = {}
+            console.log(a)
+            let spec = []
             if (a.isSelAllSpec) {
                 a.selSpecArr.forEach((item, i) => {
-                    selSpec[item.id] = item.specs[item.select].id
+                    spec.push({
+                        'id': item.id,
+                        'title': item.title,
+                        'selid': item.specs[item.select].id,
+                        'seltitle': item.specs[item.select].title,
+                    })
                 })
             } else {
                 uni.showToast({
@@ -223,14 +245,15 @@ export default {
                     icon: 'none'
                 })
             }
+
             let postData = {
-                name: that.title,
-                img: that.img,
+                // name: that.title,
+                // img: that.img,
                 id: that.id,
-                price: that.price,
+                // price: that.price,
                 count: that.count,
-                selSpec: selSpec,
-                specTip: a.specTip,
+                spec: JSON.stringify(spec),
+                // specTip: a.specTip,
             }
             return postData
         },
@@ -274,8 +297,11 @@ export default {
                     u.checkLogin(function () {
                         console.log('添加成功 在购物车等亲')
                         u.request({
-                            url: u.api.addcart,
+                            url: u.api.cartadd,
                             method: 'POST',
+                            header: {
+                                'content-type': 'application/x-www-form-urlencoded'
+                            },
                             data: postData,
                             isVerifyLogin: true,
                             success(res) {
@@ -313,10 +339,14 @@ export default {
         }
     },
     onShareAppMessage() {
-        return {
+        let that = this
+        let obj = {
             title: this.title,
             path: `/pages/product/product/?id=${that.id}&title=${that.title}&price=${that.price}`
         }
+        console.log('分享')
+        console.log(obj)
+        return obj
     },
     onLoad(event) {
         console.log("product onLoad")
@@ -602,6 +632,16 @@ export default {
         float: left;
         width: 40px;
         height: 50px;
+        position: relative;
+    }
+    .product-tf__item button {
+        opacity: 0;
+        display: block;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0px;
+        left: 0px;
     }
     .product-tf__item-icon {
         display: block;

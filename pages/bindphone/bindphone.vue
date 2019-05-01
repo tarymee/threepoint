@@ -1,62 +1,75 @@
 <template>
-    <div class="tt-form">
-        <div class="tt-form__item">
-            <div class="tt-form__item-l">手机号码</div>
-            <div class="tt-form__item-r"><input type="number" v-model="phone" placeholder="11位手机号" /></div>
-        </div>
-        <div class="tt-form__item">
-            <div class="tt-form__item-l">验证码</div>
-            <div class="tt-form__item-r"><input type="text" v-model="verification" placeholder="请输入验证码" /></div>
-            <div class="tt-form__item-btn">获取验证码</div>
-        </div>
-        <a class="tt-form__btn" @click="save">绑定手机</a>
-    </div>
+    <view class="auth">
+        <view class="auth__th">
+            <view class="auth__th-avt">
+                <open-data class="" type="userAvatarUrl"></open-data>
+            </view>
+        </view>
+        <view class="auth__title">十器良品 申请以下权限</view>
+        <view class="auth__subtitle">绑定您的微信手机号</view>
+        <button type="primary" open-type='getPhoneNumber' @getphonenumber="authorPhone">授权绑定</button>
+    </view>
 </template>
 
 <script>
-import u from '@/common/util'
-
+import u from "@/common/util"
 export default {
     components: {},
     data() {
         return {
-            phone: '',
-            verification: ''
+
         }
     },
     methods: {
-        save() {
-            let that = this
-            if (!that.phone) {
-                uni.showToast({
-                    title: '请输入手机号码',
-                    icon: 'none'
-                })
-                return false
-            } else if (!that.verification) {
-                uni.showToast({
-                    title: '请输入验证码',
-                    icon: 'none'
-                })
-                return false
-            }
+        authorPhone(e) {
+            console.log(e)
+            return false
+
             u.request({
-                url: u.api.bindphone,
+                url: u.api.phoneget,
                 method: 'POST',
+                header: {
+                    'content-type': 'application/x-www-form-urlencoded'
+                    // 'content-type': 'application/json'
+                },
                 data: {
-                    phone: that.phone,
-                    verification: that.verification
+                    encryptedData: e.detail.encryptedData,
+                    iv: e.detail.iv
                 },
                 isVerifyLogin: true,
                 success(res) {
-                    uni.showModal({
-                        title: '提示',
-                        content: '绑定成功',
-                        showCancel: false,
-                        success: function () {
-                            uni.navigateBack()
-                        }
-                    })
+                    console.log(res)
+                    if (res.code == 1) {
+                        u.request({
+                            url: u.api.phonebind,
+                            method: 'POST',
+                            header: {
+                                'content-type': 'application/x-www-form-urlencoded'
+                                // 'content-type': 'application/json'
+                            },
+                            data: {
+                                phone: res.data.phone
+                            },
+                            isVerifyLogin: true,
+                            success(res) {
+                                console.log(res)
+                                if (res.code == 1) {
+                                    uni.showToast({
+                                        title: '授权绑定成功',
+                                        mask: true,
+                                        duration: 5000,
+                                        success: function () {
+                                            // 返回
+                                            uni.navigateBack()
+                                        }
+                                    })
+                                }
+                            },
+                            fail(res) {
+                                console.error(res)
+                            }
+                        })
+                    }
                 },
                 fail(res) {
                     console.error(res)
@@ -64,11 +77,46 @@ export default {
             })
         }
     },
-    onLoad(event) {
-        console.log("bindphone onLoad")
-        let that = this
-        console.log(event)
+    onLoad() {
+        console.log('bingphone onLoad')
+        var that = this
+        // 确认是否登录
         u.checkLogin()
+    },
+    onShow(event) {
+        console.log('bingphone onShow')
+        var that = this
+
     }
 }
 </script>
+<style scoped>
+.auth {
+    padding: 30px 20px 0;
+}
+.auth__th {
+    padding-bottom: 30px;
+    margin-bottom: 30px;
+    border-bottom: 1upx solid #e3e3e3;
+    text-align: center;
+}
+.auth__th-avt {
+    width: 90px;
+    height: 90px;
+    border: 2px solid #fff;
+    margin: 0 auto 0;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 1px 0px 5px rgba(50, 50, 50, 0.3);
+}
+.auth__title {
+    color: #585858;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+.auth__subtitle {
+    font-size: 16px;
+    color: #888;
+    margin-bottom: 40px;
+}
+</style>
