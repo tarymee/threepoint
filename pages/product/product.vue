@@ -249,9 +249,9 @@ export default {
             let postData = {
                 // name: that.title,
                 // img: that.img,
-                id: that.id,
+                goods_id: that.id,
                 // price: that.price,
-                count: that.count,
+                goods_num: that.count,
                 spec: JSON.stringify(spec),
                 // specTip: a.specTip,
             }
@@ -295,7 +295,6 @@ export default {
                 console.log('postData', postData)
                 if (that.isAddCart) {
                     u.checkLogin(function () {
-                        console.log('添加成功 在购物车等亲')
                         u.request({
                             url: u.api.cartadd,
                             method: 'POST',
@@ -306,10 +305,18 @@ export default {
                             isVerifyLogin: true,
                             success(res) {
                                 console.log(res)
-                                uni.showToast({
-                                    title: '添加成功 在购物车等亲',
-                                    icon: 'none'
-                                })
+                                if (res.code == 1) {
+                                    uni.showToast({
+                                        title: '添加成功 在购物车等亲',
+                                        icon: 'none'
+                                    })
+                                    that.togglePopup('')
+                                } else {
+                                    uni.showToast({
+                                        title: res.msg,
+                                        icon: 'none'
+                                    })
+                                }
                             },
                             fail(res) {
                                 console.error(res)
@@ -361,8 +368,8 @@ export default {
         })
 
         u.request({
-            // url: u.api.goods + that.id,
-            url: u.api.goods + '27',
+            url: u.api.goods + that.id,
+            // url: u.api.goods + '27',
             method: 'POST',
             data: {},
             isVerifyLogin: false,

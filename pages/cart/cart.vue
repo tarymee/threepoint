@@ -142,6 +142,29 @@ export default {
             }
             that.proArr[index].count--
             that.sum()
+
+            u.request({
+                url: u.api.cartchangenum,
+                method: 'POST',
+                header: {
+                    'content-type': 'application/x-www-form-urlencoded'
+                },
+                data: {
+                    goods_id: that.proArr[index].id,
+                    goods_num: that.proArr[index].count
+                },
+                isVerifyLogin: true,
+                isShowLoading: false,
+                isShowError: false,
+                success(res) {
+                    console.log(res)
+                },
+                fail(res) {
+                    console.error(res)
+                }
+            })
+
+
             that.updateCart()
         },
         // 增加数量
@@ -186,18 +209,53 @@ export default {
         toConfirm() {
             let that = this
             let confirmArr = []
+            let cartidArr = []
             that.proArr.forEach((item, i) => {
                 if (item.select) {
                     confirmArr.push(item)
+                    cartidArr.push(item.cartid)
                 }
             })
             console.log(confirmArr)
-            if (confirmArr.length) {
+            console.log(cartidArr)
+            if (cartidArr.length) {
                 u.checkLogin(function () {
-                    console.log('跳去订单确认页')
-                    uni.navigateTo({
-                        url: '/pages/confirm/confirm?confirmArr=' + encodeURIComponent(JSON.stringify(confirmArr)) + '&proPrice=' + that.sumPrice
+                    u.request({
+                        url: u.api.cartsave,
+                        method: 'POST',
+                        header: {
+                            'content-type': 'application/x-www-form-urlencoded'
+                        },
+                        data: {
+                            cartid: JSON.stringify(cartidArr)
+                        },
+                        isVerifyLogin: true,
+                        isShowLoading: false,
+                        isShowError: false,
+                        success(res) {
+                            console.log(res)
+                            if (res.code == 1) {
+                                console.log('跳去订单确认页')
+                                uni.navigateTo({
+                                    url: '/pages/confirm/confirm?confirmData=' + encodeURIComponent(JSON.stringify(res.data))
+                                    // url: '/pages/confirm/confirm?confirmArr=' + encodeURIComponent(JSON.stringify(confirmArr)) + '&proPrice=' + that.sumPrice
+                                })
+                            } else {
+                                console.error('提交订单失败')
+                            }
+
+
+
+
+                        },
+                        fail(res) {
+                            console.error(res)
+                        }
                     })
+
+                    return false
+
+
                 })
             } else {
                 uni.showToast({
@@ -207,8 +265,13 @@ export default {
                 })
             }
         },
+        // 更新购物车商品数量
+        updateCount() {
+
+        },
         // 更新购物车列表
         updateCart() {
+            return false
             console.log('更新购物车列表')
             let that = this
             u.checkLogin(function () {
@@ -219,6 +282,9 @@ export default {
                 u.request({
                     url: u.api.cartupdate,
                     method: 'POST',
+                    header: {
+                        'content-type': 'application/x-www-form-urlencoded'
+                    },
                     data: {
                         cartlist: newArr
                     },
@@ -250,10 +316,17 @@ export default {
             isShowError: false,
             success(res) {
                 console.log(res)
-                if (res && res.data) {
-                    that.proArr = res.data
-                    that.sum()
+                if (res && res.code == 1 && res.data && res.data.length) {
+                    // that.proArr = res.data
 
+                    that.proArr = u.dataTransform(res.data, {
+                        goodsId: 'id',
+                        id: 'cartid',
+                        goodsPrice: 'price',
+                        price: 'totalprice',
+                    })
+                    console.log(that.proArr)
+                    that.sum()
                 }
             },
             fail(res) {
@@ -262,24 +335,35 @@ export default {
         })
         return false
 
-
-
         let res = {
             data: [
                 {
                     id: '15646',
+                    cartid: '554',
                     img: 'https://cbu01.alicdn.com/img/ibank/2018/466/073/9464370664_1899654620.220x220.jpg',
                     name: '青花瓷 89*99 CM',
-                    spec: {
-                        '112233': '111',
-                        '334455': '345',
-                    },
+                    spec: [
+                        {
+                            id: '123656',
+                            title: '尺码',
+                            selid: '165465',
+                            seltitle: 'S码',
+                        },
+                        {
+                            id: '12386',
+                            title: '颜色',
+                            selid: '44',
+                            seltitle: '红色',
+                        }
+                    ],
                     specTip: '规格 S码 黑色',
                     price: 10.5,
+                    totalprice: 10.5,
                     count: 1
                 },
                 {
                     id: '249816',
+                    cartid: '7232',
                     img: 'https://cbu01.alicdn.com/img/ibank/2018/466/073/9464370664_1899654620.220x220.jpg',
                     name: '清朝陶瓷碗 89*99 CM',
                     spec: {
@@ -288,18 +372,7 @@ export default {
                     },
                     specTip: '规格 S码 黑色',
                     price: 20.5,
-                    count: 1
-                },
-                {
-                    id: '3062165',
-                    img: 'https://cbu01.alicdn.com/img/ibank/2018/466/073/9464370664_1899654620.220x220.jpg',
-                    name: '秦朝甲骨文片 89*99 CM',
-                    spec: {
-                        '112233': '111',
-                        '334455': '345',
-                    },
-                    specTip: '规格 S码 黑色',
-                    price: 30.5,
+                    totalprice: 20.5,
                     count: 1
                 }
             ]

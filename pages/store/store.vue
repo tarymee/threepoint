@@ -4,7 +4,7 @@
         <image src="/static/img/icon-address.png" mode="aspectFill"></image>广东省 广州市 天河区
     </div>
     <div class="store__img">
-        <image src="/static/img/open-item1.jpg" mode="aspectFill"></image>
+        <image src="/static/img/open/item1.jpg" mode="aspectFill"></image>
         <div class="store__po2">
             <div class="store__po2-l">广东省 广州市 天河区</div>
             <div class="store__po2-r">请选择 ></div>
@@ -90,13 +90,14 @@ export default {
 
 
 .store__img {
+    
     position: relative;
     height: 200px;
     margin-bottom: 15px;
 }
 .store__img image {
     display: block;
-    width: 375px;
+    width: 100%;
     height: 170px;
 }
 .store__po2 {

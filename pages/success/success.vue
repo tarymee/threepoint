@@ -54,7 +54,7 @@ export default {
     data() {
         return {
             price: '0.00',
-            id: ''
+            order_id: ''
         }
     },
     methods: {
@@ -66,15 +66,15 @@ export default {
         },
         jumpOrderdetail() {
             uni.navigateTo({
-                url: '/pages/orderdetail/orderdetail?id=' + this.id
+                url: '/pages/orderdetail/orderdetail?id=' + this.order_id
             })
         }
     },
     onLoad(event) {
-        console.log("confirm onLoad")
+        console.log("success onLoad")
         let that = this
         console.log(event)
-        that.orderid = event.id
+        that.order_id = event.order_id
         that.price = event.price
     }
 }

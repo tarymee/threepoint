@@ -20,14 +20,18 @@ const api = {
     addresssave: `${host}/api/address/save/${site}`,
     addressdel: `${host}/api/address/del/${site}`,
     addressdefault: `${host}/api/address/default/${site}`,
+    cartlist: `${host}/api/cart/list/${site}`,
+    cartadd: `${host}/api/cart/add/${site}`,
+    cartchangenum: `${host}/api/cart/changenum/${site}`,
+    cartdel: `${host}/api/cart/del/${site}`,
+    cartsave: `${host}/api/cart/save/${site}`,
+    // 查询购物车的信息保存到订单表
+    ordercart: `${host}/api/order/cart`,
 
 
     phoneget: `${host}/api/phone/get/${site}`,
     phonebind: `${host}/api/phone/bind/${site}`,
     feedback: `${host}/api/feedback/save/${site}`,
-    cartupdate: `${host}/api/cart/update/${site}`,
-    cartadd: `${host}/api/cart/add/${site}`,
-    cartlist: `${host}/api/cart/list/${site}`,
     pay: `${host}/api/pay`,
     getAddress: `${host}/api/getAddress`,
     test: `${host}/api/test`,

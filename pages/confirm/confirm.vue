@@ -64,25 +64,48 @@ export default {
             //     url: '/pages/success/success?id=123456&price=95.36'
             // })
             u.request({
-                url: u.api.test,
+                url: u.api.ordercart,
                 method: 'POST',
+                header: {
+                    'content-type': 'application/x-www-form-urlencoded'
+                },
                 data: {
-                    confirmArr: that.confirmArr,
-                    proPrice: that.proPrice,
-                    expressPrice: that.expressPrice,
-                    totalPrice: that.totalPrice,
-                    address: that.address,
+                    // confirmArr: that.confirmArr,
+                    // proPrice: that.proPrice,
+                    // expressPrice: that.expressPrice,
+                    // totalPrice: that.totalPrice,
+                    // address_id: that.address.address_id,
                 },
                 isVerifyLogin: true,
                 success(res) {
                     console.log(res)
-                    res = {
-                        id: '123456',
-                        price: '68.25',
+
+                    if (res.code == 1) {
+                        // 发起微信支付
+                        wx.requestPayment({
+                            timeStamp: res.data.payment.timeStamp,
+                            nonceStr: res.data.payment.nonceStr,
+                            package: 'prepay_id=' + res.data.payment.prepay_id,
+                            signType: 'MD5',
+                            paySign: res.data.payment.paySign,
+                            success: function (paymentRes) {
+                                console.log(paymentRes)
+                                // 跳转到成功下单页
+                                uni.navigateTo({
+                                    url: '/pages/success/success?order_id=' + res.data.order_id + '&price=' + that.totalPrice
+                                })
+                            },
+                            fail: function () {
+                                // 跳转到未付款订单
+                                // App.showError('订单未支付', function () {
+                                //     // 跳转到未付款订单
+                                //     wx.redirectTo({
+                                //         url: '../order/index?type=payment',
+                                //     })
+                                // })
+                            }
+                        })
                     }
-                    uni.navigateTo({
-                        url: '/pages/success/success?id=' + res.id + '&price=' + res.price
-                    })
                 },
                 fail(res) {
                     console.error(res)
@@ -115,6 +138,86 @@ export default {
         console.log("confirm onLoad")
         let that = this
         console.log(event)
+        let confirmData
+        if (event.confirmData) {
+            try {
+                confirmData = JSON.parse(decodeURIComponent(event.confirmData))
+            } catch (error) {
+                confirmData = JSON.parse(event.confirmData)
+            }
+        }
+        that.proPrice = confirmData.order_total_price
+        that.expressPrice = confirmData.express_price
+        that.totalPrice = confirmData.order_pay_price
+
+        confirmData.goods_list.forEach((item, i) => {
+            item.img = item.image[0].file_path
+            item.goods_id = item.goods_id
+            item.name = item.goods_name
+            item.specTip = item.goods_sku.goods_attr
+            item.price = item.goods_price
+            item.count = item.total_num
+        })
+        that.confirmArr = confirmData.goods_list
+
+
+        // 请求默认地址
+        u.request({
+            url: u.api.addresslist,
+            method: 'POST',
+            header: {
+                'content-type': 'application/x-www-form-urlencoded'
+            },
+            data: {},
+            isVerifyLogin: true,
+            success(res) {
+                console.log(res)
+                if (res.code == 1 && res.data && res.data.length) {
+                    let defaultIndex = 0
+                    res.data.forEach((item, i) => {
+                        if (item.isDefault) {
+                            defaultIndex = i
+                        }
+                    })
+                    that.address = res.data[defaultIndex]
+                }
+                // return false
+                // res = [
+                //     {
+                //         id: '18887',
+                //         name: '林多多',
+                //         phone: '15845454545',
+                //         region: ['北京市', '北京市', '东城区'],
+                //         detail: '车陂文化大街1号',
+                //         isDefault: false
+                //     },
+                //     {
+                //         id: '1886547',
+                //         name: '李先生',
+                //         phone: '15845454545',
+                //         region: ['广东省', '广州市', '天河区'],
+                //         detail: '黄埔大道车陂文化大街1号15乡6号楼7层105室',
+                //         isDefault: true
+                //     }
+                // ]
+                // if (res && res.length) {
+                //     let defaultIndex = 0
+                //     res.forEach((item, i) => {
+                //         if (item.isDefault) {
+                //             defaultIndex = i
+                //         }
+                //     })
+                //     that.address = res[defaultIndex]
+                // }
+            },
+            fail(res) {
+                console.error(res)
+            }
+        })
+
+
+
+        return false
         that.proPrice = event.proPrice
         let totalPrice = Number(that.proPrice) + Number(that.expressPrice)
         that.totalPrice = totalPrice.toFixed(2)
@@ -127,70 +230,25 @@ export default {
                 that.confirmArr = JSON.parse(event.confirmArr)
             }
         }
-
-        // that.confirmArr = [
-        //     {
-        //         id: 1,
-        //         img: 'https://cbu01.alicdn.com/img/ibank/2018/466/073/9464370664_1899654620.220x220.jpg',
-        //         name: '商品标题商品标题商品标',
-        //         specTip: '规格 S码',
-        //         price: 127.5,
-        //         count: 1
-        //     },
-        //     {
-        //         id: 2,
-        //         img: 'https://cbu01.alicdn.com/img/ibank/2018/466/073/9464370664_1899654620.220x220.jpg',
-        //         name: '商品标商品标题商品标题商品标商品标题商品标题商品标商品标题商品标题',
-        //         specTip: '规格 S码',
-        //         price: 127.5,
-        //         count: 1
-        //     }
-        // ]
-
-        // 请求地址
-        u.request({
-            url: u.api.addresslist,
-            method: 'POST',
-            header: {
-                'content-type': 'application/x-www-form-urlencoded'
+        that.confirmArr = [
+            {
+                goods_id: 1,
+                img: 'https://cbu01.alicdn.com/img/ibank/2018/466/073/9464370664_1899654620.220x220.jpg',
+                name: '商品标题商品标题商品标',
+                specTip: '规格: S码 黑色',
+                price: 127.5,
+                count: 1
             },
-            data: {},
-            isVerifyLogin: true,
-            success(res) {
-                console.log(res)
-                res = [
-                    {
-                        id: '18887',
-                        name: '林多多',
-                        phone: '15845454545',
-                        region: ['北京市', '北京市', '东城区'],
-                        detail: '车陂文化大街1号',
-                        isDefault: false
-                    },
-                    {
-                        id: '1886547',
-                        name: '李先生',
-                        phone: '15845454545',
-                        region: ['广东省', '广州市', '天河区'],
-                        detail: '黄埔大道车陂文化大街1号15乡6号楼7层105室',
-                        isDefault: true
-                    }
-                ]
-                res = []
-                if (res && res.length) {
-                    let defaultIndex = 0
-                    res.forEach((item, i) => {
-                        if (item.isDefault) {
-                            defaultIndex = i
-                        }
-                    })
-                    that.address = res[defaultIndex]
-                }
-            },
-            fail(res) {
-                console.error(res)
+            {
+                goods_id: 2,
+                img: 'https://cbu01.alicdn.com/img/ibank/2018/466/073/9464370664_1899654620.220x220.jpg',
+                name: '商品标商品标题商品标题商品标商品标题商品标题商品标商品标题商品标题',
+                specTip: '规格: S码 黑色',
+                price: 127.5,
+                count: 1
             }
-        })
+        ]
+
     }
 }
 </script>
