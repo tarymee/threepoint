@@ -1,6 +1,6 @@
 <template>
     <div class="order">
-        <div class="order__item" v-for="(item, index) in orderArr" :key="index" @click="detail(item.id)">
+        <div class="order__item" v-for="(item, index) in orderArr" :key="index" @click="jump(`/pages/orderdetail/orderdetail?id=${item.id}`)">
             <div class="order__th">
                 <div class="order__th-number">订单编号: {{item.id}}</div>
                 <div class="order__th-status" v-if="item.status === '1'">已关闭</div>
@@ -49,8 +49,8 @@ export default {
         let that = this
     },
     methods: {
-        detail(id) {
-            
+        jump(url) {
+            u.jump(url)
         },
         pay(id) {
             
@@ -68,99 +68,5 @@ export default {
 </script>
 
 <style scope>
-@charset "UTF-8";
-.order {
-    background-color: #eee;
-    overflow: hidden;
-}
-.order__item {
-    margin-bottom: 10px;
-    background-color: #fff;
-    padding: 0 15px;
-    color: #333;
-}
-.order__th {
-    display: flex;
-    justify-content: space-between;
-    font-size: 14px;
-    line-height: 40px;
-    border-bottom: 1px solid #eee;
-}
-.order__th-status {
-    color: #999;
-}
-.order__th-status--1 {
-    color: #d1a178;
-}
-.order__tb {
-    display: flex;
-    line-height: 20px;
-    padding: 10px 0px;
-}
-.order__tb-l {
-    width: 60px;
-    height: 60px;
-    flex: none;
-    margin-right: 10px;
-}
-.order__tb-img {
-    display: block;
-    width: 60px;
-    height: 60px;
-    border-radius: 3px;
-}
-.order__tb-m {
-    flex: 1;
-}
-.order__tb-m-name {
-    font-size: 12px;
-    overflow: hidden;
-    max-height: 40px;
-}
-.order__tb-m-select {
-    font-size: 12px;
-    color: #999;
-}
-.order__tb-r {
-    flex: none;
-    text-align: right;
-    margin-left: 10px;
-}
-.order__tb-price {
-    font-weight: bold;
-    font-size: 16px;
-}
-.order__tb-number {
-    font-size: 14px;
-}
-.order__tf {
-    line-height: 25px;
-    font-size: 14px;
-    text-align: right;
-    padding-bottom: 10px;
-}
-.order__tf-price {
-    font-size: 16px;
-    font-weight: bold;
-}
-.order__status {
-    border-top: 1px solid #eee;
-    display: flex;
-    padding: 10px 0;
-    justify-content: flex-end;
-    align-items: center;
-}
-.order__status-btn {
-    border: 1px solid #999;
-    color: #999;
-    padding: 0 10px;
-    border-radius: 15px;
-    font-size: 14px;
-    line-height: 25px;
-    margin-left: 10px;
-}
-.order__status-btn--1 {
-    color: #d1a178;
-    border: 1px solid #d1a178;
-}
+
 </style>

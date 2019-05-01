@@ -55,9 +55,15 @@
             }
         },
         {
+            "path": "pages/orderdetail/orderdetail",
+            "style": {
+                "navigationBarTitleText": "订单详情"
+            }
+        },
+        {
             "path": "pages/myorder/myorder",
             "style": {
-                "navigationBarTitleText": "我的订单"
+                "navigationBarTitleText": "我的订单(作废)"
             }
         },
         {
@@ -192,6 +198,11 @@
                 "name": "order",
                 "path": "pages/order/order",
                 "query": "type=all&title=全部订单"
+            },
+            {
+                "name": "orderdetail",
+                "path": "pages/orderdetail/orderdetail",
+                "query": "id=123456"
             },
             {
                 "name": "cate",
