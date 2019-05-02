@@ -197,7 +197,7 @@
             {
                 "name": "order",
                 "path": "pages/order/order",
-                "query": "type=all&title=全部订单"
+                "query": "type=&title=全部订单"
             },
             {
                 "name": "orderdetail",

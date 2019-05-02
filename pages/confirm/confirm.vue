@@ -1,10 +1,16 @@
 <template>
     <div class="">
         <div class="address">
-            <div class="address__add" @click="addAddress" v-if="!address">点击填写收货地址</div>
+            <div class="address__add" @click="addAddress" v-if="!address">
+                <div class="fa fa-map-marker address__add-icon"></div>
+                <div class="address__add-tip">点击填写收货地址</div>
+                </div>
             <div class="address__item" @click="selectAddress" v-if="address">
-                <div class="address__item-info">{{address.name}} {{address.phone}}</div>
-                <div class="address__item-detail">{{address.region[0]}} {{address.region[1]}} {{address.region[2]}} {{address.detail}}</div>
+                <div class="address__item-icon fa fa-map-marker"></div>
+                <div class="address__item-info">
+                    <div class="address__item-name">{{address.name}} {{address.phone}}</div>
+                    <div class="address__item-detail">{{address.region[0]}} {{address.region[1]}} {{address.region[2]}} {{address.detail}}</div>
+                </div>
             </div>
             <div class="address__letter"></div>
         </div>
@@ -14,7 +20,9 @@
             <image :src="item.img" class="pro__img"></image>
             <div class="pro__info">
                 <div class="pro__info-tit">{{item.name}}</div>
-                <div class="pro__info-spec">{{item.specTip}}</div>
+                <div class="pro__info-spec">
+                    <div class="pro__info-spec-tip" v-if="item.specTip">{{item.specTip}}</div>
+                </div>
                 <div class="pro__info-tf">
                     <div class="pro__info-price">￥{{item.price}}</div>
                     <div class="pro__info-count">￥{{item.count}}</div>
@@ -25,17 +33,17 @@
         <div class="confirm-list">
             <div class="confirm-list__item">
                 <div class="confirm-list__item-l">商品金额</div>
-                <div class="confirm-list__item-r">￥{{proPrice}}</div>
+                <div class="confirm-list__item-r">￥{{order_total_price}}</div>
             </div>
             <div class="confirm-list__item">
                 <div class="confirm-list__item-l">运费</div>
-                <div class="confirm-list__item-r">￥{{expressPrice}}</div>
+                <div class="confirm-list__item-r">￥{{express_price}}</div>
             </div>
         </div>
 
-        <div class="" style="height: 40px;"></div>
+        <div class="" style="height: 50px;"></div>
         <div class="confirm-tf">
-            <div class="confirm-tf__sum">实付金额: <span class="confirm-tf__sum-money">￥{{totalPrice}}</span></div>
+            <div class="confirm-tf__sum">实付金额: <span class="confirm-tf__sum-money">￥{{order_pay_price}}</span></div>
             <div class="confirm-tf__set">
                 <div class="confirm-tf__deal" @tap="pay">立即付款</div>
             </div>
@@ -50,9 +58,9 @@ export default {
     data() {
         return {
             confirmArr: [],
-            proPrice: '0.00',
-            expressPrice: '10.00',
-            totalPrice: '0.00',
+            order_total_price: '0.00',
+            express_price: '0.00',
+            order_pay_price: '0.00',
             address: null
         }
     },
@@ -69,13 +77,7 @@ export default {
                 header: {
                     'content-type': 'application/x-www-form-urlencoded'
                 },
-                data: {
-                    // confirmArr: that.confirmArr,
-                    // proPrice: that.proPrice,
-                    // expressPrice: that.expressPrice,
-                    // totalPrice: that.totalPrice,
-                    // address_id: that.address.address_id,
-                },
+                data: {},
                 isVerifyLogin: true,
                 success(res) {
                     console.log(res)
@@ -92,17 +94,21 @@ export default {
                                 console.log(paymentRes)
                                 // 跳转到成功下单页
                                 uni.navigateTo({
-                                    url: '/pages/success/success?order_id=' + res.data.order_id + '&price=' + that.totalPrice
+                                    url: '/pages/success/success?order_id=' + res.data.order_id + '&price=' + that.order_pay_price
                                 })
                             },
                             fail: function () {
-                                // 跳转到未付款订单
-                                // App.showError('订单未支付', function () {
-                                //     // 跳转到未付款订单
-                                //     wx.redirectTo({
-                                //         url: '../order/index?type=payment',
-                                //     })
-                                // })
+                                uni.showToast({
+                                    title: '订单未支付',
+                                    mask: true,
+                                    duration: 3000,
+                                    success: function () {
+                                        // 跳转到未付款订单
+                                        uni.redirectTo({
+                                            url: '/pages/order/order?type=payment',
+                                        })
+                                    }
+                                })
                             }
                         })
                     }
@@ -145,20 +151,22 @@ export default {
             } catch (error) {
                 confirmData = JSON.parse(event.confirmData)
             }
-        }
-        that.proPrice = confirmData.order_total_price
-        that.expressPrice = confirmData.express_price
-        that.totalPrice = confirmData.order_pay_price
+            that.order_total_price = confirmData.order_total_price
+            that.express_price = confirmData.express_price
+            that.order_pay_price = confirmData.order_pay_price
+            that.order_total_num = confirmData.order_total_num
 
-        confirmData.goods_list.forEach((item, i) => {
-            item.img = item.image[0].file_path
-            item.goods_id = item.goods_id
-            item.name = item.goods_name
-            item.specTip = item.goods_sku.goods_attr
-            item.price = item.goods_price
-            item.count = item.total_num
-        })
-        that.confirmArr = confirmData.goods_list
+            confirmData.goods_list.forEach((item, i) => {
+                item.goods_id = item.goods_id
+                item.name = item.goods_name
+                item.img = item.image[0].file_path
+                item.specTip = item.goods_sku.goods_attr
+                item.price = item.goods_price
+                item.count = item.total_num
+            })
+            that.confirmArr = confirmData.goods_list
+        }
+
 
 
         // 请求默认地址
@@ -218,9 +226,9 @@ export default {
 
 
         return false
-        that.proPrice = event.proPrice
-        let totalPrice = Number(that.proPrice) + Number(that.expressPrice)
-        that.totalPrice = totalPrice.toFixed(2)
+        that.order_total_price = event.order_total_price
+        let order_pay_price = Number(that.order_total_price) + Number(that.express_price)
+        that.order_pay_price = order_pay_price.toFixed(2)
 
         // 目前在某些平台参数会被主动 decode，暂时这样处理。
         if (event.confirmArr) {
@@ -255,35 +263,6 @@ export default {
 
 
 <style scoped>
-.address {
-    /* padding: 15px 20px; */
-    /* border-bottom: 5px solid #05a; */
-    line-height: 1.5;
-}
-.address__letter {
-    height: 3px;
-    background: linear-gradient(45deg,#f25953 12.5%,#fbfaf5 12.5%,#fbfaf5 25%,#5590d6 25%,#5590d6 37.5%,#fbfaf5 37.5%,#fbfaf5 50%,#f25953 50%,#f25953 62.5%,#fbfaf5 62.5%,#fbfaf5 75%,#5590d6 75%,#5590d6 87.5%,#fbfaf5 87.5%,#fbfaf5 100%);
-    background-size: 70px 70px;
-}
-.address__add {
-    padding: 15px 20px;
-    text-align: center;
-    font-size: 16px;
-    color: #777;
-}
-.address__item {
-    padding: 15px 20px;
-}
-.address__item-info {
-    font-size: 16px;
-    color: #333;
-}
-.address__item-detail {
-    font-size: 12px;
-    color: #999;
-}
-
-
 
 
 .confirm-tit {
@@ -375,17 +354,23 @@ export default {
     -webkit-line-clamp: 2;
     overflow: hidden;
 }
-.pro__info-spec {
+.pro__info-spec{
+    height: 16px;
+    line-height: 16px;
+    align-self: flex-start;
+    margin-top: 5px;
+}
+.pro__info-spec-tip {
     font-size: 10px;
     background-color: #eee;
     color: #999999;
     height: 16px;
     line-height: 16px;
-    align-self: flex-start;
     padding: 0 5px;
-    margin-top: 5px;
     border-radius: 8px;
 }
+
+
 
 .pro__info-tf {
     display: flex;

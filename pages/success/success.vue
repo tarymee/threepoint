@@ -1,51 +1,14 @@
 <template>
     <div class="success">
-        <div class="success__icon"></div>
+        <div class="fa fa-check-circle success__icon"></div>
         <div class="success__tit">支付成功</div>
-        <div class="success__price">支付金额: ￥{{price}}</div>
+        <div class="success__tip">支付金额: <span class="success__tip-price">￥{{price}}</span></div>
         <div class="success__btnbox">
-            <a class="success__btnbox-btn" @click="jumpIndex">回到首页</a>
-            <a class="success__btnbox-btn" @click="jumpOrderdetail">查看订单</a>
+            <a class="success__btnbox-btn" @click="jump(`/pages/index/index`, true)">回到首页</a>
+            <a class="success__btnbox-btn" @click="jump(`/pages/orderdetail/orderdetail?id=${order_id}`)">查看订单</a>
         </div>
     </div>
 </template>
-<style scoped>
-.success {
-    text-align: center;
-}
-.success__icon {
-    border-radius: 50%;
-    background-color: #d1a178;
-    width: 50px;
-    height: 50px;
-    margin: 60px auto 20px;
-}
-.success__tit {
-    font-size: 18px;
-    font-weight: bold;
-}
-.success__price {
-    font-size: 14px;
-    color: #999;
-}
-.success__btnbox {
-    margin: 15px 0;
-    display: flex;
-    justify-content: center;
-}
-.success__btnbox-btn {
-    font-size: 14px;
-    border: 1upx solid #eee;
-    padding: 0 20px;
-    line-height: 30px;
-    height: 30px;
-    color: #333;
-    border-radius: 15px;
-    margin: 0 15px;
-}
-
-</style>
-
 <script>
 import u from '@/common/util'
 
@@ -58,16 +21,8 @@ export default {
         }
     },
     methods: {
-        // 提交订单 付款
-        jumpIndex() {
-            uni.switchTab({
-                url: '/pages/index/index'
-            })
-        },
-        jumpOrderdetail() {
-            uni.navigateTo({
-                url: '/pages/orderdetail/orderdetail?id=' + this.order_id
-            })
+        jump(url, isSwitchTab) {
+            u.jump(url, isSwitchTab)
         }
     },
     onLoad(event) {
@@ -79,3 +34,46 @@ export default {
     }
 }
 </script>
+<style scoped>
+.success {
+    text-align: center;
+    padding-top: 60px;
+}
+.success__icon {
+    color: #d1a178;
+    font-size: 60px;
+    line-height: 60px;
+    text-align: center;
+}
+.success__tit {
+    font-size: 18px;
+    line-height: 30px;
+    font-weight: bold;
+}
+.success__tip {
+    font-size: 14px;
+    line-height: 25px;
+    color: #999;
+}
+.success__tip-price {
+    color: #d1a178;
+    font-size: 16px;
+    font-weight: bold;
+}
+.success__btnbox {
+    margin: 15px 0;
+    display: flex;
+    justify-content: center;
+}
+.success__btnbox-btn {
+    font-size: 14px;
+    border: 1upx solid #ccc;
+    padding: 0 20px;
+    line-height: 30px;
+    height: 30px;
+    color: #333;
+    border-radius: 15px;
+    margin: 0 15px;
+}
+
+</style>

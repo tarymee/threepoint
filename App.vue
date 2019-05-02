@@ -117,7 +117,6 @@
 
 /* 订单 */
 .order {
-    background-color: #eee;
     overflow: hidden;
 }
 .order__item {
@@ -182,12 +181,12 @@
 }
 .order__tf {
     line-height: 25px;
-    font-size: 14px;
+    font-size: 12px;
     text-align: right;
     padding-bottom: 10px;
 }
 .order__tf-price {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: bold;
 }
 .order__status {
@@ -209,5 +208,56 @@
 .order__status-btn--1 {
     color: #d1a178;
     border: 1px solid #d1a178;
+}
+
+
+
+
+
+
+.address {
+    /* padding: 15px 20px; */
+    /* border-bottom: 5px solid #05a; */
+    background-color: #fff;
+    line-height: 1.5;
+}
+.address__letter {
+    height: 3px;
+    background: linear-gradient(45deg,#f25953 12.5%,#fbfaf5 12.5%,#fbfaf5 25%,#5590d6 25%,#5590d6 37.5%,#fbfaf5 37.5%,#fbfaf5 50%,#f25953 50%,#f25953 62.5%,#fbfaf5 62.5%,#fbfaf5 75%,#5590d6 75%,#5590d6 87.5%,#fbfaf5 87.5%,#fbfaf5 100%);
+    background-size: 70px 70px;
+}
+.address__add {
+    padding: 15px 20px;
+    text-align: center;
+}
+.address__add-icon {
+    font-size: 25px;
+    color: #999;
+}
+.address__add-tip {
+    font-size: 16px;
+    color: #999;
+}
+.address__item {
+    padding: 15px 20px;
+    overflow: hidden;
+}
+.address__item-icon {
+    float: left;
+    font-size: 25px;
+    line-height: 40px;
+    color: #333;
+    margin-right: 10px;
+}
+.address__item-info {
+    overflow: hidden;
+}
+.address__item-name {
+    font-size: 16px;
+    color: #333;
+}
+.address__item-detail {
+    font-size: 12px;
+    color: #999;
 }
 </style>

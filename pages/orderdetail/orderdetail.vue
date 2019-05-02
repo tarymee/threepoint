@@ -1,4 +1,26 @@
+
 <template>
+<div class="">
+    <div class="status">
+        <div class="status__tit">待发货</div>
+        <div class="status__des">您的订单正在准备发货中</div>
+        <img src="/static/img/status-icon1.png" mode="aspectFit" class="status__icon" alt="" />
+    </div>
+    <div class="address">
+        <div class="address__add" @click="addAddress" v-if="!address">
+            <div class="fa fa-map-marker address__add-icon"></div>
+            <div class="address__add-tip">点击填写收货地址</div>
+            </div>
+        <div class="address__item" @click="selectAddress" v-if="address">
+            <div class="address__item-icon fa fa-map-marker"></div>
+            <div class="address__item-info">
+                <div class="address__item-name">{{address.name}} {{address.phone}}</div>
+                <div class="address__item-detail">{{address.region[0]}} {{address.region[1]}} {{address.region[2]}} {{address.detail}}</div>
+            </div>
+        </div>
+        <!-- <div class="address__letter"></div> -->
+    </div>
+    <div class="" style="height: 10px;background-color: #F9F9F9;"></div>
     <div class="order">
         <div class="order__item" @click="detail(orderObj.id)">
             <div class="order__th">
@@ -29,6 +51,20 @@
             </div>
         </div>
     </div>
+    <div class="" style="height: 10px;background-color: #F9F9F9;"></div>
+    <div class="info">
+        <div class="info__txt">订单编号：65465465465465464</div>
+        <div class="info__txt">下单时间：2019-02-01 12:55:00</div>
+        <div class="info__txt">付款时间：2019-02-01 12:55:00</div>
+    </div>
+    <div class="" style="height: 10px;background-color: #F9F9F9;"></div>
+
+    <div class="" style="height: 50px;"></div>
+    <div class="detail-tf">
+        <div class="detail-tf__btn1" @tap="pay">立即付款</div>
+        <div class="detail-tf__btn2" @tap="pay">申请</div>
+    </div>
+</div>
 </template>
 <script>
 import u from '@/common/util'
@@ -37,6 +73,14 @@ export default {
     },
     data() {
         return {
+            address: {
+                id: '1886547',
+                name: '李先生',
+                phone: '15845454545',
+                region: ['广东省', '广州市', '天河区'],
+                detail: '黄埔大道车陂文化大街1号15乡6号楼7层105室',
+                isDefault: true
+            },
             orderObj: {
                 id: '12345678790',
                 status: '6',
@@ -48,7 +92,7 @@ export default {
                         count: '1',
                         price: '100',
                         specTip: '规格: 天蓝色 S码',
-                        name: '日系复古短袖T恤'
+                        name: '日系复古短袖T恤日系复古短袖T恤日系复古短袖T恤日系复古短袖T恤日系复古短袖T恤'
                     }
                 ]
             }
@@ -68,5 +112,71 @@ export default {
 }
 </script>
 <style scoped>
+.status {
+    background-color: #d1a178;
+    color: #ffffff;
+    padding: 30px 15px;
+    position: relative;
+}
+.status__tit {
+    font-size: 16px;
+    font-weight: bold;
+}
+.status__des {
+    font-size: 12px;
+}
+.status__icon {
+    position: absolute;
+    display: block;
+    width: 40px;
+    height: 40px;
+    top: 30px;
+    right: 20px;
+}
+
+
+.info {
+    padding: 15px;
+    font-size: 14px;
+    line-height: 25px;
+}
+
+
+.detail-tf {
+    display: flex;
+    width: 100%;
+    padding: 0 15px;
+    height: 50px;
+    background-color: #fff;
+    justify-content: flex-end;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+    border-top: 1upx solid #eee;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.detail-tf__btn1 {
+    background-color: #d1a178;
+    color: #fff;
+    padding: 0 15px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 15px;
+    font-size: 14px;
+    margin-left: 10px;
+}
+.detail-tf__btn2 {
+    border: 1upx solid #d1a178;
+    color: #d1a178;
+    padding: 0 15px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 15px;
+    font-size: 14px;
+    margin-left: 10px;
+}
+
+
 
 </style>

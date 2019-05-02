@@ -20,7 +20,12 @@ export default {
             bottomLoad_type: 'order',
             bottomLoad_api: u.api.myorder,
             bottomLoad_params: {
-                type: 'all'
+                // 类型
+                // 所有: ''
+                // payment
+                // delivery
+                // received
+                dataType: ''
             }
         }
     },
@@ -34,7 +39,7 @@ export default {
         console.log("order onLoad")
         let that = this
         console.log(event)
-        that.bottomLoad_params.type = event.type
+        that.bottomLoad_params.dataType = event.type
         uni.setNavigationBarTitle({
             title: event.title
         })

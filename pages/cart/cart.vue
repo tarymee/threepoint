@@ -17,7 +17,7 @@
                         <image :src="item.img" class="pro__img"></image>
                         <view class="pro__info">
                             <view class="pro__info-tit">{{item.name}}</view>
-                            <view class="pro__info-spec">{{item.specTip}}</view>
+                            <view class="pro__info-spec"><div class="pro__info-spec-tip" v-if="item.specTip">{{item.specTip}}</div></view>
                             <view class="pro__info-tf">
                                 <view class="pro__info-price">￥{{item.price}}</view>
                                 <view class="pro__info-count">
@@ -530,14 +530,18 @@ export default {
     overflow: hidden;
 }
 .pro__info-spec{
+    height: 16px;
+    line-height: 16px;
+    align-self: flex-start;
+    margin-top: 5px;
+}
+.pro__info-spec-tip {
     font-size: 10px;
     background-color: #eee;
     color: #999999;
     height: 16px;
     line-height: 16px;
-    align-self: flex-start;
     padding: 0 5px;
-    margin-top: 5px;
     border-radius: 8px;
 }
 

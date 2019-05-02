@@ -47,23 +47,33 @@ const bottomLoad = {
                     page: bottomLoad_pageindex,
                     ...that.bottomLoad_params
                 }
+                let isVerifyLogin = false
+                if (that.bottomLoad_type === 'order') {
+                    isVerifyLogin = true
+                }
                 u.request({
                     url: that.bottomLoad_api,
                     method: 'POST',
+                    header: {
+                        'content-type': 'application/x-www-form-urlencoded'
+                    },
                     data: postData,
-                    isVerifyLogin: false,
+                    isVerifyLogin: isVerifyLogin,
                     success(res) {
                         console.log(res)
                         if (that.bottomLoad_type === 'order') {
                             res = {
                                 data: [
                                     {
-                                        id: '1234567890',
-                                        status: '1',
+                                        order_id: '1234567890',
+                                        status: '1', // 订单状态 已完成 未付款什么的 状态你定
                                         totalcount: '1',
-                                        totalprice: '100.00',
+                                        order_total_price: '100.00',
+                                        express_price: '10.00',
+                                        order_pay_price: '110.00',
                                         detail: [
                                             {
+                                                goods_id: '1',
                                                 img: 'https://cbu01.alicdn.com/img/ibank/2018/122/260/9488062221_1899654620.400x400.jpg',
                                                 count: '1',
                                                 price: '100',
@@ -73,84 +83,95 @@ const bottomLoad = {
                                         ]
                                     },
                                     {
-                                        id: '1234567890',
+                                        order_id: '1234567890',
                                         status: '2',
-                                        totalcount: '1',
-                                        totalprice: '300.00',
+                                        order_total_price: '100.00',
+                                        express_price: '10.00',
+                                        order_pay_price: '110.00',
                                         detail: [
                                             {
+                                                goods_id: '1',
                                                 img: 'https://cbu01.alicdn.com/img/ibank/2018/122/260/9488062221_1899654620.400x400.jpg',
                                                 count: '1',
                                                 price: '100',
                                                 specTip: '规格: 天蓝色 S码',
-                                                name: '日系复古短袖T恤'
+                                                name: '日系复古短袖T恤日系复古短袖T恤日系复古短袖T恤日系复古短袖T恤'
                                             },
                                             {
+                                                goods_id: '1',
                                                 img: 'https://cbu01.alicdn.com/img/ibank/2018/122/260/9488062221_1899654620.400x400.jpg',
-                                                count: '2',
+                                                count: '1',
                                                 price: '100',
                                                 specTip: '规格: 天蓝色 S码',
-                                                name: '日系复古短袖T恤'
+                                                name: '日系复古短袖T恤日系复古短袖T恤日系复古短袖T恤日系复古短袖T恤'
                                             }
                                         ]
                                     },
                                     {
-                                        id: '12345679590',
+                                        order_id: '12345679590',
                                         status: '3',
-                                        totalcount: '1',
-                                        totalprice: '100.00',
+                                        order_total_price: '100.00',
+                                        express_price: '10.00',
+                                        order_pay_price: '110.00',
                                         detail: [
                                             {
+                                                goods_id: '1',
                                                 img: 'https://cbu01.alicdn.com/img/ibank/2018/122/260/9488062221_1899654620.400x400.jpg',
                                                 count: '1',
                                                 price: '100',
                                                 specTip: '规格: 天蓝色 S码',
-                                                name: '日系复古短袖T恤'
+                                                name: '日系复古短袖T恤日系复古短袖T恤日系复古短袖T恤日系复古短袖T恤'
                                             }
                                         ]
                                     },
                                     {
-                                        id: '12345678790',
+                                        order_id: '12345678790',
                                         status: '4',
-                                        totalcount: '1',
-                                        totalprice: '100.00',
+                                        order_total_price: '100.00',
+                                        express_price: '10.00',
+                                        order_pay_price: '110.00',
                                         detail: [
                                             {
+                                                goods_id: '1',
                                                 img: 'https://cbu01.alicdn.com/img/ibank/2018/122/260/9488062221_1899654620.400x400.jpg',
                                                 count: '1',
                                                 price: '100',
                                                 specTip: '规格: 天蓝色 S码',
-                                                name: '日系复古短袖T恤'
+                                                name: '日系复古短袖T恤日系复古短袖T恤日系复古短袖T恤日系复古短袖T恤'
                                             }
                                         ]
                                     },
                                     {
-                                        id: '12345678790',
+                                        order_id: '12345678790',
                                         status: '5',
-                                        totalcount: '1',
-                                        totalprice: '100.00',
+                                        order_total_price: '100.00',
+                                        express_price: '10.00',
+                                        order_pay_price: '110.00',
                                         detail: [
                                             {
+                                                goods_id: '1',
                                                 img: 'https://cbu01.alicdn.com/img/ibank/2018/122/260/9488062221_1899654620.400x400.jpg',
                                                 count: '1',
                                                 price: '100',
                                                 specTip: '规格: 天蓝色 S码',
-                                                name: '日系复古短袖T恤'
+                                                name: '日系复古短袖T恤日系复古短袖T恤日系复古短袖T恤日系复古短袖T恤'
                                             }
                                         ]
                                     },
                                     {
-                                        id: '12345678790',
+                                        order_id: '12345678790',
                                         status: '6',
-                                        totalcount: '1',
-                                        totalprice: '100.00',
+                                        order_total_price: '100.00',
+                                        express_price: '10.00',
+                                        order_pay_price: '110.00',
                                         detail: [
                                             {
+                                                goods_id: '1',
                                                 img: 'https://cbu01.alicdn.com/img/ibank/2018/122/260/9488062221_1899654620.400x400.jpg',
                                                 count: '1',
                                                 price: '100',
                                                 specTip: '规格: 天蓝色 S码',
-                                                name: '日系复古短袖T恤'
+                                                name: '日系复古短袖T恤日系复古短袖T恤日系复古短袖T恤日系复古短袖T恤'
                                             }
                                         ]
                                     }
