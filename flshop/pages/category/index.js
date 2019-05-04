@@ -21,12 +21,44 @@ Page({
     notcont: false
   },
 
-  onLoad: function() {
+  onLoad: function(e) {
+    console.log()
+    console.log(e)
     let _this = this;
     // 设置分类列表高度
     _this.setListHeight();
     // 获取分类列表
     this.getCategoryList();
+  },
+  onShow: function () {
+    console.log('show')
+    let _this = this;
+    _this.goCate()
+  },
+
+  goCate : function () {
+    console.log('goCate')
+    let _this = this;
+    console.log(_this.data)
+    var cateParam = wx.getStorageSync('cateParam')
+    if (cateParam && _this.data && _this.data.list.length) {
+      wx.removeStorageSync('cateParam')
+      let index = 0
+
+      _this.data.list.forEach((item, i) => {
+        if (item.category_id == cateParam.category_id) {
+          index = i
+        }
+      })
+      _this.setData({
+        curNav: _this.data.list.length > 0 ? cateParam.category_id : true,
+        curIndex: index
+      });
+    } else {
+      _this.setData({
+        curNav: _this.data.list.length > 0 ? _this.data.list[0].category_id : true
+      });
+    }
   },
 
   /**
@@ -52,9 +84,9 @@ Page({
       let data = result.data;
       _this.setData({
         list: data.list,
-        curNav: data.list.length > 0 ? data.list[0].category_id : true,
         notcont: !data.list.length
       });
+      _this.goCate()
     });
   },
 

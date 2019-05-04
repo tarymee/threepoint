@@ -149,13 +149,39 @@ Page({
             });
           } else if (res.tapIndex == 1) {
             // 线下银行转账
-            wx.redirectTo({
-              url: '../order/index?type=all',
+            App._post_form('order/payType', {
+              payType: 2,
+              orde_id: result.data.order_id,
+              token: wx.getStorageSync('token')
+            }, function (res2) {
+              // success
+                wx.redirectTo({
+                  url: '../order/index?type=all',
+                });
+              }, function (res2) {
+              // fail
+              console.log('fail');
+            }, function () {
+              // complete
+              console.log('complete');
             });
           } else if (res.tapIndex == 2) {
             // 货到付款
-            wx.redirectTo({
-              url: '../order/index?type=all',
+            App._post_form('order/payType', {
+              payType: 3,
+              orde_id: result.data.order_id,
+              token: wx.getStorageSync('token')
+            }, function (res2) {
+              // success
+              wx.redirectTo({
+                url: '../order/index?type=all',
+              });
+            }, function (res2) {
+              // fail
+              console.log('fail');
+            }, function () {
+              // complete
+              console.log('complete');
             });
           }
         },

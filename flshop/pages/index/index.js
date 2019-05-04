@@ -73,10 +73,21 @@ Page({
     });
   },
 
-  goTop: function(t) {
+  goTop: function (t) {
     this.setData({
       scrollTop: 0
     });
+  },
+  goCate: function (t) {
+    console.log(t)
+    console.log(t.currentTarget.dataset.id)
+    wx.setStorageSync('cateParam', {
+      category_id: t.currentTarget.dataset.id
+      // category_id: '28'
+    })
+    wx.switchTab({
+      url: '/pages/category/index'
+    })
   },
 
   contact: function (t) {
