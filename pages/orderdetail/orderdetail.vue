@@ -2,8 +2,18 @@
 <template>
 <div class="">
     <div class="status">
-        <div class="status__tit">待发货</div>
-        <div class="status__des">您的订单正在准备发货中</div>
+        <div class="status__tit" v-if="orderObj.status === '1'">已关闭</div>
+        <div class="status__tit" v-if="orderObj.status === '2'">已完成</div>
+        <div class="status__tit" v-if="orderObj.status === '3'">待付款</div>
+        <div class="status__tit" v-if="orderObj.status === '4'">待发货</div>
+        <div class="status__tit" v-if="orderObj.status === '5'">已发货</div>
+        <div class="status__tit" v-if="orderObj.status === '6'">待收货</div>
+        <div class="status__des" v-if="orderObj.status === '1'">您的订单已关闭</div>
+        <div class="status__des" v-if="orderObj.status === '2'">您的订单已经完成</div>
+        <div class="status__des" v-if="orderObj.status === '3'">您的订单未付款</div>
+        <div class="status__des" v-if="orderObj.status === '4'">您的订单正在准备发货中</div>
+        <div class="status__des" v-if="orderObj.status === '5'">您的订单已经发货</div>
+        <div class="status__des" v-if="orderObj.status === '6'">您的订单已签收 请确认收货</div>
         <img src="/static/img/status-icon1.png" mode="aspectFit" class="status__icon" alt="" />
     </div>
     <div class="address">
