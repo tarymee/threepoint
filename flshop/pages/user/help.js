@@ -29,8 +29,8 @@ Page({
    */
   getHelpList: function () {
     let _this = this;
-    App._get('wxapp/help', {}, function (result) {
-      _this.setData(result.data);
+    App._get('help/list/1', {}, function (result) {
+      _this.setData(result);
     });
   },
 

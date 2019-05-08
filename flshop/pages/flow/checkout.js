@@ -22,7 +22,7 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function(options) {
+  onLoad: function (options) {
     // 当前页面参数
     this.data.options = options;
     console.log(options);
@@ -31,7 +31,7 @@ Page({
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function() {
+  onShow: function () {
     // 获取当前订单信息
     this.getOrderData();
   },
@@ -39,12 +39,12 @@ Page({
   /**
    * 获取当前订单信息
    */
-  getOrderData: function() {
+  getOrderData: function () {
     let _this = this,
       options = _this.data.options;
 
     // 获取订单信息回调方法
-    let callback = function(result) {
+    let callback = function (result) {
       if (result.code !== 1) {
         App.showError(result.msg);
         return false;
@@ -65,7 +65,7 @@ Page({
         goods_num: options.goods_num,
         goods_sku_id: options.goods_sku_id,
         token: wx.getStorageSync('token')
-      }, function(result) {
+      }, function (result) {
         //console.info("buyNow:" + JSON.stringify(result));
 
         callback(result);
@@ -74,7 +74,7 @@ Page({
 
     // 购物车结算
     else if (options.order_type === 'cart') {
-      App._get('order/cart', { token: wx.getStorageSync('token')}, function(result) {
+      App._get('order/cart', { token: wx.getStorageSync('token') }, function (result) {
         callback(result);
       });
     }
@@ -84,7 +84,7 @@ Page({
   /**
    * 选择收货地址
    */
-  selectAddress: function() {
+  selectAddress: function () {
     wx.navigateTo({
       url: '../address/' + (this.data.exist_address ? 'index?from=flow' : 'create')
     });
@@ -93,7 +93,7 @@ Page({
   /**
    * 订单提交
    */
-  submitOrder: function() {
+  submitOrder: function () {
     let _this = this,
       options = _this.data.options;
 
@@ -107,9 +107,9 @@ Page({
     }
 
     // 订单创建成功后回调--微信支付
-    let callback = function(result) {
+    let callback = function (result) {
       if (result.code === -10) {
-        App.showError(result.msg, function() {
+        App.showError(result.msg, function () {
           // 跳转到未付款订单
           wx.redirectTo({
             url: '../order/index?type=payment',
@@ -151,14 +151,14 @@ Page({
             // 线下银行转账
             App._post_form('order/payType', {
               payType: 2,
-              orde_id: result.data.order_id,
+              order_id: result.data.order_id,
               token: wx.getStorageSync('token')
             }, function (res2) {
               // success
-                wx.redirectTo({
-                  url: '../order/index?type=all',
-                });
-              }, function (res2) {
+              wx.redirectTo({
+                url: '../order/index?type=all',
+              });
+            }, function (res2) {
               // fail
               console.log('fail');
             }, function () {
@@ -169,7 +169,7 @@ Page({
             // 货到付款
             App._post_form('order/payType', {
               payType: 3,
-              orde_id: result.data.order_id,
+              order_id: result.data.order_id,
               token: wx.getStorageSync('token')
             }, function (res2) {
               // success
@@ -208,14 +208,14 @@ Page({
         goods_num: options.goods_num,
         goods_sku_id: 1,
         token: wx.getStorageSync('token')
-      }, function(result) {
+      }, function (result) {
         // success
         console.log(result);
         callback(result);
-      }, function(result) {
+      }, function (result) {
         // fail
         console.log('fail');
-      }, function() {
+      }, function () {
         // complete
         console.log('complete');
         // 解除按钮禁用
@@ -225,14 +225,14 @@ Page({
 
     // 创建订单-购物车结算
     else if (options.order_type === 'cart') {
-      App._post_form('order/cart', { token: wx.getStorageSync('token')}, function(result) {
+      App._post_form('order/cart', { token: wx.getStorageSync('token') }, function (result) {
         // success
         console.log('success');
         callback(result);
-      }, function(result) {
+      }, function (result) {
         // fail
         console.log('fail');
-      }, function() {
+      }, function () {
         // complete
         console.log('complete');
         // 解除按钮禁用

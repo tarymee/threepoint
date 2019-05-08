@@ -21,7 +21,7 @@ Page({
     notcont: false
   },
 
-  onLoad: function(e) {
+  onLoad: function (e) {
     console.log()
     console.log(e)
     let _this = this;
@@ -36,7 +36,7 @@ Page({
     _this.goCate()
   },
 
-  goCate : function () {
+  goCate: function () {
     console.log('goCate')
     let _this = this;
     console.log(_this.data)
@@ -64,10 +64,10 @@ Page({
   /**
    * 设置分类列表高度
    */
-  setListHeight: function() {
+  setListHeight: function () {
     let _this = this;
     wx.getSystemInfo({
-      success: function(res) {
+      success: function (res) {
         _this.setData({
           scrollHeight: res.windowHeight - 47,
         });
@@ -78,9 +78,9 @@ Page({
   /**
    * 获取分类列表
    */
-  getCategoryList: function() {
+  getCategoryList: function () {
     let _this = this;
-    App._get('category/list/1', {}, function(result) {
+    App._get('category/list/1', {}, function (result) {
       let data = result.data;
       _this.setData({
         list: data.list,
@@ -93,7 +93,7 @@ Page({
   /**
    * 一级分类：选中分类
    */
-  selectNav: function(t) {
+  selectNav: function (t) {
     let curNav = t.target.dataset.id,
       curIndex = parseInt(t.target.dataset.index);
     this.setData({
@@ -106,7 +106,7 @@ Page({
   /**
    * 设置分享内容
    */
-  onShareAppMessage: function() {
+  onShareAppMessage: function () {
     return {
       title: "全部分类",
       path: "/pages/category/index"

@@ -316,7 +316,7 @@ export default {
             isShowError: false,
             success(res) {
                 console.log(res)
-                if (res && res.code == 1 && res.data && res.data.length) {
+                if (res && res.code == 1 && res.data) {
                     // that.proArr = res.data
 
                     that.proArr = u.dataTransform(res.data, {

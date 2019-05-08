@@ -9,30 +9,30 @@
         </div>
         <div class="user">
             <div class="user__list-item--noborder">
-                <uni-list-item title="我的订单" @click="jump('/pages/order/order?type=all&title=全部订单')" show-badge="true" badge-text="查看全部" badge-type="default" badge-inverted="true"></uni-list-item>
+                <uni-list-item title="我的订单" @click="jump('/pages/order/order?type=')" show-badge="true" badge-text="查看全部" badge-type="default" badge-inverted="true"></uni-list-item>
             </div>
 
             <div class="status">
-                <a class="status__item" @click="jump('/pages/order/order?type=1&title=待付款')">
+                <a class="status__item" @click="jump('/pages/order/order?type=payment')">
                     <image src="/static/img/user/icon1.png" mode="aspectFill" class="status__item-img"></image>
                     <text class="status__item-text">待付款</text>
                 </a>
-                <a class="status__item" @click="jump('/pages/order/order?type=2&title=待发货')">
+                <a class="status__item" @click="jump('/pages/order/order?type=delivery')">
                     <image src="/static/img/user/icon2.png" mode="aspectFill" class="status__item-img"></image>
                     <text class="status__item-text">待发货</text>
                 </a>
-                <a class="status__item" @click="jump('/pages/order/order?type=3&title=待收款')">
+                <a class="status__item" @click="jump('/pages/order/order?type=received')">
                     <image src="/static/img/user/icon3.png" mode="aspectFill" class="status__item-img"></image>
-                    <text class="status__item-text">待收款</text>
+                    <text class="status__item-text">待收货</text>
                 </a>
-                <a class="status__item" @click="jump('/pages/order/order?type=4&title=已完成')">
+                <!-- <a class="status__item" @click="jump('/pages/order/order?type=')">
                     <image src="/static/img/user/icon4.png" mode="aspectFill" class="status__item-img"></image>
                     <text class="status__item-text">已完成</text>
                 </a>
-                <a class="status__item" @click="jump('/pages/order/order?type=5&title=退换/售后')">
+                <a class="status__item" @click="jump('/pages/order/order?type=')">
                     <image src="/static/img/user/icon5.png" mode="aspectFill" class="status__item-img"></image>
                     <text class="status__item-text">退换/售后</text>
-                </a>
+                </a> -->
             </div>
 
             <div style="background-color: #efefef; height: 15px"></div>
@@ -140,14 +140,14 @@
 </style>
 
 <style scoped>
-.clearstyle {
-    margin: 10px;
-    padding: 0px;
-    border: none;
-    line-height: inherit;
-    border-radius: 0!important;
-    background-color: transparent;
-}
+    .clearstyle {
+        margin: 10px;
+        padding: 0px;
+        border: none;
+        line-height: inherit;
+        border-radius: 0!important;
+        background-color: transparent;
+    }
     .user {
         border-radius: 5px 5px 0 0;
         overflow: hidden;
@@ -183,10 +183,12 @@
     .status {
         margin: 10px 15px;
         overflow: hidden;
+        text-align: center;
     }
     .status__item {
-        width: 20%;
+        width: 33%;
         padding: 5px 0;
+        /* display: inline-block; */
         float: left;
     }
     .status__item-img {

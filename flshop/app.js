@@ -128,7 +128,7 @@ App({
     // 构造get请求
     let request = function() {
       data.token = wx.getStorageSync('token');
-      console.info("url=====>"+App.api_root+url);
+     // console.info("url=====>"+App.api_root+url);
       wx.request({
         url: App.api_root + url,
         header: {
@@ -136,7 +136,7 @@ App({
         },
         data: data,
         success(res) {
-          console.info("get res:" + JSON.stringify(res.data));
+         // console.info("get res:" + JSON.stringify(res.data));
           if (res.statusCode !== 200 || typeof res.data !== 'object') {
            
             App.showError('网络请求出错');

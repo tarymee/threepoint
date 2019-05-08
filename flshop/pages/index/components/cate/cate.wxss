@@ -1,6 +1,6 @@
 /* 分类 */
 .cate {
-    width: 100%
+    width: 100%;
     overflow: hidden;
     white-space:nowrap;
     margin: 20px 0;
@@ -27,5 +27,5 @@
     line-height: 20px;
     text-align: center;
     color: #333;
-    white-space: normal
+    white-space: normal;
 }

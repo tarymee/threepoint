@@ -12,7 +12,7 @@
               <text class="col-m"></text>
             </view>
             <view class="flow-checkout-address">
-              {{address.region.province}} {{address.region.city}} {{address.region.region}} {{address.detail}}
+              {{address.region.country}} {{address.region.city}} {{address.detail}} {{address.region.postcode}} 
             </view>
           </view>
           <view class="flow-header-right pr-12">

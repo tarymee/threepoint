@@ -77,6 +77,7 @@
         <div class="product-tf__item" style="margin-right: 15px" @tap="jump('/pages/cart/cart', true)">
             <div class="fa fa-shopping-cart product-tf__item-icon"></div>
             <div class="product-tf__item-tit">购物车</div>
+            <div class="product-tf__item-count" v-if="cartCount">{{cartCount}}</div>
         </div>
         <div class="product-tf__btns">
             <div class="product-tf__btns-buy" @click="buy">立即购买</div>
@@ -112,6 +113,7 @@ export default {
             // 规格数据
             specArr: [],
             count: 1,
+            cartCount: 0,
             // 弹出框类型 share: 分享, select： 选择产品颜色大小等
             popupType: '',
             // 产品分类框是由哪里打开的
@@ -310,6 +312,7 @@ export default {
                                         title: '添加成功 在购物车等亲',
                                         icon: 'none'
                                     })
+                                    that.cartCount++
                                     that.togglePopup('')
                                 } else {
                                     uni.showToast({
@@ -477,6 +480,31 @@ export default {
             // that.htmlString = res.content.replace(/\\/g, "").replace(/<img/g, "<img style=\"display:none;\"")
         }
 
+    },
+    onShow() {
+        let that = this
+        u.checkLogin(function (token, userid, userInfo) {
+            u.request({
+                url: u.api.cartlist,
+                method: 'POST',
+                header: {
+                    'content-type': 'application/x-www-form-urlencoded'
+                },
+                data: {},
+                isVerifyLogin: true,
+                isShowLoading: false,
+                isShowError: false,
+                success(res) {
+                    console.log(res)
+                    if (res && res.code == 1 && res.data && res.data.length) {
+                        that.cartCount = res.data.length
+                    }
+                },
+                fail(res) {
+                    console.error(res)
+                }
+            })
+        }, null, false)
     }
 }
 </script>
@@ -485,7 +513,6 @@ export default {
 
 
 <style scoped>
-
     /* 焦点图 */
     .proswiper {
         overflow: hidden;
@@ -665,6 +692,18 @@ export default {
         font-size: 10px;
         line-height: 15px;
         color: #777;
+    }
+    .product-tf__item-count {
+        background-color: #f00;
+        line-height: 15px;
+        height: 15px;
+        padding: 0 5px;
+        border-radius: 8px;
+        color: #ffffff;
+        position: absolute;
+        top: 2px;
+        right: 0px;
+        font-size: 12px;
     }
     .product-tf__btns {
         overflow: hidden;

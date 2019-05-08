@@ -16,9 +16,9 @@
                   <text class="title">商品列表</text>
                 </view>
                 <view class="flex-box t-r">
-                  <text class="cont" wx:if="{{item.pay_status.value===10}}">{{item.pay_status.text}}</text>
-                  <text class="cont" wx:if="{{item.pay_status.value===20 && item.delivery_status.value===10}}">{{item.delivery_status.text}}</text>
-                  <text class="cont" wx:if="{{item.pay_status.value===20 && item.delivery_status.value===20 && item.receipt_status.value===10}}">{{item.receipt_status.text}}</text>
+                  <text class="cont" wx:if="{{item.pay_status.value===0}}">{{item.pay_status.text}}</text>
+                  <text class="cont" wx:if="{{item.pay_status.value===1 && item.delivery_status.value===10}}">{{item.delivery_status.text}}</text>
+                  <text class="cont" wx:if="{{item.pay_status.value===1 && item.delivery_status.value===20 && item.receipt_status.value===10}}">{{item.receipt_status.text}}</text>
                   <text class="cont" wx:if="{{item.order_status.value===30}}">{{item.order_status.text}}</text>
                 </view>
               </view>

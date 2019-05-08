@@ -19,6 +19,18 @@
 /* 微信小程序中引用FontAwesome字体 https://blog.csdn.net/qq_28988969/article/details/76633921 */
 @import './common/font-awesome.css';
 
+
+
+
+
+
+
+
+
+
+
+
+
 /* 表单模块 */
 .tt-form {
     overflow: hidden;
@@ -259,5 +271,49 @@
 .address__item-detail {
     font-size: 12px;
     color: #999;
+}
+
+
+
+
+
+/* 精选下面的分类 */
+.cate1 {
+    /* padding-left: 15px; */
+    background-color: #fff;
+    width: 100%;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.cate1__place {
+    height: 0;
+}
+.cate1__place--holder {
+    height: 34px;
+}
+.cate1--fixed {
+    position: fixed;
+    top: 0px;
+}
+
+.cate1 scroll-view {
+    white-space: nowrap;
+}
+.cate1__item {
+    display: inline-block;
+    margin: 0 15px;
+    text-align: center;
+}
+.cate1__item text {
+    display: inline-block;
+    font-size: 14px;
+    color: #333;
+    line-height: 30px;
+    border-bottom: 3px solid #fff;
+}
+.cate1__item--cur text {
+    font-size: 16px;
+    font-weight: bold;
+    border-bottom: 3px solid #d1a178;
 }
 </style>

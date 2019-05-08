@@ -9,7 +9,6 @@ const host = 'https://www.3ftc.com'
 const site = '8'
 const api = {
     user: `${host}/api/user/index/${site}`,
-    myorder: `${host}/api/myorder/list/${site}`,
     goods: `${host}/api/goods/view/`,
     list: `${host}/api/goods/list/${site}`,
     index: `${host}/api/shop/index/${site}`,
@@ -27,6 +26,12 @@ const api = {
     cartsave: `${host}/api/cart/save/${site}`,
     // 查询购物车的信息保存到订单表
     ordercart: `${host}/api/order/cart`,
+    orderrepay: `${host}/api/order/repay`,
+    orderdetail: `${host}/api/myorder//detail/${site}`,
+    orderlist: `${host}/api/myorder/list/${site}`,
+    ordercancel: `${host}/api/myorder/cancel/${site}`,
+    orderreceipt: `${host}/api/myorder/receipt/${site}`,
+
 
 
     phoneget: `${host}/api/phone/get/${site}`,
@@ -41,7 +46,7 @@ const api = {
 }
 // console.log(api)
 
-function checkLogin(success, fail) {
+function checkLogin(success, fail, isAutoJumpToLogin = true) {
     // uni.setStorageSync('token', '11111')
     // uni.setStorageSync('token', '')
     let token = uni.getStorageSync('token')
@@ -52,14 +57,17 @@ function checkLogin(success, fail) {
     // console.log('userInfo', userInfo)
 
     let failFn = function () {
-        console.error('用户未授权登录 跳登录页面')
         fail && fail()
-        uni.navigateTo({
-            url: '/pages/login/login'
-        })
+        if (isAutoJumpToLogin) {
+            console.error('用户未授权登录 跳登录页面')
+            uni.navigateTo({
+                url: '/pages/login/login'
+            })
+        }
     }
 
     if (token) {
+        console.log(token)
         uni.checkSession({
             success() {
                 // console.log('session_key 未过期，并且在本生命周期一直有效')
@@ -541,6 +549,127 @@ const debounce = function (func, wait, immediate) {
     }
 }
 
+const repay = function(order_id, order_pay_price) {
+    console.log('repay', order_id, order_pay_price)
+
+    request({
+        url: api.orderrepay,
+        method: 'POST',
+        header: {
+            'content-type': 'application/x-www-form-urlencoded'
+        },
+        data: {
+            order_id: order_id
+        },
+        isVerifyLogin: true,
+        isShowLoading: true,
+        isShowError: true,
+        success(res) {
+            console.log(res)
+            if (res.data) {
+                // 发起微信支付
+                wx.requestPayment({
+                    timeStamp: res.data.payment.timeStamp,
+                    nonceStr: res.data.payment.nonceStr,
+                    package: 'prepay_id=' + res.data.payment.prepay_id,
+                    signType: 'MD5',
+                    paySign: res.data.payment.paySign,
+                    success: function (paymentRes) {
+                        console.log(paymentRes)
+                        // 跳转到成功下单页
+                        uni.navigateTo({
+                            url: '/pages/success/success?order_id=' + res.data.order_id + '&price=' + order_pay_price
+                        })
+                    },
+                    fail: function () {
+                        uni.showToast({
+                            title: '订单未支付',
+                            mask: true,
+                            duration: 3000,
+                            success: function () {
+                                // 跳转到未付款订单
+                                uni.redirectTo({
+                                    url: '/pages/order/order?type=payment',
+                                })
+                            }
+                        })
+                    }
+                })
+            }
+        },
+        fail(res) {
+            console.error(res)
+        }
+    })
+}
+const receipt = function(order_id) {
+    console.log('receipt', order_id)
+    let that = this
+
+    request({
+        url: api.orderreceipt,
+        method: 'POST',
+        header: {
+            'content-type': 'application/x-www-form-urlencoded'
+        },
+        data: {
+            order_id: order_id
+        },
+        isVerifyLogin: true,
+        isShowLoading: true,
+        isShowError: true,
+        success(res) {
+            console.log(res)
+            if (res && res.code == 1) {
+                uni.redirectTo({
+                    url: '/pages/order/order?type=',
+                })
+            } else {
+            }
+        },
+        fail(res) {
+            console.error(res)
+        }
+    })
+}
+const cancel = function(order_id) {
+    console.log('cancel', order_id)
+    request({
+        url: api.ordercancel,
+        method: 'POST',
+        header: {
+            'content-type': 'application/x-www-form-urlencoded'
+        },
+        data: {
+            order_id: order_id
+        },
+        isVerifyLogin: true,
+        isShowLoading: true,
+        isShowError: true,
+        success(res) {
+            console.log(res)
+            if (res && res.code == 1) {
+                uni.redirectTo({
+                    url: '/pages/order/order?type=',
+                })
+            } else {
+            }
+        },
+        fail(res) {
+            console.error(res)
+        }
+    })
+
+}
+
+
+
+
+
+
+
+
+
 module.exports = {
     api,
     phone,
@@ -549,7 +678,10 @@ module.exports = {
     // authorLogin,
     request,
     dataTransform,
+    repay,
+    receipt,
     math,
+    cancel,
     throttle,
     debounce
     // alert,

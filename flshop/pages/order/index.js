@@ -31,7 +31,7 @@ Page({
    */
   getOrderList: function (dataType) {
     let _this = this;
-    App._get('myorder/list/1', { dataType }, function (result) {
+    App._get('myorder/list/1', { token: wx.getStorageSync('token'),dataType }, function (result) {
       _this.setData(result.data);
       result.data.list.length && wx.pageScrollTo({
         scrollTop: 0
@@ -59,7 +59,7 @@ Page({
       content: "确认取消订单？",
       success: function (o) {
         if (o.confirm) {
-          App._post_form('user.order/cancel', { order_id }, function (result) {
+          App._post_form('myorder/cancel/1', { order_id }, function (result) {
             _this.getOrderList(_this.data.dataType);
           });
         }
@@ -78,7 +78,7 @@ Page({
       content: "确认收到商品？",
       success: function (o) {
         if (o.confirm) {
-          App._post_form('user.order/receipt', { order_id }, function (result) {
+          App._post_form('myorder/receipt/1', { order_id }, function (result) {
             _this.getOrderList(_this.data.dataType);
           });
         }

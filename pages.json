@@ -197,12 +197,12 @@
             {
                 "name": "order",
                 "path": "pages/order/order",
-                "query": "type=&title=全部订单"
+                "query": "type="
             },
             {
                 "name": "orderdetail",
                 "path": "pages/orderdetail/orderdetail",
-                "query": "id=123456"
+                "query": "order_id=164"
             },
             {
                 "name": "cate",

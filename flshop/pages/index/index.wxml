@@ -12,7 +12,7 @@
       <block wx:if="{{item.type === 'banner'}}">
         <include src="components/banner/banner.wxml" />
       </block>
-       <!-- banner轮播 -->
+       <!-- 推荐分类 -->
       <block wx:if="{{item.type === 'cate'}}">
         <include src="components/cate/cate.wxml" />
       </block>

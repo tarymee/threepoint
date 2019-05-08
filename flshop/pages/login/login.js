@@ -39,7 +39,7 @@ Page({
           }
           , function (result) {
             // 记录token user_id
-            console.info("user login---->"+JSON.stringify(result))
+           // console.info("user login---->"+JSON.stringify(result))
             wx.setStorageSync('token', result.data.token);
             wx.setStorageSync('user_id', result.data.user_id);
             // 跳转回原页面

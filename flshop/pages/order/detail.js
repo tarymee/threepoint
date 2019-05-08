@@ -23,7 +23,7 @@ Page({
    */
   getOrderDetail: function (order_id) {
     let _this = this;
-    App._get('user.order/detail', { order_id }, function (result) {
+    App._get('myorder/detail/1', { order_id }, function (result) {
       _this.setData(result.data);
     });
   },
@@ -49,7 +49,7 @@ Page({
       content: "确认取消订单？",
       success: function (o) {
         if (o.confirm) {
-          App._post_form('user.order/cancel', { order_id }, function (result) {
+          App._post_form('myorder/cancel/1', { order_id }, function (result) {
             wx.navigateBack();
           });
         }
@@ -66,18 +66,18 @@ Page({
 
     // 显示loading
     wx.showLoading({ title: '正在处理...', });
-    App._post_form('user.order/pay', { order_id }, function (result) {
+    App._post_form('order/repay', { order_id }, function (result) {
       if (result.code === -10) {
         App.showError(result.msg);
         return false;
       }
       // 发起微信支付
       wx.requestPayment({
-        timeStamp: result.data.timeStamp,
-        nonceStr: result.data.nonceStr,
-        package: 'prepay_id=' + result.data.prepay_id,
+        timeStamp: result.data.payment.timeStamp,
+        nonceStr: result.data.payment.nonceStr,
+        package: 'prepay_id=' + result.data.payment.prepay_id,
         signType: 'MD5',
-        paySign: result.data.paySign,
+        paySign: result.data.payment.paySign,
         success: function (res) {
           _this.getOrderDetail(order_id);
         },

@@ -70,14 +70,18 @@
     <div class="cate1__place" :class="cate1Fixed ? 'cate1__place--holder' : ''"></div>
     <div class="cate1" :class="cate1Fixed ? 'cate1--fixed' : ''">
         <scroll-view scroll-x>
-            <a class="cate1__item" :class="item.select ? 'cate1__item--cur' : ''" v-for="(item, index) in cate1Arr" :key="index" @click="reloadCate(index, item.id)">
+            <a class="cate1__item" :class="item.select ? 'cate1__item--cur' : ''" v-for="(item, index) in cate1Arr" :key="index" @click="reloadCate(item.id)">
                 <text>{{item.title}}</text>
             </a>
         </scroll-view>
     </div>
     <productList :productArr="bottomLoad_data"></productList>
-    <tip :text="bottomLoad_tip" :none-icon="false"></tip>
 
+    <tip :text="bottomLoad_tip" :none-icon="false" v-if="bottomLoad_data.length!=0"></tip>
+
+    <div style="padding: 100px 0;" v-if="bottomLoad_data.length==0">
+        <tip :text="bottomLoad_tip" :none-icon="true"></tip>
+    </div>
 </div>
 </template>
 
@@ -242,10 +246,10 @@ export default {
         jump(url) {
             u.jump(url)
         },
-        reloadCate(index, id) {
+        reloadCate(id) {
             let that = this
             that.cate1Arr.forEach((item, i) => {
-                if (index === i) {
+                if (id === item.id) {
                     item.select = true
                 } else {
                     item.select = false
@@ -307,7 +311,7 @@ export default {
                     title: 'title',
                     id: 'id',
                 })
-                that.reloadCate(0, that.cate1Arr[0].id)
+                that.reloadCate(that.cate1Arr[0].id)
             },
             fail(res) {
                 console.error('错误')
@@ -509,43 +513,5 @@ export default {
 }
 
 
-/* 精选下面的分类 */
-.cate1 {
-    padding-left: 15px;
-    background-color: #fff;
-    width: 100%;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-}
-.cate1__place {
-    height: 0;
-}
-.cate1__place--holder {
-    height: 34px;
-}
-.cate1--fixed {
-    position: fixed;
-    top: 0px;
-}
 
-.cate1 scroll-view {
-    white-space: nowrap;
-}
-.cate1__item {
-    display: inline-block;
-    margin-right: 30px;
-}
-.cate1__item text {
-    display: block;
-    font-size: 14px;
-    color: #333;
-    line-height: 30px;
-    border-bottom: 3px solid #fff;
-}
-.cate1__item--cur text {
-    display: block;
-    font-size: 16px;
-    font-weight: bold;
-    border-bottom: 3px solid #d1a178;
-}
 </style>

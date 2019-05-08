@@ -1,123 +1,226 @@
 
 <template>
 <div class="">
-    <div class="status">
-        <div class="status__tit" v-if="orderObj.status === '1'">已关闭</div>
-        <div class="status__tit" v-if="orderObj.status === '2'">已完成</div>
-        <div class="status__tit" v-if="orderObj.status === '3'">待付款</div>
-        <div class="status__tit" v-if="orderObj.status === '4'">待发货</div>
-        <div class="status__tit" v-if="orderObj.status === '5'">已发货</div>
-        <div class="status__tit" v-if="orderObj.status === '6'">待收货</div>
-        <div class="status__des" v-if="orderObj.status === '1'">您的订单已关闭</div>
-        <div class="status__des" v-if="orderObj.status === '2'">您的订单已经完成</div>
-        <div class="status__des" v-if="orderObj.status === '3'">您的订单未付款</div>
-        <div class="status__des" v-if="orderObj.status === '4'">您的订单正在准备发货中</div>
-        <div class="status__des" v-if="orderObj.status === '5'">您的订单已经发货</div>
-        <div class="status__des" v-if="orderObj.status === '6'">您的订单已签收 请确认收货</div>
-        <img src="/static/img/status-icon1.png" mode="aspectFit" class="status__icon" alt="" />
+    <div style="padding: 100px 0;" v-if="!order">
+        <tip text="暂无订单" :none-icon="true"></tip>
     </div>
-    <div class="address">
-        <div class="address__add" @click="addAddress" v-if="!address">
-            <div class="fa fa-map-marker address__add-icon"></div>
-            <div class="address__add-tip">点击填写收货地址</div>
-            </div>
-        <div class="address__item" @click="selectAddress" v-if="address">
-            <div class="address__item-icon fa fa-map-marker"></div>
-            <div class="address__item-info">
-                <div class="address__item-name">{{address.name}} {{address.phone}}</div>
-                <div class="address__item-detail">{{address.region[0]}} {{address.region[1]}} {{address.region[2]}} {{address.detail}}</div>
-            </div>
-        </div>
-        <!-- <div class="address__letter"></div> -->
-    </div>
-    <div class="" style="height: 10px;background-color: #F9F9F9;"></div>
-    <div class="order">
-        <div class="order__item" @click="detail(orderObj.id)">
-            <div class="order__th">
-                <div class="order__th-number">订单编号: {{orderObj.id}}</div>
-                <div class="order__th-status" v-if="orderObj.status === '1'">已关闭</div>
-                <div class="order__th-status" v-if="orderObj.status === '2'">已完成</div>
-                <div class="order__th-status order__th-status--1" v-if="orderObj.status === '3'">待付款</div>
-                <div class="order__th-status order__th-status--1" v-if="orderObj.status === '4'">待发货</div>
-                <div class="order__th-status order__th-status--1" v-if="orderObj.status === '5'">已发货</div>
-                <div class="order__th-status order__th-status--1" v-if="orderObj.status === '6'">待收货</div>
-            </div>
-            <div class="order__tb" v-for="(item1, index1) in orderObj.detail" :key="index1">
-                <div class="order__tb-l"><img :src="item1.img" mode="aspectFill" class="order__tb-img" alt="" /></div>
-                <div class="order__tb-m">
-                    <div class="order__tb-m-name">{{item1.name}}</div>
-                    <div class="order__tb-m-select">{{item1.specTip}}</div>
-                </div>
-                <div class="order__tb-r">
-                    <div class="order__tb-price">¥{{item1.price}}</div>
-                    <div class="order__tb-number">x{{item1.count}}</div>
-                </div>
-            </div>
-            <div class="order__tf">共 {{orderObj.totalcount}} 件 合计： <span class="order__tf-price">¥{{orderObj.totalprice}}</span></div>
-            <div class="order__status" v-if="orderObj.status === '3' || orderObj.status === '5' || orderObj.status === '6'">
-                <div class="order__status-btn" @click="express(orderObj.id)" v-if="orderObj.status === '5' || orderObj.status === '6'">查看物流</div>
-                <div class="order__status-btn order__status-btn--1" @click="comfirm(orderObj.id)" v-if="orderObj.status === '6'">确认收获</div>
-                <div class="order__status-btn order__status-btn--1" @click="pay(orderObj.id)" v-if="orderObj.status === '3'">立即付款</div>
-            </div>
-        </div>
-    </div>
-    <div class="" style="height: 10px;background-color: #F9F9F9;"></div>
-    <div class="info">
-        <div class="info__txt">订单编号：65465465465465464</div>
-        <div class="info__txt">下单时间：2019-02-01 12:55:00</div>
-        <div class="info__txt">付款时间：2019-02-01 12:55:00</div>
-    </div>
-    <div class="" style="height: 10px;background-color: #F9F9F9;"></div>
+    <div class="" v-if="order">
 
-    <div class="" style="height: 50px;"></div>
-    <div class="detail-tf">
-        <div class="detail-tf__btn1" @tap="pay">立即付款</div>
-        <div class="detail-tf__btn2" @tap="pay">申请</div>
+        <div class="status">
+            <div class="status__tit" v-if="order.pay_status.value===0">{{order.pay_status.text}}</div>
+            <div class="status__tit" v-if="order.pay_status.value===1 && order.delivery_status.value===10">{{order.delivery_status.text}}</div>
+            <div class="status__tit" v-if="order.pay_status.value===1 && order.delivery_status.value===20 && order.receipt_status.value===10">{{order.receipt_status.text}}</div>
+            <div class="status__tit" v-if="order.order_status.value===30">{{order.order_status.text}}</div>
+            <img src="/static/img/status-icon1.png" mode="aspectFit" class="status__icon" alt="" />
+        </div>
+
+        <!-- <div class="status">
+            <div class="status__tit">已关闭</div>
+            <div class="status__des">您的订单已关闭</div>
+            <img src="/static/img/status-icon1.png" mode="aspectFit" class="status__icon" alt="" />
+        </div> -->
+        <div class="address">
+            <div class="address__item">
+                <div class="address__item-icon fa fa-map-marker"></div>
+                <div class="address__item-info">
+                    <div class="address__item-name">{{address.name}} {{address.phone}}</div>
+                    <div class="address__item-detail">{{address.region[0]}} {{address.region[1]}} {{address.region[2]}} {{address.detail}}</div>
+                </div>
+            </div>
+            <div class="address__letter"></div>
+        </div>
+        <div class="" style="height: 10px;background-color: #F9F9F9;"></div>
+        <div class="order">
+            <div class="order__item">
+                <div class="order__th">
+                    <div class="order__th-tit">订单信息</div>
+                </div>
+                <div class="order__tb" v-for="(item1, index1) in order.detail" :key="index1">
+                    <div class="order__tb-l"><img :src="item1.img" mode="aspectFill" class="order__tb-img" alt="" /></div>
+                    <div class="order__tb-m">
+                        <div class="order__tb-m-name">{{item1.name}}</div>
+                        <div class="order__tb-m-select">{{item1.specTip}}</div>
+                    </div>
+                    <div class="order__tb-r">
+                        <div class="order__tb-price">¥{{item1.price}}</div>
+                        <div class="order__tb-number">x{{item1.count}}</div>
+                    </div>
+                </div>
+                <div class="order__tf">共 {{order.totalcount}} 件 合计： <span class="order__tf-price">¥{{order.order_pay_price}}</span> (含运费¥{{order.express_price}})</div>
+            </div>
+        </div>
+        <div class="" style="height: 10px;background-color: #F9F9F9;"></div>
+        <div class="info">
+            <div class="info__txt">订单编号：{{order.order_no}}</div>
+            <div class="info__txt">下单时间：{{order.create_time}}</div>
+            <div class="info__txt" v-if="order.pay_time">付款时间：{{order.pay_time}}</div>
+            <div class="info__txt" v-if="order.delivery_time">发货时间：{{order.delivery_time}}</div>
+            <div class="info__txt" v-if="order.receipt_time">确认收货时间：{{order.receipt_time}}</div>
+        </div>
+        <div class="" style="height: 10px;background-color: #F9F9F9;"></div>
+
+        <div class="" style="height: 50px;"></div>
+        <div class="detail-tf">
+            <div class="detail-tf__btn1" v-if="order.pay_status.value===0" @tap="cancel(order.order_id)">取消订单</div>
+            <div class="detail-tf__btn2" v-if="order.pay_status.value===0" @tap="repay(order.order_id, order.order_pay_price)">立即付款</div>
+            <div class="detail-tf__btn2" v-if="order.delivery_status.value===20 && order.receipt_status.value===10" @tap="receipt(order.order_id)">确认收货</div>
+        </div>
     </div>
 </div>
 </template>
 <script>
 import u from '@/common/util'
+import tip from '@/components/tip/tip.vue'
 export default {
     components: {
+        tip
     },
     data() {
         return {
-            address: {
-                id: '1886547',
-                name: '李先生',
-                phone: '15845454545',
-                region: ['广东省', '广州市', '天河区'],
-                detail: '黄埔大道车陂文化大街1号15乡6号楼7层105室',
-                isDefault: true
-            },
-            orderObj: {
-                id: '12345678790',
-                status: '6',
-                totalcount: '1',
-                totalprice: '100.00',
-                detail: [
-                    {
-                        img: 'https://cbu01.alicdn.com/img/ibank/2018/122/260/9488062221_1899654620.400x400.jpg',
-                        count: '1',
-                        price: '100',
-                        specTip: '规格: 天蓝色 S码',
-                        name: '日系复古短袖T恤日系复古短袖T恤日系复古短袖T恤日系复古短袖T恤日系复古短袖T恤'
-                    }
-                ]
-            }
+            address: null,
+            order: null
         }
     },
     methods: {
         test() {
             console.log('text')
+        },
+        repay(order_id, order_pay_price) {
+            console.log('repay', order_id, order_pay_price)
+            u.repay(order_id, order_pay_price)
+        },
+        receipt(order_id) {
+            console.log('receipt', order_id)
+            u.receipt(order_id)
+        },
+        cancel(order_id) {
+            console.log('cancel', order_id)
+            u.cancel(order_id)
+        },
+        express(order_id) {
+            uni.navigateTo({
+                url: '/pages/express/express?id=' + order_id
+            })
         }
     },
     onLoad(event) {
         console.log("orderdetail onLoad")
         let that = this
         console.log(event)
-        that.order_id = event.id
+        that.order_id = event.order_id
+
+        u.request({
+            url: u.api.orderdetail,
+            method: 'POST',
+            header: {
+                'content-type': 'application/x-www-form-urlencoded'
+            },
+            data: {
+                order_id: that.order_id
+            },
+            isVerifyLogin: true,
+            isShowLoading: true,
+            isShowError: true,
+            success(res) {
+                console.log(res)
+                if (res && res.code == 1 && res.data && res.data.order) {
+                    res = res.data.order
+                    that.address = {
+                        name: res.address.name,
+                        phone: res.address.phone,
+                        region: res.address.region,
+                        detail: res.address.detail,
+                    }
+
+                    let order = {
+                        order_id: res.order_id,
+                        order_no: res.order_no,
+                        create_time: res.create_time,
+                        pay_time: res.pay_time,
+                        delivery_time: res.delivery_time,
+                        receipt_time: res.receipt_time,
+                        status: res.status,
+                        order_total_price: res.total_price,
+                        express_price: res.express_price,
+                        order_pay_price: res.pay_price,
+                        totalcount: res.goods.length,
+                        pay_status: res.pay_status,
+                        delivery_status: res.delivery_status,
+                        receipt_status: res.receipt_status,
+                        order_status: res.order_status,
+                        detail: []
+                    }
+                    res.goods.forEach((item, i) => {
+                        order.detail.push({
+                            goods_id: item.goods_id,
+                            img: item.image.file_path,
+                            count: item.total_num,
+                            price: item.goods_price,
+                            specTip: item.goods_attr,
+                            name: item.goods_name
+                        })
+                    })
+
+
+                    that.order = order
+                } else {
+
+                    return false
+                    that.address = {
+                        name: '李先生',
+                        phone: '15845454545',
+                        region: ['广东省', '广州市', '天河区'],
+                        detail: '黄埔大道车陂文化大街1号15乡6号楼7层105室',
+                        isDefault: true
+                    }
+                    that.order = {
+                        order_id: '12345679590',
+                        create_time: '2019-02-01 12:55:00',
+                        pay_time: '2019-02-01 12:55:00',
+                        delivery_time: '2019-02-01 12:55:00',
+                        receipt_time: '2019-02-01 12:55:00',
+                        status: '3',
+                        order_total_price: '100.00',
+                        express_price: '10.00',
+                        order_pay_price: '110.00',
+                        totalcount: '1',
+                        pay_status: {
+                            text: '已付款',
+                            value: 1
+                        },
+                        delivery_status: {
+                            text: '待发货',
+                            value: 10
+                        },
+                        receipt_status: {
+                            text: '待收货',
+                            value: 10
+                        },
+                        order_status: {
+                            text: '进行中',
+                            value: 10
+                        },
+                        detail: [
+                            {
+                                goods_id: '1',
+                                img: 'https://cbu01.alicdn.com/img/ibank/2018/122/260/9488062221_1899654620.400x400.jpg',
+                                count: '1',
+                                price: '100',
+                                specTip: '规格: 天蓝色 S码',
+                                name: '日系复古短袖T恤日系复古短袖T恤日系复古短袖T恤日系复古短袖T恤'
+                            }
+                        ]
+                    }
+                }
+            },
+            fail(res) {
+                console.error(res)
+            }
+        })
+
+
+
+
     }
 }
 </script>
@@ -126,6 +229,7 @@ export default {
     background-color: #d1a178;
     color: #ffffff;
     padding: 30px 15px;
+    height: 40px;
     position: relative;
 }
 .status__tit {

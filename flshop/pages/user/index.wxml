@@ -52,7 +52,7 @@
         <view class="order-navbar-item flex-box">
           <text class="order-navbar__icon iconfont icon-daipingjia"></text>
           <text class="order-navbar__name">待评价</text>
-          <text class="order-badge" wx:if="{{ false }}"></text>
+          <text class="order-badge" wx:if="{{ true }}"></text>
         </view>
       </view>
     </view>

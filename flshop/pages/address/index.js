@@ -54,7 +54,7 @@ Page({
       title: "提示",
       content: "您确定要移除当前收货地址吗?",
       success: function(o) {
-        o.confirm && App._post_form('address/delete', {
+        o.confirm && App._post_form('address/del/1', {
           address_id
         }, function(result) {
           _this.getAddressList();
@@ -72,7 +72,7 @@ Page({
     _this.setData({
       default_id: parseInt(address_id)
     });
-    App._post_form('address/setDefault', {
+    App._post_form('address/default/1', {
       address_id
     }, function(result) {
       _this.data.options.from === 'flow' && wx.navigateBack();

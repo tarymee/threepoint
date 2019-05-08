@@ -15,9 +15,10 @@ Page({
     best: {},
 
     scrollTop: 0,
+    wechat: '',
   },
 
-  onLoad: function() {
+  onLoad: function () {
     // 设置页面标题
     App.setTitle();
     // 设置navbar标题、颜色
@@ -29,18 +30,21 @@ Page({
   /**
    * 获取首页数据
    */
-  getIndexData: function() {
+  getIndexData: function () {
     let _this = this;
-    App._get('weapp/index/1',{}, function(result) {
-      console.info('11111'+result.data);
+    App._get('weapp/index/1', {}, function (result) {
+      console.info('11111' + result.data);
       _this.setData(result.data);
+      _this.setData({
+        wechat: result.wechat
+      });
     });
   },
 
   /**
    * 计算图片高度
    */
-  imagesHeight: function(e) {
+  imagesHeight: function (e) {
     let imgId = e.target.dataset.id,
       itemKey = e.target.dataset.itemKey,
       ratio = e.detail.width / e.detail.height, // 宽高比
@@ -63,7 +67,7 @@ Page({
     });
   },
 
-  bindChange: function(e) {
+  bindChange: function (e) {
     let itemKey = e.target.dataset.itemKey,
       imgCurrent = this.data.imgCurrent;
     // imgCurrent[itemKey] = e.detail.current;
@@ -93,7 +97,7 @@ Page({
   contact: function (t) {
     wx.showModal({
       title: '请添加微信联系客服',
-      content: '微信号：xxxx',
+      content: '微信号：' + this.data.wechat,
       showCancel: false,
       success(res) {
         if (res.confirm) {
@@ -128,7 +132,7 @@ Page({
   //   })
   // },
 
-  onShareAppMessage: function() {
+  onShareAppMessage: function () {
     return {
       title: "小程序首页",
       desc: "彩虹商城",
@@ -136,5 +140,3 @@ Page({
     };
   }
 });
-
-
