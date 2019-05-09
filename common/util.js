@@ -27,6 +27,7 @@ const api = {
     // 查询购物车的信息保存到订单表
     ordercart: `${host}/api/order/cart`,
     orderrepay: `${host}/api/order/repay`,
+    orderbuynow: `${host}/api/order/buyNow`,
     orderdetail: `${host}/api/myorder//detail/${site}`,
     orderlist: `${host}/api/myorder/list/${site}`,
     ordercancel: `${host}/api/myorder/cancel/${site}`,
@@ -602,6 +603,39 @@ const repay = function(order_id, order_pay_price) {
         }
     })
 }
+
+
+// 发起微信支付
+const pay = function (payment, order_id, order_pay_price) {
+    wx.requestPayment({
+        timeStamp: payment.timeStamp,
+        nonceStr: payment.nonceStr,
+        package: 'prepay_id=' + payment.prepay_id,
+        signType: 'MD5',
+        paySign: payment.paySign,
+        success: function (paymentRes) {
+            console.log(paymentRes)
+            // 跳转到成功下单页
+            uni.navigateTo({
+                url: '/pages/success/success?order_id=' + order_id + '&price=' + order_pay_price
+            })
+        },
+        fail: function () {
+            uni.showToast({
+                title: '订单未支付',
+                mask: true,
+                duration: 3000,
+                success: function () {
+                    // 跳转到未付款订单
+                    uni.redirectTo({
+                        url: '/pages/order/order?type=payment',
+                    })
+                }
+            })
+        }
+    })
+}
+
 const receipt = function(order_id) {
     console.log('receipt', order_id)
     let that = this
@@ -679,6 +713,7 @@ module.exports = {
     request,
     dataTransform,
     repay,
+    pay,
     receipt,
     math,
     cancel,

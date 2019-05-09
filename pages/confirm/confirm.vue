@@ -25,7 +25,7 @@
                 </div>
                 <div class="pro__info-tf">
                     <div class="pro__info-price">￥{{item.price}}</div>
-                    <div class="pro__info-count">￥{{item.count}}</div>
+                    <div class="pro__info-count">X{{item.count}}</div>
                 </div>
             </div>
         </div>
@@ -57,6 +57,11 @@ export default {
     components: {},
     data() {
         return {
+            // 下单类型
+            // 立即购买 type = buynow
+            // 购物车下单 type = ''
+            type: '',
+            buynowData: null,
             confirmArr: [],
             order_total_price: '0.00',
             express_price: '0.00',
@@ -68,55 +73,53 @@ export default {
         // 提交订单 付款
         pay() {
             let that = this
-            // uni.navigateTo({
-            //     url: '/pages/success/success?id=123456&price=95.36'
-            // })
-            u.request({
-                url: u.api.ordercart,
-                method: 'POST',
-                header: {
-                    'content-type': 'application/x-www-form-urlencoded'
-                },
-                data: {},
-                isVerifyLogin: true,
-                success(res) {
-                    console.log(res)
 
-                    if (res.code == 1) {
-                        // 发起微信支付
-                        wx.requestPayment({
-                            timeStamp: res.data.payment.timeStamp,
-                            nonceStr: res.data.payment.nonceStr,
-                            package: 'prepay_id=' + res.data.payment.prepay_id,
-                            signType: 'MD5',
-                            paySign: res.data.payment.paySign,
-                            success: function (paymentRes) {
-                                console.log(paymentRes)
-                                // 跳转到成功下单页
-                                uni.navigateTo({
-                                    url: '/pages/success/success?order_id=' + res.data.order_id + '&price=' + that.order_pay_price
-                                })
-                            },
-                            fail: function () {
-                                uni.showToast({
-                                    title: '订单未支付',
-                                    mask: true,
-                                    duration: 3000,
-                                    success: function () {
-                                        // 跳转到未付款订单
-                                        uni.redirectTo({
-                                            url: '/pages/order/order?type=payment',
-                                        })
-                                    }
-                                })
-                            }
-                        })
+            if (that.type == 'buynow') {
+                u.request({
+                    url: u.api.orderbuynow,
+                    method: 'POST',
+                    header: {
+                        'content-type': 'application/x-www-form-urlencoded'
+                    },
+                    data: {
+                        address_id: that.address.address_id,
+                        ...that.buynowData
+                    },
+                    isVerifyLogin: true,
+                    success(res) {
+                        console.log(res)
+                        if (res.code == 1) {
+                            // 发起微信支付
+                            u.pay(res.data.payment, res.data.order_id, that.order_pay_price)
+                        }
+                    },
+                    fail(res) {
+                        console.error(res)
                     }
-                },
-                fail(res) {
-                    console.error(res)
-                }
-            })
+                })
+            } else {
+                u.request({
+                    url: u.api.ordercart,
+                    method: 'POST',
+                    header: {
+                        'content-type': 'application/x-www-form-urlencoded'
+                    },
+                    data: {
+                        address_id: that.address.address_id
+                    },
+                    isVerifyLogin: true,
+                    success(res) {
+                        console.log(res)
+                        if (res.code == 1) {
+                            // 发起微信支付
+                            u.pay(res.data.payment, res.data.order_id, that.order_pay_price)
+                        }
+                    },
+                    fail(res) {
+                        console.error(res)
+                    }
+                })
+            }
         },
         selectAddress() {
             uni.navigateTo({
@@ -144,8 +147,17 @@ export default {
         console.log("confirm onLoad")
         let that = this
         console.log(event)
-        let confirmData
+        that.type = event.type
+        if (event.buynowData) {
+            try {
+                that.buynowData = JSON.parse(decodeURIComponent(event.buynowData))
+            } catch (error) {
+                that.buynowData = JSON.parse(event.buynowData)
+            }
+        }
+
         if (event.confirmData) {
+            let confirmData
             try {
                 confirmData = JSON.parse(decodeURIComponent(event.confirmData))
             } catch (error) {

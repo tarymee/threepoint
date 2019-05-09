@@ -25,7 +25,7 @@
                                         <view>-</view>
                                     </view>
                                     <view class="pro__info-count-input" @tap.stop="discard">
-                                        <input type="number" v-model="item.count" @input="changeCount" />
+                                        <input type="number" v-model="item.count" @input="changeCount(index)" />
                                     </view>
                                     <view class="pro__info-count-add"  @tap.stop="addCount(index)">
                                         <view>+</view>
@@ -93,6 +93,7 @@ export default {
         // 滑动删除商品
         delPro(index) {
             let that = this
+            let delProId = that.proArr[index].id
             let leftProArr = []
             that.proArr.forEach((item, i) => {
                 if (i != index) {
@@ -101,24 +102,49 @@ export default {
             })
             that.proArr = leftProArr
             that.sum()
-            that.updateCart()
+            that.updateDelPro(delProId)
         },
         // 按钮删除商品
         delSelPros() {
             let that = this
             if (that.proArr.length) {
                 let leftProArr = []
+                let delProsIdArr = []
                 that.proArr.forEach((item, i) => {
                     if (!item.select) {
                         leftProArr.push(item)
+                    } else {
+                        delProsIdArr.push(item.id)
                     }
                 })
                 that.proArr = leftProArr
                 that.sum()
-                that.updateCart()
+                that.updateDelPro(delProsIdArr.join(','))
             } else {
                 that.isEdit = false
             }
+        },
+        // 提交删除购物车数据
+        updateDelPro(id) {
+            u.request({
+                url: u.api.cartdel,
+                method: 'POST',
+                header: {
+                    'content-type': 'application/x-www-form-urlencoded'
+                },
+                data: {
+                    goods_id: id
+                },
+                isVerifyLogin: true,
+                isShowLoading: false,
+                isShowError: false,
+                success(res) {
+                    console.log(res)
+                },
+                fail(res) {
+                    console.error(res)
+                }
+            })
         },
         // 选中商品
         selPro(index) {
@@ -142,7 +168,10 @@ export default {
             }
             that.proArr[index].count--
             that.sum()
-
+            that.updateCount(that.proArr[index].id, that.proArr[index].count)
+        },
+        // 更新购物车商品数量
+        updateCount(id, count) {
             u.request({
                 url: u.api.cartchangenum,
                 method: 'POST',
@@ -150,8 +179,8 @@ export default {
                     'content-type': 'application/x-www-form-urlencoded'
                 },
                 data: {
-                    goods_id: that.proArr[index].id,
-                    goods_num: that.proArr[index].count
+                    id: id,
+                    count: count
                 },
                 isVerifyLogin: true,
                 isShowLoading: false,
@@ -163,22 +192,20 @@ export default {
                     console.error(res)
                 }
             })
-
-
-            that.updateCart()
         },
         // 增加数量
         addCount(index) {
             let that = this
             that.proArr[index].count++
             that.sum()
-            that.updateCart()
+            that.updateCount(that.proArr[index].id, that.proArr[index].count)
         },
         // input改变数量
-        changeCount() {
+        changeCount(index) {
+            console.log(index)
             let that = this
             that.sum()
-            that.updateCart()
+            that.updateCount(that.proArr[index].id, that.proArr[index].count)
         },
         // 合计
         sum() {
@@ -230,32 +257,23 @@ export default {
                             cartid: JSON.stringify(cartidArr)
                         },
                         isVerifyLogin: true,
-                        isShowLoading: false,
-                        isShowError: false,
+                        isShowLoading: true,
+                        isShowError: true,
                         success(res) {
                             console.log(res)
                             if (res.code == 1) {
                                 console.log('跳去订单确认页')
                                 uni.navigateTo({
                                     url: '/pages/confirm/confirm?confirmData=' + encodeURIComponent(JSON.stringify(res.data))
-                                    // url: '/pages/confirm/confirm?confirmArr=' + encodeURIComponent(JSON.stringify(confirmArr)) + '&proPrice=' + that.sumPrice
                                 })
                             } else {
                                 console.error('提交订单失败')
                             }
-
-
-
-
                         },
                         fail(res) {
                             console.error(res)
                         }
                     })
-
-                    return false
-
-
                 })
             } else {
                 uni.showToast({
@@ -264,41 +282,6 @@ export default {
                     icon: 'none',
                 })
             }
-        },
-        // 更新购物车商品数量
-        updateCount() {
-
-        },
-        // 更新购物车列表
-        updateCart() {
-            return false
-            console.log('更新购物车列表')
-            let that = this
-            u.checkLogin(function () {
-                let newArr = []
-                that.proArr.forEach((item, i) => {
-                    newArr.push(item)
-                })
-                u.request({
-                    url: u.api.cartupdate,
-                    method: 'POST',
-                    header: {
-                        'content-type': 'application/x-www-form-urlencoded'
-                    },
-                    data: {
-                        cartlist: newArr
-                    },
-                    isVerifyLogin: true,
-                    isShowLoading: false,
-                    isShowError: false,
-                    success(res) {
-                        console.log(res)
-                    },
-                    fail(res) {
-                        console.error(res)
-                    }
-                })
-            })
         }
     },
     onShow() {

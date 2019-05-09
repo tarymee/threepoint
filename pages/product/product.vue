@@ -327,13 +327,39 @@ export default {
                         })
                     })
                 } else {
+                    // 立即购买
                     u.checkLogin(function () {
-                        console.log('跳去订单确认页')
-                        let confirmArr = [postData]
-                        let proPrice = u.math.multimul(confirmArr[0].price, confirmArr[0].count)
-                        uni.navigateTo({
-                            url: '/pages/confirm/confirm?confirmArr=' + encodeURIComponent(JSON.stringify(confirmArr)) + '&proPrice=' + proPrice
+                        u.request({
+                            url: u.api.orderbuynow,
+                            method: 'GET',
+                            header: {
+                                'content-type': 'application/x-www-form-urlencoded'
+                            },
+                            data: postData,
+                            isVerifyLogin: true,
+                            isShowLoading: true,
+                            isShowError: true,
+                            success(res) {
+                                console.log(res)
+                                if (res.code == 1) {
+                                    console.log('跳去订单确认页')
+                                    uni.navigateTo({
+                                        url: '/pages/confirm/confirm?confirmData=' + encodeURIComponent(JSON.stringify(res.data)) + '&type=buynow&buynowData=' + encodeURIComponent(JSON.stringify(postData))
+                                    })
+                                } else {
+                                    console.error('提交订单失败')
+                                }
+                            },
+                            fail(res) {
+                                console.error(res)
+                            }
                         })
+
+                        // let confirmArr = [postData]
+                        // let proPrice = u.math.multimul(confirmArr[0].price, confirmArr[0].count)
+                        // uni.navigateTo({
+                        //     url: '/pages/confirm/confirm?confirmArr=' + encodeURIComponent(JSON.stringify(confirmArr)) + '&proPrice=' + proPrice
+                        // })
                     })
                 }
             } else {
