@@ -138,3 +138,21 @@
 .chackout-left-detail {
   line-height: 44px;
 }
+
+
+.express {
+    padding: 15px 0;
+    text-align: center;
+    background-color: #fff;
+}
+.express__btn {
+    display: inline-block;
+    line-height: 30px;
+    height: 30px;
+    border: 1rpx solid #ff495e;
+    border-radius: 15px;
+    padding: 0 25px;
+    font-size: 14px;
+    text-align: center;
+    color: #ff495e;
+}

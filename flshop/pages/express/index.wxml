@@ -1,0 +1,55 @@
+<view class="container" style="padding: 20px;background-color: #fff;">
+    <view class="express__pro" wx:for="{{orderList}}" wx:key="this">
+        <view class="express__pro-l"><image src="{{item.logo}}" mode="aspectFill" class="express__pro-img" alt="" /></view>
+        <view class="express__pro-m">
+            <view class="express__pro-m-name">{{item.title}}</view>
+            <view class="express__pro-m-des">数量: {{item.number}} 价格: {{item.price}}</view>
+        </view>
+    </view>
+
+    <!-- <view class="express__pro">
+        <view class="express__pro-l">
+            <image src="http://fpoimg.com/400x400" mode="aspectFill" class="express__pro-img" alt="" />
+        </view>
+        <view class="express__pro-m">
+            <view class="express__pro-m-name">三分联盟红色清朝康熙年代景德镇陶瓷80cm*90CM</view>
+            <view class="express__pro-m-des">规格: 红色 80cm</view>
+            <view class="express__pro-m-des">数量: 1</view>
+        </view>
+    </view> -->
+
+    <!-- <view class="express__info">
+        <view class="express__info-txt">发货时间：2017-08-20 14:16 周日</view>
+        <view class="express__info-txt">物流公司：韵达</view>
+        <view class="express__info-txt">联系电话：<text class="express__info-phone">95533</text></view>
+        <view class="express__info-txt">物流单号：65465654646546546 <view class="express__info-copy">复制</view></view>
+    </view> -->
+
+    <view class="express" wx:if="{{expressList.length}}">
+        <view class="express__item express__item--on" wx:for="{{expressList}}" wx:key="this">
+            <view class="express__item-circle"></view>
+            <!-- <view class="express__item-tit">已发货</view> -->
+            <view class="express__item-info">{{item.content}}</view>
+            <view class="express__item-time">{{item.dates}} {{item.times}}</view>
+        </view>
+    </view>
+    <view class="yoshop-notcont" wx:else>
+        <text class="iconfont icon-ziyuan"></text>
+        <text class="cont">亲，您还没有物流轨迹信息哦！</text>
+    </view>
+    <!-- <view class="express">
+        <view class="express__item express__item--on">
+            <view class="express__item-circle"></view>
+            <view class="express__item-tit">已发货</view>
+            <view class="express__item-info">广州市天河区龙洞xx快递员正在联系客户派送 联系电话:广州市天河区龙洞xx快递员正在联系客户派送 联系电话: 187654121452</view>
+            <view class="express__item-time">2017-08-20 14:16 周日</view>
+        </view>
+        <view class="express__item">
+            <view class="express__item-circle"></view>
+            <view class="express__item-tit">已发货</view>
+            <view class="express__item-info">广州市天河区龙洞xx快递员正在联系客户派送 联系电话: 187654121452</view>
+            <view class="express__item-time">2017-08-20 14:16 周日</view>
+        </view>
+    </view> -->
+
+</view>

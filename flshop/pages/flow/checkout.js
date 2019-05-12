@@ -203,6 +203,7 @@ Page({
 
     // 创建订单-立即购买
     if (options.order_type === 'buyNow') {
+      console.info("openid---------->"+wx.getStorageSync('token'));
       App._post_form('order/buyNow', {
         goods_id: options.goods_id,
         goods_num: options.goods_num,

@@ -39,6 +39,15 @@ Page({
   },
 
   /**
+   * 跳转物流轨迹
+   */
+  express: function () {
+    wx.navigateTo({
+      url: '../express/index?orderId=' + this.data.order_id
+    });
+  },
+
+  /**
    * 取消订单
    */
   cancelOrder: function (e) {

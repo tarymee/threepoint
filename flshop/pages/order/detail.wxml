@@ -23,6 +23,9 @@
       <view class="dis-flex flow-all-list-cont">
         <text class="col-7" selectable="{{true}}">快递单号: {{order.express_no}}</text>
       </view>
+      <view class="express" wx:if="{{order.delivery_status.value===20 && order.receipt_status.value===10}}">
+        <view class="express__btn" bindtap="express">查看物流</view>
+      </view>
     </view>
 
     <!-- 商品列表 -->

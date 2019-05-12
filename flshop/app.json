@@ -11,6 +11,7 @@
     "pages/user/help",
     "pages/order/index",
     "pages/order/detail",
+    "pages/express/index",
     "pages/address/index",
     "pages/address/create",
     "pages/address/detail",
