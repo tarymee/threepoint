@@ -43,7 +43,7 @@ Page({
    */
   express: function () {
     wx.navigateTo({
-      url: '../express/index?orderId=' + this.data.order_id
+      url: '../order/express?order_id=' + this.data.order_id
     });
   },
 

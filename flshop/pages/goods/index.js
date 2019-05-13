@@ -27,6 +27,15 @@ Page({
     goods_sku_id: 0, // 规格id
     cart_total_num: 0, // 购物车商品总数量
     specData: {}, // 多规格信息
+    goodsComment: null,
+    // goodsComment: [
+    //   {
+    //     comment_rank: 3,
+    //     name: 'tarymee',
+    //     cont: '这个商品不错, 很好用, 我非常喜欢',
+    //     time: '2018-05-09 12:12:22',
+    //   }
+    // ]
   },
 
   // 记录规格的数组

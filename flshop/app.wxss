@@ -474,13 +474,13 @@ page {
   min-height: 150px;
 }
 
-.com_xing .icon-shoucang1 {
+.com_xing .icon-favorite {
   padding-right: 6rpx;
   color: #ccc;
   font-size: 26rpx;
 }
 
-.com_xing .icon-shoucang1.active {
+.com_xing .icon-favorite.active {
   color: #f4a213;
 }
 

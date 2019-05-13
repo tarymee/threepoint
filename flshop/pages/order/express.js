@@ -2,7 +2,7 @@ let App = getApp();
 
 Page({
     data: {
-        orderId: '',
+        order_id: '',
         orderList: [],
         expressList: [],
         order: {},
@@ -12,10 +12,10 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
-        this.data.orderId = options.orderId || '';
+        this.data.order_id = options.order_id || '';
         // console.log(options)
-        // console.log(this.data.orderId)
-        this.setData({ orderId: this.data.orderId });
+        // console.log(this.data.order_id)
+        this.setData({ order_id: this.data.order_id });
     },
 
     /**
@@ -28,7 +28,7 @@ Page({
     getExpressData: function () {
         let _this = this
         App._post_form('order/track', {
-            orderId: _this.data.orderId,
+            orderId: _this.data.order_id,
             // orderId: '265',
             token: wx.getStorageSync('token')
         }, function (res) {
@@ -47,13 +47,6 @@ Page({
                 }
             }
         });
-
-        // App._get('order/track', {
-        //     orderId: _this.data.orderId,
-        //     token: wx.getStorageSync('token')
-        // }, function (result) {
-        //     console.log(result)
-        // });
 
     },
 

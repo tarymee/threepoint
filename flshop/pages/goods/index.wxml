@@ -73,11 +73,11 @@
         <view class="cont-box goods-comment-box b-t b-f b-b" wx:for="{{goodsComment}}" wx:key="goodsComment">
           <text class="admin">{{item.name}}</text>
           <view class="com_xing">
-            <text class="iconfont icon-shoucang1 {{item.comment_rank>0?'active ':''}}"></text>
-            <text class="iconfont icon-shoucang1 {{item.comment_rank>1?'active ':''}}"></text>
-            <text class="iconfont icon-shoucang1 {{item.comment_rank>2?'active ':''}}"></text>
-            <text class="iconfont icon-shoucang1 {{item.comment_rank>3?'active ':''}}"></text>
-            <text class="iconfont icon-shoucang1 {{item.comment_rank>4?'active ':''}}"></text>
+            <text class="iconfont icon-favorite {{item.comment_rank>0?'active ':''}}"></text>
+            <text class="iconfont icon-favorite {{item.comment_rank>1?'active ':''}}"></text>
+            <text class="iconfont icon-favorite {{item.comment_rank>2?'active ':''}}"></text>
+            <text class="iconfont icon-favorite {{item.comment_rank>3?'active ':''}}"></text>
+            <text class="iconfont icon-favorite {{item.comment_rank>4?'active ':''}}"></text>
           </view>
           <view class="goods-comment-cont m-top20">{{item.cont}}</view>
           <view class="f-22 col-9 m-top10">{{item.time}}</view>
