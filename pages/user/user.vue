@@ -38,7 +38,7 @@
             <div style="background-color: #efefef; height: 15px"></div>
 
             <uni-list>
-                <uni-list-item title="收获地址" @click="jump('/pages/address/address')"></uni-list-item>
+                <uni-list-item title="收货地址" @click="jump('/pages/address/address')"></uni-list-item>
                 <uni-list-item title="绑定手机" @click="bindphone()" show-badge="true" :badge-text="user.isbindphone ? user.phone : '未绑定'" badge-type="default" badge-inverted="true"></uni-list-item>
                 <uni-list-item title="联系客服" @click="jump('/pages/service/service')"></uni-list-item>
                 <uni-list-item title="用户反馈" @click="jump('/pages/feedback/feedback')"></uni-list-item>

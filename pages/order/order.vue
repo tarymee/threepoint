@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="">
         <div class="cate1 cate1--fixed">
             <scroll-view scroll-x>
                 <a class="cate1__item" style="width: 25%; margin: 0" :class="item.select ? 'cate1__item--cur' : ''" v-for="(item, index) in cate1Arr" :key="index" @click="reloadOrder(item.type)">
@@ -9,13 +9,7 @@
         </div>
         <div class="" style="height: 35px;"></div>
         <orderList :orderArr="bottomLoad_data"></orderList>
-
-        <tip :text="bottomLoad_tip" :none-icon="false" v-if="bottomLoad_data.length!=0"></tip>
-
-        <div style="padding: 100px 0;" v-if="bottomLoad_data.length==0">
-            <tip :text="bottomLoad_tip" :none-icon="true"></tip>
-        </div>
-
+        <tip :text="bottomLoad_tip" :none-icon="noneIcon"></tip>
     </div>
 </template>
 <script>
@@ -60,6 +54,12 @@ export default {
                 // received
                 dataType: ''
             }
+        }
+    },
+    computed: {
+        noneIcon () {
+            let that = this
+            return that.bottomLoad_data.length ? false : true
         }
     },
     methods: {

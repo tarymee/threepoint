@@ -1,7 +1,7 @@
 
 <template>
 <div class="">
-    <div style="padding: 100px 0;" v-if="!order">
+    <div v-if="!order">
         <tip text="暂无订单" :none-icon="true"></tip>
     </div>
     <div class="" v-if="order">
@@ -32,21 +32,23 @@
         <div class="" style="height: 10px;background-color: #F9F9F9;"></div>
         <div class="order">
             <div class="order__item">
-                <div class="order__th">
-                    <div class="order__th-tit">订单信息</div>
-                </div>
-                <div class="order__tb" v-for="(item1, index1) in order.detail" :key="index1">
-                    <div class="order__tb-l"><img :src="item1.img" mode="aspectFill" class="order__tb-img" alt="" /></div>
-                    <div class="order__tb-m">
-                        <div class="order__tb-m-name">{{item1.name}}</div>
-                        <div class="order__tb-m-select">{{item1.specTip}}</div>
+                <div class="order__item-con">
+                    <div class="order__th">
+                        <div class="order__th-tit">订单信息</div>
                     </div>
-                    <div class="order__tb-r">
-                        <div class="order__tb-price">¥{{item1.price}}</div>
-                        <div class="order__tb-number">x{{item1.count}}</div>
+                    <div class="order__tb" v-for="(item1, index1) in order.detail" :key="index1">
+                        <div class="order__tb-l"><img :src="item1.img" mode="aspectFill" class="order__tb-img" alt="" /></div>
+                        <div class="order__tb-m">
+                            <div class="order__tb-m-name">{{item1.name}}</div>
+                            <div class="order__tb-m-select">{{item1.specTip}}</div>
+                        </div>
+                        <div class="order__tb-r">
+                            <div class="order__tb-price">¥{{item1.price}}</div>
+                            <div class="order__tb-number">x{{item1.count}}</div>
+                        </div>
                     </div>
+                    <div class="order__tf">共 {{order.totalcount}} 件 合计： <span class="order__tf-price">¥{{order.order_pay_price}}</span> (含运费¥{{order.express_price}})</div>
                 </div>
-                <div class="order__tf">共 {{order.totalcount}} 件 合计： <span class="order__tf-price">¥{{order.order_pay_price}}</span> (含运费¥{{order.express_price}})</div>
             </div>
         </div>
         <div class="" style="height: 10px;background-color: #F9F9F9;"></div>
@@ -60,7 +62,7 @@
         <div class="" style="height: 10px;background-color: #F9F9F9;"></div>
 
         <div class="" style="height: 50px;"></div>
-        <div class="detail-tf">
+        <div class="detail-tf" v-if="order.pay_status.value===0 || (order.delivery_status.value===20 && order.receipt_status.value===10)">
             <div class="detail-tf__btn1" v-if="order.pay_status.value===0" @tap="cancel(order.order_id)">取消订单</div>
             <div class="detail-tf__btn2" v-if="order.pay_status.value===0" @tap="repay(order.order_id, order.order_pay_price)">立即付款</div>
             <div class="detail-tf__btn2" v-if="order.delivery_status.value===20 && order.receipt_status.value===10" @tap="receipt(order.order_id)">确认收货</div>
@@ -251,7 +253,7 @@ export default {
 
 .info {
     padding: 15px;
-    font-size: 14px;
+    font-size: 12px;
     line-height: 25px;
 }
 

@@ -66,7 +66,8 @@ export default {
             order_total_price: '0.00',
             express_price: '0.00',
             order_pay_price: '0.00',
-            address: null
+            address: null,
+            cartid: null,
         }
     },
     methods: {
@@ -105,7 +106,8 @@ export default {
                         'content-type': 'application/x-www-form-urlencoded'
                     },
                     data: {
-                        address_id: that.address.address_id
+                        address_id: that.address.address_id,
+                        cartid: that.cartid
                     },
                     isVerifyLogin: true,
                     success(res) {
@@ -177,6 +179,10 @@ export default {
                 item.count = item.total_num
             })
             that.confirmArr = confirmData.goods_list
+        }
+
+        if (event.cartid) {
+            that.cartid = event.cartid
         }
 
 

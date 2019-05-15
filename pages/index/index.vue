@@ -76,12 +76,7 @@
         </scroll-view>
     </div>
     <productList :productArr="bottomLoad_data"></productList>
-
-    <tip :text="bottomLoad_tip" :none-icon="false" v-if="bottomLoad_data.length!=0"></tip>
-
-    <div style="padding: 100px 0;" v-if="bottomLoad_data.length==0">
-        <tip :text="bottomLoad_tip" :none-icon="true"></tip>
-    </div>
+    <tip :text="bottomLoad_tip" :none-icon="noneIcon"></tip>
 </div>
 </template>
 
@@ -96,6 +91,12 @@ export default {
         productList
     },
     mixins: [bottomLoad],
+    computed: {
+        noneIcon () {
+            let that = this
+            return that.bottomLoad_data.length ? false : true
+        }
+    },
     data() {
         return {
             autoplay: true,

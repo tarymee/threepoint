@@ -1,7 +1,7 @@
 <template>
     <div>
         <productList :productArr="bottomLoad_data"></productList>
-        <tip :text="bottomLoad_tip" :none-icon="false"></tip>
+        <tip :text="bottomLoad_tip" :none-icon="noneIcon"></tip>
     </div>
 </template>
 <script>
@@ -25,6 +25,12 @@ export default {
             }
         }
     },
+    computed: {
+        noneIcon () {
+            let that = this
+            return that.bottomLoad_data.length ? false : true
+        }
+    },
     methods: {
         test() {
             console.log('text')
@@ -35,12 +41,20 @@ export default {
         console.log("cate onLoad")
         let that = this
         console.log(event)
-        that.bottomLoad_params.category_id = event.id
-        that.bottomLoad_params.type = event.type
-        that.bottomLoad_params.search = event.search
-        uni.setNavigationBarTitle({
-            title: event.title
-        })
+        if (event.id) {
+            that.bottomLoad_params.category_id = event.id
+        }
+        if (event.type) {
+            that.bottomLoad_params.type = event.type
+        }
+        if (event.search) {
+            that.bottomLoad_params.search = event.search
+        }
+        if (event.title) {
+            uni.setNavigationBarTitle({
+                title: event.title
+            })
+        }
         that.bottomLoad_reload()
     }
 }

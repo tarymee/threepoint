@@ -1,4 +1,5 @@
 <template>
+    <!-- 此页面废弃 -->
     <div>
         <orderList :orderArr="bottomLoad_data"></orderList>
         <tip :text="bottomLoad_tip" :none-icon="false"></tip>

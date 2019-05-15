@@ -24,7 +24,10 @@
 
 
 
-
+.contain--gray {
+    background-color:rgb(247,247,247);
+    min-height: 100vh;
+}
 
 
 
@@ -132,10 +135,17 @@
     overflow: hidden;
 }
 .order__item {
-    margin-bottom: 10px;
+    /* margin-top: 10px; */
     background-color: #fff;
-    padding: 0 15px;
+    /* padding: 0 15px; */
     color: #333;
+}
+.order__item-graybg {
+    background-color:rgb(247,247,247);
+    height: 10px;
+}
+.order__item-con {
+    padding: 0 15px;
 }
 .order__th {
     display: flex;

@@ -341,13 +341,18 @@ export default {
                             isShowError: true,
                             success(res) {
                                 console.log(res)
-                                if (res.code == 1) {
+                                if (res && res.code == 1) {
                                     console.log('跳去订单确认页')
                                     uni.navigateTo({
                                         url: '/pages/confirm/confirm?confirmData=' + encodeURIComponent(JSON.stringify(res.data)) + '&type=buynow&buynowData=' + encodeURIComponent(JSON.stringify(postData))
                                     })
                                 } else {
                                     console.error('提交订单失败')
+                                    uni.showModal({
+                                        title: '提示',
+                                        content: '提交订单失败',
+                                        showCancel: false
+                                    })
                                 }
                             },
                             fail(res) {
@@ -424,7 +429,7 @@ export default {
                         }
                     })
                     that.specArr = dealSpecArr
-                    that.htmlString = res.remark
+                    that.htmlString = res.remark.replace(/<img/g, "<img width=\"100%;\" style=\"max-width:100%;height:auto\"")
                 }
             },
             fail(res) {
@@ -559,6 +564,10 @@ export default {
         overflow: hidden;
         font-size: 14px;
         color: #333;
+    }
+    .product-con rich-text {
+        overflow: hidden;
+        width: 100%;
     }
 
 
