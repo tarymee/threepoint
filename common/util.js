@@ -32,7 +32,14 @@ const api = {
     orderlist: `${host}/api/myorder/list/${site}`,
     ordercancel: `${host}/api/myorder/cancel/${site}`,
     orderreceipt: `${host}/api/myorder/receipt/${site}`,
-
+    // 申请开店列表
+    applylist: `${host}/api/applyinfo/list/${site}`,
+    // 申请开店
+    apply: `${host}/api/order/apply`,
+    // 申请开店查询
+    applyuser: `${host}/api/applyuser/detail`,
+    // 门店列表
+    sitelist: `${host}/api/site/list/${site}`,
 
 
     phoneget: `${host}/api/phone/get/${site}`,
@@ -636,6 +643,7 @@ const pay = function (payment, order_id, order_pay_price) {
     })
 }
 
+// 确认收货
 const receipt = function(order_id) {
     console.log('receipt', order_id)
     let that = this
@@ -666,6 +674,8 @@ const receipt = function(order_id) {
         }
     })
 }
+
+// 取消订单
 const cancel = function(order_id) {
     console.log('cancel', order_id)
     request({

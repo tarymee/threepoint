@@ -171,6 +171,11 @@
             }
         ]
     },
+    "permission": {
+        "scope.userLocation": {
+            "desc": "您的位置将用于十器良品小程序获取门店列表"
+        }
+    },
     "condition" : {
         "current": 1,
         "list": [
@@ -192,6 +197,11 @@
             {
                 "name": "user",
                 "path": "pages/user/user",
+                "query": ""
+            },
+            {
+                "name": "store",
+                "path": "pages/store/store",
                 "query": ""
             },
             {
@@ -233,6 +243,11 @@
                 "name": "open",
                 "path": "pages/open/open",
                 "query": ""
+            },
+            {
+                "name": "applystore",
+                "path": "pages/applystore/applystore",
+                "query": "price=1999&title=三分联盟旗舰店&storeid=1"
             },
             {
                 "name": "addressdetail",

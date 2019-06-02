@@ -1,6 +1,6 @@
 <template>
 <div>
-    <a class="store" @click="contact(item.phone)" v-for="(item, index) in storeArr" :key="index">
+    <a class="store" @click="applystore(item)" v-for="(item, index) in storeArr" :key="index">
         <image :src="item.img" mode="aspectFill"></image>
         <div class="store__tit">{{item.title}}</div>
         <div class="store__price">
@@ -11,13 +11,11 @@
         <div class="store__del">原价: ￥{{item.marketPrice}}</div>
     </a>
 
-    <!-- <rich-text :nodes="htmlString"></rich-text> -->
-
-    <div class="con" @click="applystore">
-      <image src="/static/img/open/art1.jpg" mode="aspectFill" style="height: 430px"></image>
-      <image src="/static/img/open/art2.jpg" mode="aspectFill" style="height: 314px"></image>
-      <image src="/static/img/open/art3.jpg" mode="aspectFill" style="height: 515px"></image>
-      <image src="/static/img/open/art4.jpg" mode="aspectFill" style="height: 441px"></image>
+    <div class="con">
+      <image src="/static/img/open/art1.jpg" mode="aspectFill" style="height: 860upx"></image>
+      <image src="/static/img/open/art2.jpg" mode="aspectFill" style="height: 630upx"></image>
+      <image src="/static/img/open/art3.jpg" mode="aspectFill" style="height: 1030upx"></image>
+      <image src="/static/img/open/art4.jpg" mode="aspectFill" style="height: 882upx"></image>
     </div>
 
 </div>
@@ -30,29 +28,28 @@ export default {
     data() {
         return {
             storeArr: [
-                {
-                    img: '/static/img/open/item1.jpg',
-                    title: '三分联盟专卖店（工厂直供）',
-                    discountPrice: '386',
-                    marketPrice: '19999',
-                    phone: '13666666666'
-                },
-                {
-                    img: '/static/img/open/item2.jpg',
-                    title: '三分联盟专卖店（工厂直供）',
-                    discountPrice: '386',
-                    marketPrice: '19999',
-                    phone: '13666666666'
-                },
-                {
-                    img: '/static/img/open/item3.jpg',
-                    title: '三分联盟专卖店（工厂直供）',
-                    discountPrice: '386',
-                    marketPrice: '19999',
-                    phone: '13666666666'
-                }
-            ],
-            htmlString: ''
+                // {
+                //     img: '/static/img/open/item1.jpg',
+                //     title: '三分联盟专卖店（工厂直供）',
+                //     discountPrice: '386',
+                //     marketPrice: '19999',
+                //     phone: '13666666666'
+                // },
+                // {
+                //     img: '/static/img/open/item2.jpg',
+                //     title: '三分联盟专卖店（工厂直供）',
+                //     discountPrice: '386',
+                //     marketPrice: '19999',
+                //     phone: '13666666666'
+                // },
+                // {
+                //     img: '/static/img/open/item3.jpg',
+                //     title: '三分联盟专卖店（工厂直供）',
+                //     discountPrice: '386',
+                //     marketPrice: '19999',
+                //     phone: '13666666666'
+                // }
+            ]
         }
     },
     methods: {
@@ -68,26 +65,37 @@ export default {
                 showCancel: false
             })
         },
-        applystore() {
+        applystore(item) {
             uni.navigateTo({
-                url: '/pages/applystore/applystore'
+                url: `/pages/applystore/applystore?title=${item.title}&price=${item.discountPrice}&storeid=${item.id}`
             })
         }
     },
     onLoad() {
         console.log('open onLoad')
         var that = this
-        // u.request({
-        //     url: u.api.open,
-        //     method: 'POST',
-        //     isVerifyLogin: false,
-        //     success(res) {
-        //         console.log(res)
-        //         that.storeArr = res.applyinfo
-        //     }
-        // })
+        u.request({
+            url: u.api.applylist,
+            method: 'POST',
+            header: {
+                'content-type': 'application/x-www-form-urlencoded'
+            },
+            data: {},
+            isVerifyLogin: true,
+            success(res) {
+                console.log(res)
 
-        that.htmlString = '<p><img style="width:100%" src="/static/img/open/art1.jpg" /></p><p><img style="width:100%" src="/static/img/open/art2.jpg" /></p><p><img style="width:100%" src="/static/img/open/art3.jpg" /></p><p><img style="width:100%" src="/static/img/open/art4.jpg" /></p>'
+                that.storeArr = u.dataTransform(res.applyinfo, {
+                    logo: 'img',
+                    discountPrice: 'discountPrice',
+                    marketPrice: 'marketPrice',
+                    title: 'title',
+                    phone: 'phone',
+                })
+
+            }
+        })
+
     }
 }
 </script>

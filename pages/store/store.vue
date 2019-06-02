@@ -1,31 +1,40 @@
 <template>
 <div>
     <div class="store__po">
-        <image src="/static/img/icon-address.png" mode="aspectFill"></image>广东省 广州市 天河区
+        <!-- <image src="/static/img/icon-address.png" mode="aspectFill"></image> -->
+        <!-- 广东省 广州市 天河区 -->
+        <picker mode="region" @change="bindRegionChange" :value="region">
+            <view class="tt-form__item-r-text" v-if="region.length"><image src="/static/img/icon-address.png" mode="aspectFill"></image> {{region[0]}} {{region[1]}} {{region[2]}}</view>
+            <view class="tt-form__item-r-text" v-else><image src="/static/img/icon-address.png" mode="aspectFill"></image> 您附近的门店</view>
+        </picker>
     </div>
     <div class="store__img">
         <image src="/static/img/open/item1.jpg" mode="aspectFill"></image>
-        <div class="store__po2">
+        <!-- <div class="store__po2">
             <div class="store__po2-l">广东省 广州市 天河区</div>
             <div class="store__po2-r">请选择 ></div>
-        </div>
+        </div> -->
     </div>
 
-    <a class="store" @click="jump(item.url)" v-for="(item, index) in storeArr" :key="index">
+    <a class="store" @click="showAddress(item)" v-for="(item, index) in storeArr" :key="index">
         <div class="store__tit">
-            <div class="store__tit-l">{{item.name}}</div>
-            <div class="store__tit-r">{{item.distance}}</div>
+            <div class="store__tit-l">{{item.title}}</div>
+            <div class="store__tit-r" v-if="item.phone">{{item.phone}}</div>
         </div>
         <div class="store__address">
             <div class="store__address-l">{{item.address}}</div>
             <div class="store__address-r">{{item.type}}</div>
         </div>
     </a>
-    <tip text="很抱歉 该地区暂未开通" :none-icon="true"></tip>
+    <div class="" v-if="!storeArr.length">
+        <tip text="很抱歉 该地区暂未开通" :none-icon="true"></tip>
+    </div>
+
 </div>
 </template>
 
 <script>
+import u from '@/common/util'
 import tip from '@/components/tip/tip.vue'
 export default {
     components: {
@@ -33,40 +42,101 @@ export default {
     },
     data() {
         return {
+            region: [],
+            latitude: null,
+            longitude: null,
             storeArr: [
                 // {
-                //     distance: '10km',
-                //     name: '三分联盟专卖店三分联盟专卖店三分联盟专卖店（工厂直供）',
+                //     phone: '10km',
+                //     title: '三分联盟专卖店三分联盟专卖店三分联盟专卖店（工厂直供）',
                 //     address: '广东省广州市天河区kkk街道',
-                //     type: '直营店',
-                //     url: '/pages/logs/main'
+                //     type: '直营店'
                 // },
                 // {
-                //     distance: '20km',
-                //     name: '三分联盟专卖店（工厂直供）',
+                //     phone: '20km',
+                //     title: '三分联盟专卖店（工厂直供）',
                 //     address: '广东省广州市天河区kkk街道广东省广州市天河区kkk街道广东省广州市天河区kkk街道',
-                //     type: '直营店',
-                //     url: '/pages/logs/main'
+                //     type: '直营店'
                 // },
                 // {
-                //     distance: '30km',
-                //     name: '三分联盟专卖店（工厂直供）',
+                //     phone: '30km',
+                //     title: '三分联盟专卖店（工厂直供）',
                 //     address: '广东省广州市天河区kkk街道',
-                //     type: '直营店',
-                //     url: '/pages/logs/main'
+                //     type: '直营店'
                 // }
             ]
         }
     },
     methods: {
-        jump(url) {
-            mpvue.navigateTo({
-                url: url
+        bindRegionChange(e) {
+            let that = this
+            console.log(e)
+            that.region = e.target.value
+            that.load(1)
+        },
+        showAddress(info) {
+            wx.openLocation({
+                // latitude: 23.13171,
+                // longitude: 113.26627,
+                latitude: Number(info.latitude),
+                longitude: Number(info.longitude),
+                name: info.title,
+                address: info.address,
+                scale: 18
+            })
+        },
+        // type0=经纬度 type1=地区
+        load(type) {
+            let that = this
+            let postData = {}
+            if (type == 0) {
+                postData.latitude = that.latitude
+                postData.longitude = that.longitude
+            } else {
+                postData.region = JSON.stringify(that.region)
+            }
+            u.request({
+                url: u.api.sitelist,
+                method: 'POST',
+                header: {
+                    'content-type': 'application/x-www-form-urlencoded'
+                },
+                data: postData,
+                isVerifyLogin: false,
+                success(res) {
+                    console.log(res)
+                    if (res.code == 1 && res.data && res.data.length) {
+                        that.storeArr = res.data.map((item, i) => {
+                            return {
+                                title: item.title,
+                                type: item.name,
+                                // 如果是直营店要显示手机号，如果是加盟点不显示手机号
+                                // type 1直营2加盟
+                                phone: item.type == 1 ? item.phone : null,
+                                address: item.address + item.remark,
+                                latitude: item.latitude,
+                                longitude: item.longitude,
+                            }
+                        })
+                    } else {
+                        that.storeArr = []
+                    }
+                }
             })
         }
     },
     onLoad() {
         console.log('store onLoad')
+        var that = this
+        wx.getLocation({
+            type: 'gcj02',
+            success (res) {
+                console.log(res)
+                that.latitude = res.latitude
+                that.longitude = res.longitude
+                that.load(0)
+            }
+        })
     }
 }
 </script>
@@ -90,9 +160,9 @@ export default {
 
 
 .store__img {
-    
     position: relative;
-    height: 200px;
+    /* height: 200px; */
+    height: 170px;
     margin-bottom: 15px;
 }
 .store__img image {
@@ -134,7 +204,7 @@ export default {
 }
 .store__tit-l {
     float: left;
-    width: 80%;
+    width: 70%;
     font-size: 14px;
     font-weight: bold;
 }

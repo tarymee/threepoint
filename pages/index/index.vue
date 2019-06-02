@@ -2,7 +2,7 @@
 <div>
 
     <div class="site">
-        <div class="site__store" @click="jump()">
+        <div class="site__store" @click="showAddress(site)">
             <image :src="site.img" mode="aspectFill" class="site__store-img"></image>
             <div class="site__store-info">
                 <div class="site__store-info-tit">{{site.title}}</div>
@@ -223,6 +223,17 @@ export default {
     methods: {
         aaa(info) {
             console.log(info)
+        },
+        showAddress(info) {
+            wx.openLocation({
+                // latitude: 23.13171,
+                // longitude: 113.26627,
+                latitude: Number(info.latitude),
+                longitude: Number(info.longitude),
+                name: info.title,
+                address: info.address,
+                scale: 18
+            })
         },
         phone(number) {
             u.phone(number)
