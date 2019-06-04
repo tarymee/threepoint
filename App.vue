@@ -322,7 +322,6 @@
     border-bottom: 3px solid #fff;
 }
 .cate1__item--cur text {
-    font-size: 16px;
     font-weight: bold;
     border-bottom: 3px solid #d1a178;
 }

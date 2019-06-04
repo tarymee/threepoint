@@ -25,14 +25,14 @@
                     <image src="/static/img/user/icon3.png" mode="aspectFill" class="status__item-img"></image>
                     <text class="status__item-text">待收货</text>
                 </a>
-                <!-- <a class="status__item" @click="jump('/pages/order/order?type=')">
+                <a class="status__item" @click="jump('/pages/order/order?type=done')">
                     <image src="/static/img/user/icon4.png" mode="aspectFill" class="status__item-img"></image>
                     <text class="status__item-text">已完成</text>
                 </a>
-                <a class="status__item" @click="jump('/pages/order/order?type=')">
+                <a class="status__item" @click="jump('/pages/order/order?type=return')">
                     <image src="/static/img/user/icon5.png" mode="aspectFill" class="status__item-img"></image>
                     <text class="status__item-text">退换/售后</text>
-                </a> -->
+                </a>
             </div>
 
             <div style="background-color: #efefef; height: 15px"></div>
@@ -40,7 +40,10 @@
             <uni-list>
                 <uni-list-item title="收货地址" @click="jump('/pages/address/address')"></uni-list-item>
                 <uni-list-item title="绑定手机" @click="bindphone()" show-badge="true" :badge-text="user.isbindphone ? user.phone : '未绑定'" badge-type="default" badge-inverted="true"></uni-list-item>
-                <uni-list-item title="联系客服" @click="jump('/pages/service/service')"></uni-list-item>
+                <div class="service">
+                    <uni-list-item title="联系客服"></uni-list-item>
+                    <button open-type="contact">客服</button>
+                </div>
                 <uni-list-item title="用户反馈" @click="jump('/pages/feedback/feedback')"></uni-list-item>
                 <uni-list-item title="关于" @click="jump('/pages/about/about')"></uni-list-item>
             </uni-list>
@@ -186,7 +189,7 @@
         text-align: center;
     }
     .status__item {
-        width: 33%;
+        width: 20%;
         padding: 5px 0;
         /* display: inline-block; */
         float: left;
@@ -206,4 +209,18 @@
         color: #999;
     }
 
+
+    /* 联系客服 */
+    .service {
+        position: relative;
+    }
+    .service button{
+        opacity: 0;
+        display: block;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+    }
 </style>

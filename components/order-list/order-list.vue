@@ -30,6 +30,10 @@
                 </div>
                 <div class="order__tf" @click="jump(`/pages/orderdetail/orderdetail?order_id=${item.order_id}`)">共 {{item.totalcount}} 件 合计： <span class="order__tf-price">¥{{item.order_pay_price}}</span> (含运费¥{{item.express_price}})</div>
 
+                <!-- <div class="order__status">
+                    <div class="order__status-btn" @tap="orderreturn(item.order_id)">退款</div>
+                </div> -->
+
                 <div class="order__status" v-if="item.pay_status.value===0 || (item.delivery_status.value===20 && item.receipt_status.value===10)">
                     <div class="order__status-btn" v-if="item.pay_status.value===0" @tap="cancel(item.order_id)">取消订单</div>
                     <div class="order__status-btn order__status-btn--1" v-if="item.pay_status.value===0" @tap="repay(item.order_id, item.order_pay_price)">立即付款</div>
@@ -75,10 +79,11 @@ export default {
             console.log('cancel', order_id)
             u.cancel(order_id)
         },
+        orderreturn(order_id) {
+            u.jump('/pages/orderreturn/orderreturn?id=' + order_id)
+        },
         express(order_id) {
-            uni.navigateTo({
-                url: '/pages/express/express?id=' + order_id
-            })
+            u.jump('/pages/express/express?id=' + order_id)
         }
     }
 }

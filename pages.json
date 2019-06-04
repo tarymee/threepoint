@@ -55,6 +55,12 @@
             }
         },
         {
+            "path": "pages/orderreturn/orderreturn",
+            "style": {
+                "navigationBarTitleText": "退换货"
+            }
+        },
+        {
             "path": "pages/orderdetail/orderdetail",
             "style": {
                 "navigationBarTitleText": "订单详情"
@@ -213,6 +219,11 @@
                 "name": "orderdetail",
                 "path": "pages/orderdetail/orderdetail",
                 "query": "order_id=164"
+            },
+            {
+                "name": "orderreturn",
+                "path": "pages/orderreturn/orderreturn",
+                "query": "order_id=174&order_no=NO546546546565654654&price=18.22"
             },
             {
                 "name": "cate",

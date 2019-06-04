@@ -2,7 +2,7 @@
     <div class="">
         <div class="cate1 cate1--fixed">
             <scroll-view scroll-x>
-                <a class="cate1__item" style="width: 25%; margin: 0" :class="item.select ? 'cate1__item--cur' : ''" v-for="(item, index) in cate1Arr" :key="index" @click="reloadOrder(item.type)">
+                <a class="cate1__item" style="width: 16.666%; margin: 0" :class="item.select ? 'cate1__item--cur' : ''" v-for="(item, index) in cate1Arr" :key="index" @click="reloadOrder(item.type)">
                     <text>{{item.title}}</text>
                 </a>
             </scroll-view>
@@ -27,7 +27,7 @@ export default {
         return {
             cate1Arr: [
                 {
-                    title: '全部订单',
+                    title: '全部',
                     // select: true,
                     type: ''
                 },
@@ -42,6 +42,14 @@ export default {
                 {
                     title: '待收货',
                     type: 'received'
+                },
+                {
+                    title: '已完成',
+                    type: 'done'
+                },
+                {
+                    title: '退换货',
+                    type: ' return'
                 }
             ],
             bottomLoad_type: 'order',
@@ -92,9 +100,9 @@ export default {
         that.reloadOrder(event.type)
     },
     onShow() {
-        console.log("order onShow")
-        let that = this
-        that.bottomLoad_reload()
+        // console.log("order onShow")
+        // let that = this
+        // that.bottomLoad_reload()
     }
 }
 </script>
