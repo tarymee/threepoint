@@ -8,13 +8,21 @@
             <view class="tt-form__item-r-text" v-else><image src="/static/img/icon-address.png" mode="aspectFill"></image> 您附近的门店</view>
         </picker>
     </div>
-    <div class="store__img">
+    <!-- <div class="store__img">
         <image src="/static/img/open/item1.jpg" mode="aspectFill"></image>
-        <!-- <div class="store__po2">
+        <div class="store__po2">
             <div class="store__po2-l">广东省 广州市 天河区</div>
             <div class="store__po2-r">请选择 ></div>
-        </div> -->
-    </div>
+        </div>
+    </div> -->
+
+    <swiper v-if="sliderArr.length > 0" class="swiper" :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
+        <block v-for="(item, index) in sliderArr" :key="index">
+            <swiper-item class="swiper__item">
+                <image class="swiper__img" lazy-load :src="item.img" mode="aspectFill" @click="jump(item.url)"></image>
+            </swiper-item>
+        </block>
+    </swiper>
 
     <a class="store" @click="showAddress(item)" v-for="(item, index) in storeArr" :key="index">
         <div class="store__tit">
@@ -42,6 +50,20 @@ export default {
     },
     data() {
         return {
+            sliderArr: [
+                // {
+                //     img: '/static/img/home/slider.jpg',
+                //     url: '/pages/product/product'
+                // },
+                // {
+                //     img: '/static/img/home/slider.jpg',
+                //     url: '/pages/product/product'
+                // },
+                // {
+                //     img: '/static/img/home/slider.jpg',
+                //     url: '/pages/product/product'
+                // }
+            ],
             region: [],
             latitude: null,
             longitude: null,
@@ -120,6 +142,12 @@ export default {
                         })
                     } else {
                         that.storeArr = []
+                    }
+                    if (res.ppt) {
+                        that.sliderArr = u.dataTransform(res.ppt, {
+                            logo: 'img',
+                            url: 'url',
+                        })
                     }
                 }
             })
@@ -233,5 +261,26 @@ export default {
     padding: 0 3px;
     border-radius: 2px;
     font-size: 10px;
+}
+
+
+
+
+
+
+/* 焦点图 */
+.swiper {
+    overflow: hidden;
+    border-radius: 5px;
+    margin: 0 15px 0 15px;
+    height: 150px;
+}
+.swiper__item {
+    background: url('~@/static/img/loading.gif') center center no-repeat;
+}
+.swiper__img {
+    border-radius: 5px;
+    width: 100%;
+    height: 150px;
 }
 </style>
