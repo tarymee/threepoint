@@ -1,5 +1,28 @@
 <template>
 <div>
+
+    <div class="site">
+        <div class="site__store" @click="showAddress(site)">
+            <image :src="site.img" mode="aspectFill" class="site__store-img"></image>
+            <div class="site__store-info">
+                <div class="site__store-info-tit">{{site.title}}</div>
+                <div class="site__store-info-address">{{site.address}}</div>
+            </div>
+        </div>
+        <div class="site__r">
+            <div class="site__r-item" style="border-right: 1px solid #e9e9e9">
+            <!-- <div class="site__r-item" style="border-right: 1px solid #e9e9e9" @tap="contact(site.phone)"> -->
+                <image src="/static/img/home/icon2.png" mode="aspectFill" class="site__r-item-img"></image>
+                <div class="site__r-item-tit">客服</div>
+                <button open-type="contact" @contact="handleContact">客服</button>
+            </div>
+            <div class="site__r-item" @click="phone(site.phone)">
+                <image src="/static/img/home/icon1.png" mode="aspectFill" class="site__r-item-img"></image>
+                <div class="site__r-item-tit">电话</div>
+            </div>
+        </div>
+    </div>
+
     <swiper v-if="sliderArr.length > 0" class="swiper" :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
         <block v-for="(item, index) in sliderArr" :key="index">
             <swiper-item class="swiper__item">
@@ -29,15 +52,11 @@
         </a> -->
     </div>
 
-    <div class="title" v-if="newArr.length">
-        <div class="title__tit">新品推荐</div>
-        <div class="title__des">PRODUCTS</div>
-    </div>
+    <div class="title" v-if="newArr.length">新品推荐</div>
     <div class="pro1">
         <scroll-view scroll-x>
             <a class="pro1-item" @click="jump(`/pages/product/product?id=${item.id}&title=${item.name}&price=${item.price}&cover=${item.img}`)" v-for="(item, index) in newArr" :key="index">
                 <image :src="item.img" mode="aspectFill"></image>
-                <text class="pro1-item-new">NEW</text>
                 <text class="pro1-item-tit">{{item.name}}</text>
                 <div class="pro1-item-price"><text>￥</text>{{item.price}}</div>
             </a>
@@ -47,85 +66,7 @@
         <a class="more__btn" @click="jump('/pages/cate/cate?id=&title=最新产品&type=1')">查看更多</a>
     </div>
 
-    <div class="title">
-        <div class="title__tit">产品类目</div>
-        <div class="title__des">CATEGORY</div>
-    </div>
-
-    <div class="catepro">
-        <div class="catepro__item">
-            <div class="catepro__item-tit">不<br>锈<br>钢</div>
-            <div class="catepro__item-list">
-                <a class="catepro__item-pro">
-                    <image src="http://fpoimg.com/400x400" mode="aspectFill"></image>
-                </a>
-                <a class="catepro__item-pro">
-                    <image src="http://fpoimg.com/400x400" mode="aspectFill"></image>
-                </a>
-                <a class="catepro__item-pro">
-                    <image src="http://fpoimg.com/400x400" mode="aspectFill"></image>
-                </a>
-            </div>
-        </div>
-        <div class="catepro__item">
-            <div class="catepro__item-tit">不<br>锈<br>钢</div>
-            <div class="catepro__item-list">
-                <a class="catepro__item-pro">
-                    <image src="http://fpoimg.com/400x400" mode="aspectFill"></image>
-                </a>
-                <a class="catepro__item-pro">
-                    <image src="http://fpoimg.com/400x400" mode="aspectFill"></image>
-                </a>
-                <a class="catepro__item-pro">
-                    <image src="http://fpoimg.com/400x400" mode="aspectFill"></image>
-                </a>
-            </div>
-        </div>
-        <div class="catepro__item">
-            <div class="catepro__item-tit">不<br>锈<br>钢</div>
-            <div class="catepro__item-list">
-                <a class="catepro__item-pro">
-                    <image src="http://fpoimg.com/400x400" mode="aspectFill"></image>
-                </a>
-                <a class="catepro__item-pro">
-                    <image src="http://fpoimg.com/400x400" mode="aspectFill"></image>
-                </a>
-                <a class="catepro__item-pro">
-                    <image src="http://fpoimg.com/400x400" mode="aspectFill"></image>
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <div class="title">
-        <div class="title__tit">产品展示</div>
-        <div class="title__des">PRODUCTS</div>
-    </div>
-    <div class="propic">
-        <image src="http://fpoimg.com/400x400" mode="aspectFill"></image>
-    </div>
-    <productList :productArr="bottomLoad_data"></productList>
-    <productList :productArr="bottomLoad_data" :grid="3"></productList>
-    <div class="more">
-        <a class="more__btn" @click="jump('/pages/cate/cate?id=&title=最新产品&type=1')">查看更多</a>
-    </div>
-    <div class="spacegray"></div>
-
-    <div class="propic">
-        <image src="http://fpoimg.com/400x400" mode="aspectFill"></image>
-    </div>
-    <productList :productArr="bottomLoad_data"></productList>
-    <productList :productArr="bottomLoad_data" :grid="3"></productList>
-    <div class="more">
-        <a class="more__btn" @click="jump('/pages/cate/cate?id=&title=最新产品&type=1')">查看更多</a>
-    </div>
-    <div class="spacegray"></div>
-
-
-    <div class="title">
-        <div class="title__tit">产品展示</div>
-        <div class="title__des">PRODUCTS</div>
-    </div>
+    <div class="title">精选商品</div>
     <div class="cate1__place" :class="cate1Fixed ? 'cate1__place--holder' : ''"></div>
     <div class="cate1" :class="cate1Fixed ? 'cate1--fixed' : ''">
         <scroll-view scroll-x>
@@ -395,17 +336,96 @@ export default {
 </script>
 
 <style scoped>
+/* 门店 */
+.site {
+    overflow: hidden;
+    margin: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.site__store {
+    display: flex;
+    align-items: center;
+}
+.site__store-img {
+    flex: none;
+    display: block;
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+.site__store-info {
+    
+}
+.site__store-info-tit {
+    line-height: 25px;
+    font-size: 16px;
+    color: #333;
+    height: 25px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+.site__store-info-address {
+    line-height: 20px;
+    font-size: 12px;
+    color: #999;
+    height: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+.site__r {
+    display: flex;
+    flex: none;
+}
+.site__r-item {
+    width: 45px;
+    text-align: center;
+    position: relative;
+}
+.site__r-item button {
+    opacity: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+.site__r-item-img {
+    display: block;
+    width: 25px;
+    height: 25px;
+    margin: 0px auto;
+}
+.site__r-item-tit {
+    font-size: 12px;
+    line-height: 20px;
+    color: #999;
+}
+
 /* 焦点图 */
 .swiper {
     overflow: hidden;
-    height: 400upx;
+    border-radius: 5px;
+    margin: 0 15px 0 15px;
+    height: 150px;
 }
 .swiper__item {
     background: url('~@/static/img/loading.gif') center center no-repeat;
 }
 .swiper__img {
+    border-radius: 5px;
     width: 100%;
-    height: 400upx;
+    height: 150px;
 }
 
 
@@ -415,7 +435,7 @@ export default {
     overflow: hidden;
 }
 .cate-item {
-    width: 25%;
+    width: 33.33%;
     padding: 5px 0;
     float: left;
 }
@@ -437,77 +457,18 @@ export default {
 
 /* 标题 */
 .title {
+    height: 50px;
     width: 100%;
-    padding: 20px 0;
+    line-height: 50px;
+    font-size: 20px;
+    font-weight: bold;
     text-align: center;
     background-image: -webkit-linear-gradient(top, #eee, #fff, #fff, #fff, #fff);
     background-image: -o-linear-gradient(top, #eee, #fff, #fff, #fff, #fff);
     background-image: -moz-linear-gradient(top, #eee, #fff, #fff, #fff, #fff);
     background-image: linear-gradient(to bottom, #eee, #fff, #fff, #fff, #fff);
 }
-.title__tit {
-    line-height: 50upx;
-    font-size: 42upx;
-    font-weight: bold;
-}
-.title__des {
-    display: inline-block;
-    border-top: 1upx solid #d1a178;
-    line-height: 40upx;
-    color: #ccc;
-    font-size: 28upx;
-}
 
-
-
-.catepro {
-
-}
-.catepro__item {
-    overflow: hidden;
-}
-.catepro__item-tit {
-    float: left;
-    width: 90upx;
-    text-align: center;
-    line-height: 40upx;
-    font-size: 16px;
-    border-right: 1px solid #d1a178;
-    margin-top: 50upx;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-}
-.catepro__item-list {
-    overflow: hidden;
-}
-.catepro__item-pro {
-    float: left;
-    width: 160upx;
-    height: 160upx;
-    margin: 30upx;
-}
-.catepro__item-pro image {
-    display: block;
-    width: 160upx;
-    height: 160upx;
-}
-
-.propic {
-    margin: 15upx 30upx;
-    border-radius: 5upx;
-    overflow: hidden;
-}
-.propic image{
-    display: block;
-    width: 100%;
-    border-radius: 5upx;
-    height: 300upx;
-}
-
-.spacegray {
-    height: 20upx;
-    background-color: rgb(239,239,239);;
-}
 /* 新品推荐 */
 .pro1 {
     margin: 5px 0 15px 15px;
@@ -519,24 +480,11 @@ export default {
     display: inline-block;
     width: 125px;
     margin-right: 10px;
-    position: relative;
 }
 .pro1-item image {
     display: block;
     width: 125px;
     height: 125px;
-}
-.pro1-item-new {
-    display: block;
-    font-size: 12px;
-    color: #333;
-    line-height: 30upx;
-    padding: 0 8upx;
-    background-color: rgb(244,176,170);
-    border: 1upx solid rgb(200,136,130);
-    position: absolute;
-    top: 0px;
-    left: 0px;
 }
 .pro1-item-tit {
     display: block;
@@ -551,7 +499,7 @@ export default {
 .pro1-item-price {
     display: block;
     font-size: 16px;
-    color: #333;
+    color: #d1a178;
     font-weight: bold;
     line-height: 20px;
 }

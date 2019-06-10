@@ -1,7 +1,7 @@
 <template>
     <div class="pro">
-        <div class="pro__item" v-for="(item, index) in productArr" :key="index" @click="jump(`/pages/product/product?id=${item.id}&title=${item.title}&price=${item.vipPrice}&cover=${item.logo}`)">
-            <image class="pro__item-img" :src="item.logo" lazy-load="true" mode="aspectFill"></image>
+        <div :class="grid === '2' ? 'pro__item' : 'pro__item2'" v-for="(item, index) in productArr" :key="index" @click="jump(`/pages/product/product?id=${item.id}&title=${item.title}&price=${item.vipPrice}&cover=${item.logo}`)">
+            <image :class="grid === '2' ? 'pro__item-img' : 'pro__item2-img'" :src="item.logo" lazy-load="true" mode="aspectFill"></image>
             <text class="pro__item-tit">{{item.title}}</text>
             <div class="pro__item-price"><text class="pro__item-symbol">￥</text>{{item.vipPrice}}</div>
         </div>
@@ -19,11 +19,16 @@ export default {
         productArr: {
             type: Array,
             default: []
+        },
+        grid: {
+            type: String,
+            default: '2'
         }
     },
     mounted() {
         console.log('product-list mounted')
         let that = this
+        console.log(that.grid)
     },
     methods: {
         jump(url) {
@@ -68,6 +73,19 @@ export default {
     display: block;
     width: 330upx;
     height: 330upx;
+    background: url('~@/static/img/loading.gif') center center no-repeat;
+}
+
+.pro__item2 {
+    width: 210upx;
+    margin: 15upx 0 15upx 30upx;
+    flex: none;
+}
+
+.pro__item2-img {
+    display: block;
+    width: 210upx;
+    height: 210upx;
     background: url('~@/static/img/loading.gif') center center no-repeat;
 }
 

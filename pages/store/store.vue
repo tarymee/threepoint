@@ -50,6 +50,10 @@ export default {
     },
     data() {
         return {
+            autoplay: true,
+            indicatorDots: true,
+            interval: 5000,
+            duration: 300,
             sliderArr: [
                 // {
                 //     img: '/static/img/home/slider.jpg',
@@ -95,6 +99,9 @@ export default {
             console.log(e)
             that.region = e.target.value
             that.load(1)
+        },
+        jump(url) {
+            u.jump(url)
         },
         showAddress(info) {
             wx.openLocation({
