@@ -23,10 +23,10 @@ export default {
     methods: {
         authorPhone(e) {
             console.log(e)
-            return false
+            // return false
 
             u.request({
-                url: u.api.phoneget,
+                url: u.api.phonebind,
                 method: 'POST',
                 header: {
                     'content-type': 'application/x-www-form-urlencoded'
@@ -34,41 +34,51 @@ export default {
                 },
                 data: {
                     encryptedData: e.detail.encryptedData,
+                    errMsg: e.detail.errMsg,
                     iv: e.detail.iv
                 },
                 isVerifyLogin: true,
                 success(res) {
                     console.log(res)
                     if (res.code == 1) {
-                        u.request({
-                            url: u.api.phonebind,
-                            method: 'POST',
-                            header: {
-                                'content-type': 'application/x-www-form-urlencoded'
-                                // 'content-type': 'application/json'
-                            },
-                            data: {
-                                phone: res.data.phone
-                            },
-                            isVerifyLogin: true,
-                            success(res) {
-                                console.log(res)
-                                if (res.code == 1) {
-                                    uni.showToast({
-                                        title: '授权绑定成功',
-                                        mask: true,
-                                        duration: 5000,
-                                        success: function () {
-                                            // 返回
-                                            uni.navigateBack()
-                                        }
-                                    })
-                                }
-                            },
-                            fail(res) {
-                                console.error(res)
+                        uni.showToast({
+                            title: '授权绑定成功',
+                            mask: true,
+                            duration: 5000,
+                            success: function () {
+                                // 返回
+                                uni.navigateBack()
                             }
                         })
+                        // u.request({
+                        //     url: u.api.phonebind,
+                        //     method: 'POST',
+                        //     header: {
+                        //         'content-type': 'application/x-www-form-urlencoded'
+                        //         // 'content-type': 'application/json'
+                        //     },
+                        //     data: {
+                        //         phone: res.data.phone
+                        //     },
+                        //     isVerifyLogin: true,
+                        //     success(res) {
+                        //         console.log(res)
+                        //         if (res.code == 1) {
+                        //             uni.showToast({
+                        //                 title: '授权绑定成功',
+                        //                 mask: true,
+                        //                 duration: 5000,
+                        //                 success: function () {
+                        //                     // 返回
+                        //                     uni.navigateBack()
+                        //                 }
+                        //             })
+                        //         }
+                        //     },
+                        //     fail(res) {
+                        //         console.error(res)
+                        //     }
+                        // })
                     }
                 },
                 fail(res) {

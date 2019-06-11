@@ -1,5 +1,28 @@
 <template>
 <div>
+
+    <div class="site">
+        <div class="site__store" @click="showAddress(site)">
+            <image :src="site.img" mode="aspectFill" class="site__store-img"></image>
+            <div class="site__store-info">
+                <div class="site__store-info-tit">{{site.title}}</div>
+                <div class="site__store-info-address">{{site.address}}</div>
+            </div>
+        </div>
+        <div class="site__r">
+            <div class="site__r-item" style="border-right: 1px solid #e9e9e9">
+            <!-- <div class="site__r-item" style="border-right: 1px solid #e9e9e9" @tap="contact(site.phone)"> -->
+                <image src="/static/img/home/icon2.png" mode="aspectFill" class="site__r-item-img"></image>
+                <div class="site__r-item-tit">客服</div>
+                <button open-type="contact" @contact="handleContact">客服</button>
+            </div>
+            <div class="site__r-item" @click="phone(site.phone)">
+                <image src="/static/img/home/icon1.png" mode="aspectFill" class="site__r-item-img"></image>
+                <div class="site__r-item-tit">电话</div>
+            </div>
+        </div>
+    </div>
+
     <swiper v-if="sliderArr.length > 0" class="swiper" :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
         <block v-for="(item, index) in sliderArr" :key="index">
             <swiper-item class="swiper__item">
@@ -51,9 +74,8 @@
         <div class="title__tit">产品类目</div>
         <div class="title__des">CATEGORY</div>
     </div>
-
     <div class="catepro">
-        <div class="catepro__item">
+        <!-- <div class="catepro__item">
             <div class="catepro__item-tit">不<br>锈<br>钢</div>
             <div class="catepro__item-list">
                 <a class="catepro__item-pro">
@@ -66,32 +88,12 @@
                     <image src="http://fpoimg.com/400x400" mode="aspectFill"></image>
                 </a>
             </div>
-        </div>
-        <div class="catepro__item">
-            <div class="catepro__item-tit">不<br>锈<br>钢</div>
+        </div> -->
+        <div class="catepro__item" v-for="(item, index) in proCateArr" :key="index">
+            <div class="catepro__item-tit">{{item.title}}</div>
             <div class="catepro__item-list">
-                <a class="catepro__item-pro">
-                    <image src="http://fpoimg.com/400x400" mode="aspectFill"></image>
-                </a>
-                <a class="catepro__item-pro">
-                    <image src="http://fpoimg.com/400x400" mode="aspectFill"></image>
-                </a>
-                <a class="catepro__item-pro">
-                    <image src="http://fpoimg.com/400x400" mode="aspectFill"></image>
-                </a>
-            </div>
-        </div>
-        <div class="catepro__item">
-            <div class="catepro__item-tit">不<br>锈<br>钢</div>
-            <div class="catepro__item-list">
-                <a class="catepro__item-pro">
-                    <image src="http://fpoimg.com/400x400" mode="aspectFill"></image>
-                </a>
-                <a class="catepro__item-pro">
-                    <image src="http://fpoimg.com/400x400" mode="aspectFill"></image>
-                </a>
-                <a class="catepro__item-pro">
-                    <image src="http://fpoimg.com/400x400" mode="aspectFill"></image>
+                <a class="catepro__item-pro" @click="jump(`/pages/cate/cate?id=${item2.id}&title=${item2.title}`)" v-for="(item2, index2) in item.subClassify" :key="index2">
+                    <image :src="item2.logo" mode="aspectFill"></image>
                 </a>
             </div>
         </div>
@@ -101,25 +103,25 @@
         <div class="title__tit">产品展示</div>
         <div class="title__des">PRODUCTS</div>
     </div>
-    <div class="propic">
+    <!-- <div class="propic">
         <image src="http://fpoimg.com/400x400" mode="aspectFill"></image>
     </div>
     <productList :productArr="bottomLoad_data"></productList>
-    <productList :productArr="bottomLoad_data" :grid="3"></productList>
     <div class="more">
         <a class="more__btn" @click="jump('/pages/cate/cate?id=&title=最新产品&type=1')">查看更多</a>
     </div>
-    <div class="spacegray"></div>
+    <div class="spacegray"></div> -->
 
-    <div class="propic">
-        <image src="http://fpoimg.com/400x400" mode="aspectFill"></image>
+    <div class="" v-for="(item, index) in productsArr" :key="index">
+        <div class="propic">
+            <image :src="item.logo" mode="aspectFill"></image>
+        </div>
+        <productList :productArr="item.goods"></productList>
+        <div class="more">
+            <a class="more__btn" @click="jump(`/pages/cate/cate?id=${item.id}&title=${item.title}`)">查看更多</a>
+        </div>
+        <div class="spacegray"></div>
     </div>
-    <productList :productArr="bottomLoad_data"></productList>
-    <productList :productArr="bottomLoad_data" :grid="3"></productList>
-    <div class="more">
-        <a class="more__btn" @click="jump('/pages/cate/cate?id=&title=最新产品&type=1')">查看更多</a>
-    </div>
-    <div class="spacegray"></div>
 
 
     <div class="title">
@@ -182,6 +184,8 @@ export default {
                 //     url: '/pages/product/product'
                 // }
             ],
+            proCateArr: [],
+            productsArr: [],
             cateArr: [
                 // {
                 //     title: '青瓷',
@@ -377,6 +381,134 @@ export default {
                     title: 'title',
                     id: 'id',
                 })
+                // res.classify4 = [
+                //     {
+                //         "flag": 2,
+                //         "id": 35,
+                //         "logo": "https://www.3ftc.com/uploads/20190514151044塑料.JPG",
+                //         "pid": 0,
+                //         "remark": "塑料类",
+                //         "sort": 1,
+                //         "subClassify": [
+                //             {
+                //                 "flag": 3,
+                //                 "id": 91,
+                //                 "logo": "https://www.3ftc.com/uploads/20190527110216筷子1.png",
+                //                 "pid": 35,
+                //                 "sort": 1,
+                //                 "title": "合金筷",
+                //                 "type": 2
+                //             },
+                //             {
+                //                 "flag": 0,
+                //                 "id": 92,
+                //                 "logo": "https://www.3ftc.com/theme/layui/images/defaultpic.gif",
+                //                 "pid": 35,
+                //                 "sort": 2,
+                //                 "title": "冰盘",
+                //                 "type": 2
+                //             },
+                //             {
+                //                 "flag": 0,
+                //                 "id": 95,
+                //                 "logo": "https://www.3ftc.com/theme/layui/images/defaultpic.gif",
+                //                 "pid": 35,
+                //                 "sort": 3,
+                //                 "title": "餐垫",
+                //                 "type": 2
+                //             }
+                //         ],
+                //         "title": "塑料类",
+                //         "type": 2
+                //     },
+                //     {
+                //         "flag": 2,
+                //         "id": 34,
+                //         "logo": "https://www.3ftc.com/uploads/20190527110047陶瓷.png",
+                //         "pid": 0,
+                //         "sort": 10,
+                //         "subClassify": [
+                //             {
+                //                 "flag": 0,
+                //                 "id": 65,
+                //                 "logo": "https://www.3ftc.com/uploads/20190422145909特价陶瓷.png",
+                //                 "pid": 34,
+                //                 "sort": 1,
+                //                 "title": "特价陶瓷",
+                //                 "type": 2
+                //             },
+                //             {
+                //                 "flag": 0,
+                //                 "id": 66,
+                //                 "logo": "https://www.3ftc.com/uploads/20190422152807停产陶瓷.png",
+                //                 "pid": 34,
+                //                 "sort": 2,
+                //                 "title": "停产陶瓷",
+                //                 "type": 2
+                //             }
+                //         ],
+                //         "title": "陶瓷类",
+                //         "type": 2
+                //     }
+                // ]
+                // res.classify4.forEach((item, i) => {
+                //     item.title = item.title.split('').join('<br />')
+                // })
+                console.log(res.classify4)
+                that.proCateArr = res.classify4
+
+                // res.products = [
+                //     {
+                //         "flag": 3,
+                //         "id": 91,
+                //         "logo": "https://www.3ftc.com/uploads/20190527110216筷子1.png",
+                //         "pid": 35,
+                //         "sort": 1,
+                //         "title": "合金筷",
+                //         "type": 2,
+                //         "goods": [
+                //             {
+                //                 "id": 48,
+                //                 "logo": "https://www.3ftc.com/uploads/20190524114048六角筷子1.jpg",
+                //                 "marketPrice": 1,
+                //                 "title": "合金筷塑料筷22-24cm",
+                //                 "vipPrice": 1
+                //             },
+                //             {
+                //                 "id": 48,
+                //                 "logo": "https://www.3ftc.com/uploads/20190524114048六角筷子1.jpg",
+                //                 "marketPrice": 1,
+                //                 "title": "合金筷塑料筷22-24cm",
+                //                 "vipPrice": 1
+                //             },
+                //             {
+                //                 "id": 48,
+                //                 "logo": "https://www.3ftc.com/uploads/20190524114048六角筷子1.jpg",
+                //                 "marketPrice": 1,
+                //                 "title": "合金筷塑料筷22-24cm",
+                //                 "vipPrice": 1
+                //             },
+                //             {
+                //                 "id": 48,
+                //                 "logo": "https://www.3ftc.com/uploads/20190524114048六角筷子1.jpg",
+                //                 "marketPrice": 1,
+                //                 "title": "合金筷塑料筷22-24cm",
+                //                 "vipPrice": 1
+                //             }
+                //         ]
+                //     },
+                //     {
+                //         "flag": 3,
+                //         "id": 91,
+                //         "logo": "https://www.3ftc.com/uploads/20190527110216筷子1.png",
+                //         "pid": 35,
+                //         "sort": 1,
+                //         "title": "合金筷",
+                //         "type": 2,
+                //         "goods": []
+                //     }
+                // ]
+                that.productsArr = res.products
 
                 that.cate1Arr = u.dataTransform(res.classify2, {
                     title: 'title',
@@ -395,6 +527,83 @@ export default {
 </script>
 
 <style scoped>
+/* 门店 */
+.site {
+    overflow: hidden;
+    margin: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.site__store {
+    display: flex;
+    align-items: center;
+}
+.site__store-img {
+    flex: none;
+    display: block;
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+.site__store-info {
+    
+}
+.site__store-info-tit {
+    line-height: 25px;
+    font-size: 16px;
+    color: #333;
+    height: 25px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+.site__store-info-address {
+    line-height: 20px;
+    font-size: 12px;
+    color: #999;
+    height: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+.site__r {
+    display: flex;
+    flex: none;
+}
+.site__r-item {
+    width: 45px;
+    text-align: center;
+    position: relative;
+}
+.site__r-item button {
+    opacity: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+.site__r-item-img {
+    display: block;
+    width: 25px;
+    height: 25px;
+    margin: 0px auto;
+}
+.site__r-item-tit {
+    font-size: 12px;
+    line-height: 20px;
+    color: #999;
+}
+
+
 /* 焦点图 */
 .swiper {
     overflow: hidden;
@@ -469,6 +678,7 @@ export default {
 .catepro__item-tit {
     float: left;
     width: 90upx;
+    padding: 0 20upx;
     text-align: center;
     line-height: 40upx;
     font-size: 16px;

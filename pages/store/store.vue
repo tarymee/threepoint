@@ -1,28 +1,29 @@
 <template>
 <div>
     <div class="store__po">
-        <!-- <image src="/static/img/icon-address.png" mode="aspectFill"></image> -->
-        <!-- 广东省 广州市 天河区 -->
-        <picker mode="region" @change="bindRegionChange" :value="region">
-            <view class="tt-form__item-r-text" v-if="region.length"><image src="/static/img/icon-address.png" mode="aspectFill"></image> {{region[0]}} {{region[1]}} {{region[2]}}</view>
-            <view class="tt-form__item-r-text" v-else><image src="/static/img/icon-address.png" mode="aspectFill"></image> 您附近的门店</view>
-        </picker>
+        <image src="/static/img/icon-address.png" mode="aspectFill"></image>
+        您附近的门店
     </div>
-    <!-- <div class="store__img">
-        <image src="/static/img/open/item1.jpg" mode="aspectFill"></image>
-        <div class="store__po2">
-            <div class="store__po2-l">广东省 广州市 天河区</div>
-            <div class="store__po2-r">请选择 ></div>
-        </div>
-    </div> -->
+    <div class="" style="position: relative;height: 500upx">
+        <swiper v-if="sliderArr.length > 0" class="swiper" :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
+            <block v-for="(item, index) in sliderArr" :key="index">
+                <swiper-item class="swiper__item">
+                    <image class="swiper__img" lazy-load :src="item.img" mode="aspectFill" @click="jump(item.url)"></image>
+                </swiper-item>
+            </block>
+        </swiper>
 
-    <swiper v-if="sliderArr.length > 0" class="swiper" :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
-        <block v-for="(item, index) in sliderArr" :key="index">
-            <swiper-item class="swiper__item">
-                <image class="swiper__img" lazy-load :src="item.img" mode="aspectFill" @click="jump(item.url)"></image>
-            </swiper-item>
-        </block>
-    </swiper>
+        <div class="store__img">
+            <div class="store__po2">
+                <picker mode="region" @change="bindRegionChange" :value="region">
+                    <view class="tt-form__item-r-text" v-if="region.length">{{region[0]}} {{region[1]}} {{region[2]}}</view>
+                    <view class="tt-form__item-r-text" v-else>门店所在地区</view>
+                </picker>
+                <view class="store__po2-r">请选择</view>
+            </div>
+        </div>
+
+    </div>
 
     <a class="store" @click="showAddress(item)" v-for="(item, index) in storeArr" :key="index">
         <div class="store__tit">
@@ -195,35 +196,30 @@ export default {
 
 
 .store__img {
-    position: relative;
-    /* height: 200px; */
-    height: 170px;
-    margin-bottom: 15px;
-}
-.store__img image {
-    display: block;
     width: 100%;
-    height: 170px;
+    position: absolute;
+    top: 380upx;
 }
 .store__po2 {
     overflow: hidden;
-    height: 50px;
-    line-height: 50px;
-    width: 315px;
-    margin: 0 15px;
-    padding: 0 15px;
+    height: 100upx;
+    line-height: 100upx;
+    width: 630upx;
+    margin: 0 30upx;
+    padding: 0 30upx;
     background-color: #fff;
-    border-radius: 5px;
-    position: absolute;
-    top: 150px;
+    border-radius: 3px;
     font-size: 14px;
     box-shadow: 0px 5px 10px #eee;
 }
 .store__po2-l {
     float: left;
 }
+
 .store__po2-r {
-    float: right;
+    position: absolute;
+    right: 60upx;
+    top: 0px;
     color: #999;
 }
 
@@ -278,16 +274,13 @@ export default {
 /* 焦点图 */
 .swiper {
     overflow: hidden;
-    border-radius: 5px;
-    margin: 0 15px 0 15px;
-    height: 150px;
+    height: 400upx;
 }
 .swiper__item {
     background: url('~@/static/img/loading.gif') center center no-repeat;
 }
 .swiper__img {
-    border-radius: 5px;
     width: 100%;
-    height: 150px;
+    height: 400upx;
 }
 </style>
