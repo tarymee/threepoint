@@ -12,10 +12,11 @@
     </a>
 
     <div class="con">
-      <image src="/static/img/open/art1.jpg" mode="aspectFill" style="height: 860upx"></image>
-      <image src="/static/img/open/art2.jpg" mode="aspectFill" style="height: 630upx"></image>
-      <image src="/static/img/open/art3.jpg" mode="aspectFill" style="height: 1030upx"></image>
-      <image src="/static/img/open/art4.jpg" mode="aspectFill" style="height: 882upx"></image>
+        <image :src="img" mode="aspectFill" style="height: 8138upx"></image>
+        <!-- <image src="/static/img/open/art1.jpg" mode="aspectFill" style="height: 860upx"></image>
+        <image src="/static/img/open/art2.jpg" mode="aspectFill" style="height: 630upx"></image>
+        <image src="/static/img/open/art3.jpg" mode="aspectFill" style="height: 1030upx"></image>
+        <image src="/static/img/open/art4.jpg" mode="aspectFill" style="height: 882upx"></image> -->
     </div>
 
 </div>
@@ -27,6 +28,7 @@ export default {
     components: {},
     data() {
         return {
+            img: '',
             storeArr: [
                 // {
                 //     img: '/static/img/open/item1.jpg',
@@ -92,6 +94,8 @@ export default {
                     title: 'title',
                     phone: 'phone',
                 })
+
+                that.img = res.logo
 
             }
         })
