@@ -125,16 +125,26 @@ export default {
             } else {
                 postData.region = JSON.stringify(that.region)
             }
+
             u.request({
                 url: u.api.sitelist,
                 method: 'POST',
                 header: {
-                    'content-type': 'application/x-www-form-urlencoded'
+                    // 'content-type': 'application/x-www-form-urlencoded'
+                    'content-type': 'application/json'
                 },
                 data: postData,
                 isVerifyLogin: false,
                 success(res) {
                     console.log(res)
+                    // uni.showModal({
+                    //     title: '测试弹窗',
+                    //     content: JSON.stringify(res.data),
+                    //     showCancel: false,
+                    //     success: function () {
+                    //         // uni.navigateBack()
+                    //     }
+                    // })
                     if (res.code == 1 && res.data && res.data.length) {
                         that.storeArr = res.data.map((item, i) => {
                             return {
@@ -159,11 +169,33 @@ export default {
                     }
                 }
             })
+            // uni.showModal({
+            //     title: '测试弹窗',
+            //     content: JSON.stringify(postData),
+            //     showCancel: false,
+            //     success: function () {
+
+                    
+
+            //     }
+            // })
+            
         }
     },
     onLoad() {
         console.log('store onLoad')
         var that = this
+
+        // wx.getSetting({
+        //     success (res) {
+        //         console.log(res)
+        //         uni.showModal({
+        //             title: '测试弹窗',
+        //             content: JSON.stringify(res),
+        //             showCancel: false
+        //         })
+        //     }
+        // })
         wx.getLocation({
             type: 'gcj02',
             success (res) {
@@ -173,6 +205,7 @@ export default {
                 that.load(0)
             }
         })
+        that.load(0)
     }
 }
 </script>

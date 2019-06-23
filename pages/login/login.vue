@@ -57,6 +57,7 @@ export default {
                                     duration: 5000,
                                     success: function () {
                                         // 保存用户信息
+                                        uni.setStorageSync('code', result.code)
                                         uni.setStorageSync('token', res.data.data.token)
                                         uni.setStorageSync('userid', res.data.data.user_id)
                                         uni.setStorageSync('userInfo', userInfo.userInfo)

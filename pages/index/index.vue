@@ -510,6 +510,11 @@ export default {
                 // ]
                 that.productsArr = res.products
 
+                res.classify2 = [{
+                    id: '',
+                    title: '所有'
+                }].concat(res.classify2)
+
                 that.cate1Arr = u.dataTransform(res.classify2, {
                     title: 'title',
                     id: 'id',
