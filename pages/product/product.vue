@@ -410,26 +410,28 @@ export default {
             success(res) {
                 console.log(res)
                 if (res && res.goods) {
-                    res = res.goods
+                    var goodData = res.goods
 
-                    that.title = res.title
+                    that.title = goodData.title
                     uni.setNavigationBarTitle({
                         title: that.title
                     })
-                    that.price = res.vipPrice
-                    that.img = res.logo
-                    that.swiperArr = u.dataTransform(res.pics, {
+                    that.price = goodData.vipPrice
+                    that.img = goodData.logo
+                    that.swiperArr = u.dataTransform(goodData.pics, {
                         path: 'img',
                     })
                     let dealSpecArr = []
                     res.spec.forEach((item, i) => {
                         item.select = null
-                        if (item.specs && item.specs.length) {
+                        if (item.listDetail && item.listDetail.length) {
+                            item.specs = item.listDetail
                             dealSpecArr.push(item)
                         }
                     })
+                    console.log(dealSpecArr)
                     that.specArr = dealSpecArr
-                    that.htmlString = res.remark.replace(/<img/g, "<img width=\"100%;\" style=\"max-width:100%;height:auto\"")
+                    that.htmlString = goodData.remark.replace(/<img/g, "<img width=\"100%;\" style=\"max-width:100%;height:auto\"")
                 }
             },
             fail(res) {
