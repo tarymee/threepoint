@@ -5,7 +5,7 @@
                 <open-data class="" type="userAvatarUrl"></open-data>
             </view>
         </view>
-        <view class="auth__title">十器良品 申请以下权限</view>
+        <view class="auth__title">三分联盟 申请以下权限</view>
         <view class="auth__subtitle">绑定您的微信手机号</view>
         <button type="primary" open-type='getPhoneNumber' @getphonenumber="authorPhone">授权绑定</button>
     </view>

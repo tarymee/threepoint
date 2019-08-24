@@ -67,7 +67,7 @@
             return {
                 user: {
                     logo: '/static/img/avatar.png',
-                    name: '十器良品',
+                    name: '三分联盟',
                     phone: '',
                     isbindphone: false
                 }

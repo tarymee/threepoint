@@ -5,7 +5,7 @@
                 <open-data class="" type="userAvatarUrl"></open-data>
             </view>
         </view>
-        <view class="auth__title">十器良品 申请以下权限</view>
+        <view class="auth__title">三分联盟 申请以下权限</view>
         <view class="auth__subtitle">获得你的公开信息（昵称、头像等）</view>
         <button type="primary" open-type="getUserInfo" @getuserinfo="authorLogin">授权登录</button>
     </view>

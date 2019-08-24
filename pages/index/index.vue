@@ -70,11 +70,11 @@
         <a class="more__btn" @click="jump('/pages/cate/cate?id=&title=最新产品&type=1')">查看更多</a>
     </div>
 
-    <div class="title">
+    <div class="title" v-if="false">
         <div class="title__tit">产品类目</div>
         <div class="title__des">CATEGORY</div>
     </div>
-    <div class="catepro">
+    <div class="catepro" v-if="false">
         <!-- <div class="catepro__item">
             <div class="catepro__item-tit">不<br>锈<br>钢</div>
             <div class="catepro__item-list">
