@@ -549,14 +549,14 @@ export default {
     /* 焦点图 */
     .proswiper {
         overflow: hidden;
-        height: 300px;
+        height: 625upx;
     }
     .proswiper__item {
         background: url('~@/static/img/loading.gif') center center no-repeat;
     }
     .proswiper__img {
         width: 100%;
-        height: 300px;
+        height: 625upx;
     }
 
     /* 图文详情 */

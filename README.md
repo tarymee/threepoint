@@ -1,7 +1,7 @@
 # threepoint
 
 
-三分联盟小程序帐号密码
+## 三分联盟小程序帐号密码【现在用】
 ```
 appid: wxcd466d3df6df7712
 小程序账号: 3051160297@qq.com/sanfentc2016
@@ -11,7 +11,7 @@ appid: wxcd466d3df6df7712
 
 
 
-## 十器良品
+## 十器良品【不用】
 ```
 appid: wxbae9a34b901a3210
 小程序账号: 3323629045@qq.com/sanfentc2016
