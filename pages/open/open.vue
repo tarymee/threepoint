@@ -71,35 +71,41 @@ export default {
             uni.navigateTo({
                 url: `/pages/applystore/applystore?title=${item.title}&price=${item.discountPrice}&storeid=${item.id}`
             })
+        },
+        load() {
+            var that = this
+            u.request({
+                url: u.api.applylist,
+                method: 'POST',
+                header: {
+                    'content-type': 'application/x-www-form-urlencoded'
+                },
+                data: {},
+                isVerifyLogin: true,
+                success(res) {
+                    console.log(res)
+
+                    that.storeArr = u.dataTransform(res.applyinfo, {
+                        logo: 'img',
+                        discountPrice: 'discountPrice',
+                        marketPrice: 'marketPrice',
+                        title: 'title',
+                        phone: 'phone',
+                    })
+
+                    that.img = res.logo
+
+                }
+            })
         }
     },
     onLoad() {
         console.log('open onLoad')
-        var that = this
-        u.request({
-            url: u.api.applylist,
-            method: 'POST',
-            header: {
-                'content-type': 'application/x-www-form-urlencoded'
-            },
-            data: {},
-            isVerifyLogin: true,
-            success(res) {
-                console.log(res)
-
-                that.storeArr = u.dataTransform(res.applyinfo, {
-                    logo: 'img',
-                    discountPrice: 'discountPrice',
-                    marketPrice: 'marketPrice',
-                    title: 'title',
-                    phone: 'phone',
-                })
-
-                that.img = res.logo
-
-            }
-        })
-
+        this.load()
+    },
+    onShow() {
+        console.log('open onShow')
+        this.load()
     }
 }
 </script>

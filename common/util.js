@@ -41,8 +41,7 @@ const api = {
     // 门店列表
     sitelist: `${host}/api/site/list/${site}`,
     phonebind: `${host}/api/user/phone/${site}`,
-    
-    
+
     phoneget: `${host}/api/phone/get/${site}`,
     feedback: `${host}/api/feedback/save/${site}`,
     pay: `${host}/api/pay`,
