@@ -7,7 +7,10 @@
         </view>
         <view class="auth__title">三分联盟 申请以下权限</view>
         <view class="auth__subtitle">获得你的公开信息（昵称、头像等）</view>
-        <button type="primary" open-type="getUserInfo" @getuserinfo="authorLogin">授权登录</button>
+        <div class="auth__btnwrap">
+            <button type="" open-type="getUserInfo" @getuserinfo="toIndex" class="auth__btnwrap-btn1">暂不登录</button>
+            <button type="primary" open-type="getUserInfo" @getuserinfo="authorLogin" class="auth__btnwrap-btn2">授权登录</button>
+        </div>
     </view>
 </template>
 <script>
@@ -81,6 +84,9 @@ export default {
                     })
                 }
             })
+        },
+        toIndex() {
+            u.jump('/pages/index/index', true)
         }
     },
     onLoad() {
@@ -119,5 +125,16 @@ export default {
     font-size: 16px;
     color: #888;
     margin-bottom: 40px;
+}
+.auth__btnwrap {
+    overflow: hidden;
+}
+.auth__btnwrap-btn1 {
+    width: 48%;
+    float: left;
+}
+.auth__btnwrap-btn2 {
+    width: 48%;
+    float: right;
 }
 </style>
