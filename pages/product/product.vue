@@ -16,9 +16,16 @@
 
     <div style="height: 10px; background: #eee;"></div>
 
-
     <uni-popup :show="popupType === 'select'" position="bottom" @hidePopup="togglePopup('')">
+
         <div class="product__selcon">
+            <div class="product__selcon-th">
+                <image lazy-load :src="specImg" mode="aspectFill" class="product__selcon-th-pic" @click="toggleSpecImg(true)"></image>
+                <div class="product__selcon-th-r">
+                    <div class="product__selcon-th-price">¥{{price}}</div>
+                    <div class="product__selcon-th-sel">{{specTip}}</div>
+                </div>
+            </div>
             <div class="product__selcon-close" @click="togglePopup('')">X</div>
 
             <div v-for="(item, index) in specArr" :key="index">
@@ -84,6 +91,8 @@
             <div class="product-tf__btns-add" @click="addcart">加入购物车</div>
         </div>
     </div>
+
+    <div class="product-full" v-if="isShowSpecImg" @click="toggleSpecImg(false)"><image lazy-load :src="specImg" mode="aspectFit" class="product-full-img"></image></div>
   </div>
 </template>
 
@@ -107,7 +116,6 @@ export default {
             id: '',
             price: 0,
             title: '',
-            img: '',
             htmlString: "",
             swiperArr: [],
             // 规格数据
@@ -151,11 +159,14 @@ export default {
                     icon: '\ue618',
                     name: 'more'
                 }
-            ]
+            ],
+            specImg: '',
+            isShowSpecImg: false
         }
     },
     computed: {
-        specTip () {
+        // specImg() {},
+        specTip() {
             let that = this
             return that.checkSpec().specTip
         }
@@ -170,6 +181,9 @@ export default {
             //     withShareTicket: true
             // })
         },
+        toggleSpecImg(flag) {
+            this.isShowSpecImg = flag
+        },
         handleContact(e) {
             console.log(e)
         },
@@ -182,9 +196,12 @@ export default {
         selItem(index, index2) {
             if (this.specArr[index].select != index2) {
                 this.specArr[index].select = index2
+                this.specImg = this.specArr[index].specs[index2].logo || this.swiperArr[0].img
             } else {
                 this.specArr[index].select = null
+                this.specImg = this.swiperArr[0].img
             }
+            console.log(this.specArr)
         },
         // 检测规格
         checkSpec() {
@@ -396,11 +413,14 @@ export default {
         that.title = event.title
         that.id = event.id
         that.price = event.price
-        that.swiperArr = [event.cover]
+        that.swiperArr = [
+            {
+                img: event.cover
+            }
+        ]
         uni.setNavigationBarTitle({
             title: that.title
         })
-
         u.request({
             url: u.api.goods + that.id,
             // url: u.api.goods + '27',
@@ -417,10 +437,11 @@ export default {
                         title: that.title
                     })
                     that.price = goodData.vipPrice
-                    that.img = goodData.logo
+                    // that.img = goodData.logo
                     that.swiperArr = u.dataTransform(goodData.pics, {
                         path: 'img',
                     })
+                    that.specImg = that.swiperArr[0].img
                     let dealSpecArr = []
                     res.spec.forEach((item, i) => {
                         item.select = null
@@ -499,7 +520,6 @@ export default {
                 title: that.title
             })
             that.price = res.price
-            that.img = res.img
             that.swiperArr = res.swiperArr
             let dealSpecArr = []
             res.spec.forEach((item, i) => {
@@ -510,7 +530,6 @@ export default {
             })
             that.specArr = res.specArr
             that.htmlString = res.content
-            // that.htmlString = res.content.replace(/\\/g, "").replace(/<img/g, "<img style=\"display:none;\"")
         }
 
     },
@@ -613,6 +632,32 @@ export default {
         position: relative;
         text-align: left;
     }
+
+    .product__selcon-th {
+        overflow: hidden;
+        margin-top: -80upx;
+    }
+    .product__selcon-th-pic {
+        float: left;
+        width: 200upx;
+        height: 200upx;
+        margin-right: 30upx;
+    }
+    .product__selcon-th-r {
+        overflow: hidden;
+        padding-top: 80upx;
+        line-height: 50upx;
+    }
+    .product__selcon-th-price {
+        font-size: 32upx;
+        font-weight: bold;
+        color: #d1a178;
+    }
+    .product__selcon-th-sel {
+        font-size: 28upx;
+        color: #999;
+    }
+
     .product__selcon-close{
         width: 25px;
         height: 25px;
@@ -824,5 +869,20 @@ export default {
         border-top: 1px #eee solid;
     }
 
-
+    .product-full {
+        width: 750upx;
+        height: 100%;
+        position: fixed;
+        top: 0px;
+        z-index: 9999;
+        background-color: #000;
+        display:flex;
+        justify-content: center;
+        align-items:center;
+    }
+    .product-full-img {
+        display: block;
+        width: 750upx;
+        height: 100%;
+    }
 </style>

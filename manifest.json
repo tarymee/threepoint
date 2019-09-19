@@ -60,6 +60,11 @@
             "urlCheck" : false,
             "es6" : true,
             "postcss" : true
+        },
+        "permission" : {
+            "scope.userLocation" : {
+                "desc" : "您的位置将用于三分联盟小程序获取门店列表"
+            }
         }
     }
 }
