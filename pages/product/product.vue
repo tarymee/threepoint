@@ -575,7 +575,7 @@ export default {
     }
     .proswiper__img {
         width: 100%;
-        height: 625upx;
+        height: 750upx;
     }
 
     /* 图文详情 */
