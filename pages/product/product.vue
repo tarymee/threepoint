@@ -114,6 +114,7 @@ export default {
             interval: 5000,
             duration: 300,
             id: '',
+            initPrice: 0,
             price: 0,
             title: '',
             htmlString: "",
@@ -197,9 +198,11 @@ export default {
             if (this.specArr[index].select != index2) {
                 this.specArr[index].select = index2
                 this.specImg = this.specArr[index].specs[index2].logo || this.swiperArr[0].img
+                this.price = this.specArr[index].specs[index2].price
             } else {
                 this.specArr[index].select = null
                 this.specImg = this.swiperArr[0].img
+                this.price = this.initPrice
             }
             console.log(this.specArr)
         },
@@ -256,6 +259,7 @@ export default {
                         'title': item.title,
                         'selid': item.specs[item.select].id,
                         'seltitle': item.specs[item.select].title,
+                        'selPrice': item.specs[item.select].price,
                     })
                 })
             } else {
@@ -264,6 +268,8 @@ export default {
                     icon: 'none'
                 })
             }
+            console.log('000000000000')
+            console.log(spec)
 
             let postData = {
                 // name: that.title,
@@ -413,6 +419,7 @@ export default {
         that.title = event.title
         that.id = event.id
         that.price = event.price
+        that.initPrice = event.price
         that.swiperArr = [
             {
                 img: event.cover
@@ -437,6 +444,7 @@ export default {
                         title: that.title
                     })
                     that.price = goodData.vipPrice
+                    that.initPrice = goodData.vipPrice
                     // that.img = goodData.logo
                     that.swiperArr = u.dataTransform(goodData.pics, {
                         path: 'img',
