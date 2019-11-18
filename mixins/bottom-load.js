@@ -8,7 +8,7 @@ const bottomLoad = {
     data() {
         return {
             bottomLoad_api: '',
-            bottomLoad_pagesize: 20,
+            bottomLoad_pagesize: 10,
             bottomLoad_params: {},
             bottomLoad_tip: '加载中...',
             bottomLoad_data: []

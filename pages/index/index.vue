@@ -100,7 +100,7 @@
     </div>
 
     <div class="title">
-        <div class="title__tit">产品展示</div>
+        <div class="title__tit">推荐产品</div>
         <div class="title__des">PRODUCTS</div>
     </div>
     <!-- <div class="propic">
@@ -125,7 +125,7 @@
 
 
     <div class="title">
-        <div class="title__tit">产品展示</div>
+        <div class="title__tit">所有产品</div>
         <div class="title__des">PRODUCTS</div>
     </div>
     <div class="cate1__place" :class="cate1Fixed ? 'cate1__place--holder' : ''"></div>

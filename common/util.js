@@ -1,6 +1,6 @@
 // 正式
-// const host = 'https://wxcms.net'
-const host = 'https://www.3ftc.com'
+const host = 'https://wxcms.net'
+// const host = 'https://www.3ftc.com'
 // const host = 'https://flshop.mjsoft.com.cn'
 // 本地
 // const host = 'http://localhost:8088'

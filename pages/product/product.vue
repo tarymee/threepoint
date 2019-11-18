@@ -198,7 +198,7 @@ export default {
             if (this.specArr[index].select != index2) {
                 this.specArr[index].select = index2
                 this.specImg = this.specArr[index].specs[index2].logo || this.swiperArr[0].img
-                this.price = this.specArr[index].specs[index2].price
+                this.price = this.specArr[index].specs[index2].sku.salePrice
             } else {
                 this.specArr[index].select = null
                 this.specImg = this.swiperArr[0].img
@@ -259,7 +259,7 @@ export default {
                         'title': item.title,
                         'selid': item.specs[item.select].id,
                         'seltitle': item.specs[item.select].title,
-                        'selPrice': item.specs[item.select].price,
+                        'selPrice': item.specs[item.select].sku.salePrice,
                     })
                 })
             } else {
@@ -451,7 +451,7 @@ export default {
                     })
                     that.specImg = that.swiperArr[0].img
                     let dealSpecArr = []
-                    res.spec.forEach((item, i) => {
+                    res.goods.spec.forEach((item, i) => {
                         item.select = null
                         if (item.listDetail && item.listDetail.length) {
                             item.specs = item.listDetail
