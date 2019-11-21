@@ -46,6 +46,7 @@
                 </div>
                 <uni-list-item title="用户反馈" @click="jump('/pages/feedback/feedback')"></uni-list-item>
                 <uni-list-item title="关于" @click="jump('/pages/about/about')"></uni-list-item>
+                <uni-list-item title="退出登录" @click="loginout()"></uni-list-item>
             </uni-list>
 
             <div style="height: 50px"></div>
@@ -82,6 +83,13 @@
             },
             jump(url, isSwitchTab) {
                 u.jump(url, isSwitchTab)
+            },
+            loginout() {
+                uni.removeStorageSync('code')
+                uni.removeStorageSync('token')
+                uni.removeStorageSync('userid')
+                uni.removeStorageSync('userInfo')
+                u.jump('/pages/index/index', true)
             },
             bindphone() {
                 let that = this
