@@ -89,7 +89,7 @@
                 uni.removeStorageSync('token')
                 uni.removeStorageSync('userid')
                 uni.removeStorageSync('userInfo')
-                u.jump('/pages/index/index', true)
+                u.jump('/pages/index1/index1', true)
             },
             bindphone() {
                 let that = this

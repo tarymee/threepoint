@@ -7,6 +7,12 @@
             }
         },
         {
+            "path": "pages/index1/index1",
+            "style": {
+                "navigationBarTitleText": "三分联盟"
+            }
+        },
+        {
             "path": "pages/open/open",
             "style": {
                 "navigationBarTitleText": "我要开店"
@@ -147,7 +153,7 @@
         "list": [
             {
                 "text": "首页",
-                "pagePath": "pages/index/index",
+                "pagePath": "pages/index1/index1",
                 "iconPath": "static/tabs/home.png",
                 "selectedIconPath": "static/tabs/home-active.png"
             },
