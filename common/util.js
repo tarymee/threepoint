@@ -4,10 +4,10 @@ const host = 'https://wxcms.net'
 // const host = 'https://flshop.mjsoft.com.cn'
 // 本地
 // const host = 'http://localhost:8088'
-
 // 站点id 三分联盟默认是8
 const site = '8'
 const api = {
+    weapp: `${host}/api/weapp/home/${site}`,
     user: `${host}/api/user/index/${site}`,
     goods: `${host}/api/goods/view/`,
     list: `${host}/api/goods/list/${site}`,
