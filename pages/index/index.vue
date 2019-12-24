@@ -1,7 +1,6 @@
 <template>
     <div class="start">
         <image class="start-image" :src="aaa.backLogo.logo" mode="aspectFill"></image>
-        {{aaa.backLogo.url}}
         <div class="top">
             <div class="top-item" @click="jump(item.url)" v-for="(item, index) in aaa.header" :key="index"><image :src="item.logo" mode="aspectFill"></image></div>
         </div>
@@ -31,7 +30,7 @@ export default {
     methods: {
         jump(url) {
             console.log(url)
-            u.jump(url)
+            // u.jump(url)
             if (url.indexOf('index1') != -1 || url.indexOf('user') != -1 || url.indexOf('open') != -1 || url.indexOf('store') != -1 || url.indexOf('cart') != -1) {
                 u.jump(url, true)
             } else {
@@ -63,12 +62,17 @@ export default {
 </script>
 
 <style scoped>
+page {
+    background-color: #FDFAF3;
+}
 .start {
     display: block;
-    position: fixed;
+    /* position: fixed; */
     width: 750upx;
-    height: 100%;
+    min-height: 100vh;
+    overflow: scroll;
     background-color: #FDFAF3;
+    position: relative;
 }
 .start-image {
     display: block;
