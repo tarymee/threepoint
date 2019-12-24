@@ -1,15 +1,22 @@
 <template>
-    <a class="start">
-        <image :src="img" mode="aspectFill" @click="index()"></image>
-        <div class="link1"></div>
-        <div class="link2"></div>
-        <div class="link3"></div>
-        <div class="link4"></div>
-        <div class="link5"></div>
+    <div class="start">
+        <image class="start-image" :src="aaa.backLogo.logo" mode="aspectFill"></image>
+        {{aaa.backLogo.url}}
+        <div class="top">
+            <div class="top-item" @click="jump(item.url)" v-for="(item, index) in aaa.header" :key="index"><image :src="item.logo" mode="aspectFill"></image></div>
+        </div>
 
-        <div class="link6"></div>
-        <div class="link7"></div>
-    </a>
+        <div class="pro">
+            <div class="pro-item1" @click="jump(aaa.body[0].url)"><image :src="aaa.body[0].logo" mode="aspectFill"></image></div>
+            <div class="pro-item1" @click="jump(aaa.body[1].url)"><image :src="aaa.body[1].logo" mode="aspectFill"></image></div>
+            <div class="pro-item" @click="jump(aaa.body[2].url)"><image :src="aaa.body[2].logo" mode="aspectFill"></image></div>
+            <div class="pro-item" @click="jump(aaa.body[3].url)"><image :src="aaa.body[3].logo" mode="aspectFill"></image></div>
+        </div>
+
+        <div class="nav">
+            <div class="nav-item" @click="jump(item.url)" v-for="(item, index) in aaa.footer" :key="index"><image :src="item.logo" mode="aspectFill"></image></div>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -18,30 +25,36 @@ export default {
     components: {},
     data() {
         return {
-            img: '/static/img/ad.png'
+            aaa: {}
         }
     },
     methods: {
-        index() {
-            u.jump('/pages/index1/index1', true)
+        jump(url) {
+            console.log(url)
+            u.jump(url)
+            if (url.indexOf('index1') != -1 || url.indexOf('user') != -1 || url.indexOf('open') != -1 || url.indexOf('store') != -1 || url.indexOf('cart') != -1) {
+                u.jump(url, true)
+            } else {
+                u.jump(url)
+            }
         }
     },
     onLoad() {
         console.log('start onLoad')
-        // u.request({
-        //     url: u.api.weapp,
-        //     method: 'POST',
-        //     data: {},
-        //     isVerifyLogin: false,
-        //     success(res) {
-        //         console.log(res)
-
-        //     },
-        //     fail(res) {
-        //         console.error('错误')
-        //         console.error(res)
-        //     }
-        // })
+        var that = this
+        u.request({
+            url: u.api.weapp,
+            method: 'POST',
+            data: {},
+            isVerifyLogin: false,
+            success(res) {
+                console.log(res)
+                that.aaa = res
+            },
+            fail(res) {
+                console.error(res)
+            }
+        })
     },
     onShow() {
         console.log('start onShow')
@@ -55,74 +68,75 @@ export default {
     position: fixed;
     width: 750upx;
     height: 100%;
+    background-color: #FDFAF3;
 }
-.start image {
+.start-image {
     display: block;
     width: 750upx;
-    height: 100%;
+    height: 1204upx;
 }
-.start .link1 {
+.top {
     position: absolute;
-    width: 120upx;
-    height: 200upx;
-    background-color: rgba(000,000,000,0.8);
-    top: 50upx;
-    left: 70upx;
+    width: 700upx;
+    top: 65upx;
+    left: 40upx;
+    text-align: center;
 }
-
-.start .link2 {
-    position: absolute;
-    width: 120upx;
-    height: 200upx;
-    background-color: rgba(000,000,000,0.8);
-    top: 60upx;
-    left: 200upx;
+.top-item {
+    display: inline-block;
+    width: 125upx;
+    height: 187upx;
 }
-
-.start .link3 {
-    position: absolute;
-    width: 120upx;
-    height: 200upx;
-    background-color: rgba(000,000,000,0.8);
-    top: 60upx;
-    left: 330upx;
+.top-item image {
+    display: block;
+    width: 125upx;
+    height: 187upx;
 }
 
-.start .link4 {
+.pro {
     position: absolute;
-    width: 120upx;
-    height: 200upx;
-    background-color: rgba(000,000,000,0.8);
-    top: 60upx;
-    left: 460upx;
-}
-
-.start .link5 {
-    position: absolute;
-    width: 120upx;
-    height: 200upx;
-    background-color: rgba(000,000,000,0.8);
-    top: 60upx;
-    left: 580upx;
-}
-
-
-
-.start .link6 {
-    position: absolute;
-    width: 180upx;
-    height: 300upx;
-    background-color: rgba(000,000,000,0.8);
+    width: 750upx;
     top: 300upx;
-    left: 340upx;
+    text-align: center;
+    overflow: hidden;
+}
+.pro-item1 {
+    display: inline-block;
+    width: 145upx;
+    height: 320upx;
+}
+.pro-item1 image {
+    display: block;
+    width: 145upx;
+    height: 320upx;
+}
+.pro-item {
+    display: inline-block;
+    width: 200upx;
+    height: 320upx;
+}
+.pro-item image {
+    display: block;
+    width: 200upx;
+    height: 320upx;
 }
 
-.start .link7 {
+
+.nav {
     position: absolute;
-    width: 180upx;
-    height: 300upx;
-    background-color: rgba(000,000,000,0.8);
-    top: 300upx;
-    left: 540upx;
+    width: 750upx;
+    top: 930upx;
+    text-align: center;
+}
+.nav-item {
+    display: inline-block;
+    width: 125upx;
+    height: 225upx;
+    margin: 0 5upx;
+}
+.nav-item image {
+    display: block;
+    width: 125upx;
+    height: 225upx;
 }
 </style>
