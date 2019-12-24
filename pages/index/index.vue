@@ -1,21 +1,19 @@
 <template>
     <div class="start">
-        <image class="start-bg" :src="img" mode="aspectFill"></image>
-        <div class="top link1" @click="jump()"><image src="/static/img/top1.png" mode="aspectFill"></image></div>
-        <div class="top link2" @click="jump()"><image src="/static/img/top2.png" mode="aspectFill"></image></div>
-        <div class="top link3" @click="jump()"><image src="/static/img/top3.png" mode="aspectFill"></image></div>
-        <div class="top link4" @click="jump()"><image src="/static/img/top4.png" mode="aspectFill"></image></div>
-        <div class="top link5" @click="jump()"><image src="/static/img/top5.png" mode="aspectFill"></image></div>
+        <image class="start-image" :src="aaa.backLogo.logo" mode="aspectFill"></image>
+        <div class="top">
+            <div class="top-item" @click="jump(item.url)" v-for="(item, index) in aaa.header" :key="index"><image :src="item.logo" mode="aspectFill"></image></div>
+        </div>
 
-        <div class="mid link1" @click="jump()"><image src="/static/img/pro.png" mode="aspectFill"></image></div>
-        <div class="mid link2" @click="jump()"><image src="/static/img/pro2.png" mode="aspectFill"></image></div>
+        <div class="pro">
+            <div class="pro-item1" @click="jump(aaa.body[0].url)"><image :src="aaa.body[0].logo" mode="aspectFill"></image></div>
+            <div class="pro-item1" @click="jump(aaa.body[1].url)"><image :src="aaa.body[1].logo" mode="aspectFill"></image></div>
+            <div class="pro-item" @click="jump(aaa.body[2].url)"><image :src="aaa.body[2].logo" mode="aspectFill"></image></div>
+            <div class="pro-item" @click="jump(aaa.body[3].url)"><image :src="aaa.body[3].logo" mode="aspectFill"></image></div>
+        </div>
 
-        <div class="bot">
-            <div class="bot-item" @click="jump()"><image src="/static/img/nav1.png" mode="aspectFill"></image></div>
-            <div class="bot-item" @click="jump()"><image src="/static/img/nav2.png" mode="aspectFill"></image></div>
-            <div class="bot-item" @click="jump()"><image src="/static/img/nav3.png" mode="aspectFill"></image></div>
-            <div class="bot-item" @click="jump()"><image src="/static/img/nav4.png" mode="aspectFill"></image></div>
-            <div class="bot-item" @click="jump()"><image src="/static/img/nav5.png" mode="aspectFill"></image></div>
+        <div class="nav">
+            <div class="nav-item" @click="jump(item.url)" v-for="(item, index) in aaa.footer" :key="index"><image :src="item.logo" mode="aspectFill"></image></div>
         </div>
     </div>
 </template>
@@ -26,30 +24,36 @@ export default {
     components: {},
     data() {
         return {
-            img: '/static/img/index.png'
+            aaa: {}
         }
     },
     methods: {
         jump(url) {
-            u.jump('/pages/index1/index1', true)
+            console.log(url)
+            // u.jump(url)
+            if (url.indexOf('index1') != -1 || url.indexOf('user') != -1 || url.indexOf('open') != -1 || url.indexOf('store') != -1 || url.indexOf('cart') != -1) {
+                u.jump(url, true)
+            } else {
+                u.jump(url)
+            }
         }
     },
     onLoad() {
         console.log('start onLoad')
-        // u.request({
-        //     url: u.api.weapp,
-        //     method: 'POST',
-        //     data: {},
-        //     isVerifyLogin: false,
-        //     success(res) {
-        //         console.log(res)
-
-        //     },
-        //     fail(res) {
-        //         console.error('错误')
-        //         console.error(res)
-        //     }
-        // })
+        var that = this
+        u.request({
+            url: u.api.weapp,
+            method: 'POST',
+            data: {},
+            isVerifyLogin: false,
+            success(res) {
+                console.log(res)
+                that.aaa = res
+            },
+            fail(res) {
+                console.error(res)
+            }
+        })
     },
     onShow() {
         console.log('start onShow')
@@ -58,69 +62,86 @@ export default {
 </script>
 
 <style scoped>
+page {
+    background-color: #FDFAF3;
+}
 .start {
     display: block;
-    position: fixed;
+    /* position: fixed; */
     width: 750upx;
-    height: 100%;
-    background-color: rgba(253,250,244);
+    min-height: 100vh;
+    overflow: scroll;
+    background-color: #FDFAF3;
+    position: relative;
 }
-.start-bg {
+.start-image {
     display: block;
     width: 750upx;
     height: 1204upx;
 }
-
 .top {
     position: absolute;
-    width: 120upx;
-    height: 180upx;
-    top: 75upx;
+    width: 700upx;
+    top: 65upx;
+    left: 40upx;
+    text-align: center;
 }
-.top image {
+.top-item {
+    display: inline-block;
+    width: 125upx;
+    height: 187upx;
+}
+.top-item image {
     display: block;
-    width: 120upx;
-    height: 180upx;
-}
-.top.link1 {
-    left: 70upx;
+    width: 125upx;
+    height: 187upx;
 }
 
-.top.link2 {
-    left: 200upx;
-}
-
-.top.link3 {
-    left: 330upx;
-}
-
-.top.link4 {
-    left: 460upx;
-}
-
-.top.link5 {
-    left: 580upx;
-}
-
-
-
-.mid {
+.pro {
     position: absolute;
-    width: 180upx;
-    height: 300upx;
-    /* background-color: rgba(000,000,000,0.8); */
+    width: 750upx;
     top: 300upx;
+    text-align: center;
+    overflow: hidden;
 }
-.mid.link1 {
-    left: 335upx;
+.pro-item1 {
+    display: inline-block;
+    width: 145upx;
+    height: 320upx;
 }
-.mid.link2 {
-    left: 535upx;
-}
-.mid image {
+.pro-item1 image {
     display: block;
-    width: 180upx;
-    height: 300upx;
+    width: 145upx;
+    height: 320upx;
+}
+.pro-item {
+    display: inline-block;
+    width: 200upx;
+    height: 320upx;
+}
+.pro-item image {
+    display: block;
+    width: 200upx;
+    height: 320upx;
+}
+
+
+.nav {
+    position: absolute;
+    width: 750upx;
+    top: 930upx;
+    text-align: center;
+}
+.nav-item {
+    display: inline-block;
+    width: 125upx;
+    height: 225upx;
+    margin: 0 5upx;
+}
+.nav-item image {
+    display: block;
+    width: 125upx;
+    height: 225upx;
 }
 
 .bot {
