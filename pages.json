@@ -192,6 +192,11 @@
         "current": 1,
         "list": [
             {
+                "name": "index1",
+                "path": "pages/index1/index1",
+                "query": ""
+            },
+            {
                 "name": "login",
                 "path": "pages/login/login",
                 "query": ""

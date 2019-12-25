@@ -4,7 +4,7 @@
         <view class="cart">
             <div class="cart__none" v-if="proArr.length==0">
                 <tip text="亲 购物车还没有商品哦" :none-icon="true"></tip>
-                <!-- <a class="cart__none-btn" @click="jump('/pages/index/index', true)">去逛逛</a> -->
+                <!-- <a class="cart__none-btn" @click="jump('/pages/index/index')">去逛逛</a> -->
             </div>
             <uni-swipe-action :options="saOption" v-for="(item,index) in proArr" :key="index" @click="delPro(index)">
                 <view class="cart___item">
@@ -229,8 +229,8 @@ export default {
         discard() {
             //丢弃
         },
-        jump(url, isSwitchTab) {
-            u.jump(url, isSwitchTab)
+        jump(url) {
+            u.jump(url)
         },
         // 跳转确认订单页面
         toConfirm() {

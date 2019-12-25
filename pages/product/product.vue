@@ -81,7 +81,7 @@
             <div class="product-tf__item-tit">客服</div>
             <button open-type="contact" @contact="handleContact">客服</button>
         </div>
-        <div class="product-tf__item" style="margin-right: 15px" @tap="jump('/pages/cart/cart', true)">
+        <div class="product-tf__item" style="margin-right: 15px" @tap="jump('/pages/cart/cart')">
             <div class="fa fa-shopping-cart product-tf__item-icon"></div>
             <div class="product-tf__item-tit">购物车</div>
             <div class="product-tf__item-count" v-if="cartCount">{{cartCount}}</div>
@@ -188,8 +188,8 @@ export default {
         handleContact(e) {
             console.log(e)
         },
-        jump(url, isSwitchTab) {
-            u.jump(url, isSwitchTab)
+        jump(url) {
+            u.jump(url)
         },
         togglePopup(popupType) {
             this.popupType = popupType

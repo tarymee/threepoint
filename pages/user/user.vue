@@ -81,15 +81,15 @@
             test() {
                 console.log('test')
             },
-            jump(url, isSwitchTab) {
-                u.jump(url, isSwitchTab)
+            jump(url) {
+                u.jump(url)
             },
             loginout() {
                 uni.removeStorageSync('code')
                 uni.removeStorageSync('token')
                 uni.removeStorageSync('userid')
                 uni.removeStorageSync('userInfo')
-                u.jump('/pages/index1/index1', true)
+                u.jump('/pages/index1/index1')
             },
             bindphone() {
                 let that = this
@@ -100,7 +100,7 @@
                         icon: 'none'
                     })
                 } else {
-                    that.jump('/pages/bindphone/bindphone')
+                    u.jump('/pages/bindphone/bindphone')
                 }
             }
         },
