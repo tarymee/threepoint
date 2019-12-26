@@ -1,7 +1,7 @@
 <template>
     <div class="start">
-        <!-- <image class="start-image" :src="aaa.backLogo.logo" mode="aspectFill"></image> -->
-        <image class="start-image" src="/static/img/index.jpg" mode="aspectFill"></image>
+        <image class="start-image" :src="aaa.backLogo.logo" mode="aspectFill"></image>
+        <!-- <image class="start-image" src="/static/img/index.jpg" mode="aspectFill"></image> -->
 
         <div class="top">
             <div class="top-item" @click="jump(item.url)" v-for="(item, index) in aaa.header" :key="index"><image :src="item.logo" mode="aspectFill"></image></div>
@@ -18,35 +18,27 @@
             <div class="nav-item" @click="jump(item.url)" v-for="(item, index) in aaa.footer" :key="index"><image :src="item.logo" mode="aspectFill"></image></div>
         </div>
 
+        <div class="" v-for="(item, index) in navList" :key="index">
+            <div class="propic" @click="jump(`/pages/cate/cate?id=${item.wh.url}&title=${item.wh.title}`)">
+                <image :src="item.wh.logo" mode="aspectFill"></image>
+            </div>
 
-        <div class="propic">
-            <image src="http://fpoimg.com/200x100" mode="aspectFill"></image>
+            <div class="pro1" v-for="(item2, index2) in item.arrgood" :key="index2">
+                <scroll-view scroll-x>
+                    <a class="pro1-item" @click="jump(`/pages/product/product?id=${item3.id}&title=${item3.title}`)" v-for="(item3, index3) in item2" :key="index3">
+                        <image :src="item3.logo" mode="aspectFill"></image>
+                        <text class="pro1-item-tit">{{item3.title}}</text>
+                        <div class="pro1-item-price"><text>￥</text>{{item3.vipPrice}}</div>
+                    </a>
+                </scroll-view>
+            </div>
+
+            <div class="more">
+                <a class="more__btn" @click="jump(`/pages/cate/cate?id=${item.wh.url}&title=${item.wh.title}`)">查看更多</a>
+            </div>
         </div>
-        <div class="pro1">
-            <scroll-view scroll-x>
-                <a class="pro1-item" @click="">
-                    <image src="http://fpoimg.com/100x100" mode="aspectFill"></image>
-                    <text class="pro1-item-tit">十器良品陶瓷竞品</text>
-                    <div class="pro1-item-price"><text>￥</text>654654</div>
-                </a>
-                <a class="pro1-item" @click="">
-                    <image src="http://fpoimg.com/100x100" mode="aspectFill"></image>
-                    <text class="pro1-item-tit">十器良品陶瓷竞品</text>
-                    <div class="pro1-item-price"><text>￥</text>654654</div>
-                </a>
-                <a class="pro1-item" @click="">
-                    <image src="http://fpoimg.com/100x100" mode="aspectFill"></image>
-                    <text class="pro1-item-tit">十器良品陶瓷竞品</text>
-                    <div class="pro1-item-price"><text>￥</text>654654</div>
-                </a>
-                <a class="pro1-item" @click="">
-                    <image src="http://fpoimg.com/100x100" mode="aspectFill"></image>
-                    <text class="pro1-item-tit">十器良品陶瓷竞品</text>
-                    <div class="pro1-item-price"><text>￥</text>654654</div>
-                </a>
-            </scroll-view>
-        </div>
-        <div class="pro1">
+
+        <!-- <div class="pro1">
             <scroll-view scroll-x>
                 <a class="pro1-item" @click="">
                     <image src="http://fpoimg.com/100x100" mode="aspectFill"></image>
@@ -72,7 +64,7 @@
         </div>
         <div class="more">
             <a class="more__btn" @click="jump('/pages/cate/cate?id=&title=最新产品&type=1')">查看更多</a>
-        </div>
+        </div> -->
 
     </div>
 </template>
@@ -83,7 +75,8 @@ export default {
     components: {},
     data() {
         return {
-            aaa: {}
+            aaa: {},
+            navList: [],
         }
     },
     methods: {
@@ -102,6 +95,23 @@ export default {
             success(res) {
                 console.log(res)
                 that.aaa = res
+                that.navList = res.navList
+                // that.navList[0].goods.push({})
+                that.navList.forEach((item, i) => {
+                    item.arrgood = []
+                    var arr = []
+                    item.goods.forEach((item2, j) => {
+                        arr.push(item2)
+                        if (arr.length >= 8) {
+                            item.arrgood.push(JSON.parse(JSON.stringify(arr)))
+                            arr = []
+                        } else if (arr.length < 8 && j == item.goods.length - 1) {
+                            item.arrgood.push(JSON.parse(JSON.stringify(arr)))
+                            arr = []
+                        }
+                    })
+                })
+                console.log(that.navList)
             },
             fail(res) {
                 console.error(res)
