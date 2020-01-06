@@ -86,7 +86,7 @@ export default {
             })
         },
         toIndex() {
-            u.jump('/pages/index1/index1')
+            u.jump('/pages/index/index')
         }
     },
     onLoad() {

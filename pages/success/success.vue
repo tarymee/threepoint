@@ -4,7 +4,7 @@
         <div class="success__tit">支付成功</div>
         <div class="success__tip">支付金额: <span class="success__tip-price">￥{{price}}</span></div>
         <div class="success__btnbox">
-            <a class="success__btnbox-btn" @click="jump(`/pages/index1/index1`)">回到首页</a>
+            <a class="success__btnbox-btn" @click="jump(`/pages/index/index`)">回到首页</a>
             <a class="success__btnbox-btn" @click="jump(`/pages/orderdetail/orderdetail?order_id=${order_id}`)">查看订单</a>
         </div>
     </div>

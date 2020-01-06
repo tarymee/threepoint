@@ -4,29 +4,29 @@
         <!-- <image class="start-image" src="/static/img/index.jpg" mode="aspectFill"></image> -->
 
         <div class="top">
-            <div class="top-item" @click="jump(item.url)" v-for="(item, index) in aaa.header" :key="index"><image :src="item.logo" mode="aspectFill"></image></div>
+            <div class="top-item" @click="jump(item.url)" v-for="(item, index) in aaa.header" :key="index"><image :src="item.logo" mode="aspectFill" lazy-load></image></div>
         </div>
 
         <div class="pro">
-            <div class="pro-item1" @click="jump(aaa.body[0].url)"><image :src="aaa.body[0].logo" mode="aspectFill"></image></div>
-            <div class="pro-item1" @click="jump(aaa.body[1].url)"><image :src="aaa.body[1].logo" mode="aspectFill"></image></div>
-            <div class="pro-item" @click="jump(aaa.body[2].url)"><image :src="aaa.body[2].logo" mode="aspectFill"></image></div>
-            <div class="pro-item" @click="jump(aaa.body[3].url)"><image :src="aaa.body[3].logo" mode="aspectFill"></image></div>
+            <div class="pro-item1" @click="jump(aaa.body[0].url)"><image :src="aaa.body[0].logo" lazy-load mode="aspectFill"></image></div>
+            <div class="pro-item1" @click="jump(aaa.body[1].url)"><image :src="aaa.body[1].logo" lazy-load mode="aspectFill"></image></div>
+            <div class="pro-item" @click="jump(aaa.body[2].url)"><image :src="aaa.body[2].logo" lazy-load mode="aspectFill"></image></div>
+            <div class="pro-item" @click="jump(aaa.body[3].url)"><image :src="aaa.body[3].logo" lazy-load mode="aspectFill"></image></div>
         </div>
 
         <div class="nav">
-            <div class="nav-item" @click="jump(item.url)" v-for="(item, index) in aaa.footer" :key="index"><image :src="item.logo" mode="aspectFill"></image></div>
+            <div class="nav-item" @click="jump(item.url)" v-for="(item, index) in aaa.footer" :key="index"><image :src="item.logo" lazy-load mode="aspectFill"></image></div>
         </div>
 
         <div class="" v-for="(item, index) in navList" :key="index">
-            <div class="propic" @click="jump(`/pages/cate/cate?id=${item.wh.url}&title=${item.wh.title}`)">
-                <image :src="item.wh.logo" mode="aspectFill"></image>
+            <div class="propic" @click="jump(item.wh.url)">
+                <image :src="item.wh.logo" lazy-load mode="aspectFill"></image>
             </div>
 
             <div class="pro1" v-for="(item2, index2) in item.arrgood" :key="index2">
                 <scroll-view scroll-x>
                     <a class="pro1-item" @click="jump(`/pages/product/product?id=${item3.id}&title=${item3.title}`)" v-for="(item3, index3) in item2" :key="index3">
-                        <image :src="item3.logo" mode="aspectFill"></image>
+                        <image :src="item3.logo" lazy-load mode="aspectFill"></image>
                         <text class="pro1-item-tit">{{item3.title}}</text>
                         <div class="pro1-item-price"><text>￥</text>{{item3.vipPrice}}</div>
                     </a>
@@ -34,7 +34,7 @@
             </div>
 
             <div class="more">
-                <a class="more__btn" @click="jump(`/pages/cate/cate?id=${item.wh.url}&title=${item.wh.title}`)">查看更多</a>
+                <a class="more__btn" @click="jump(item.wh.url)">查看更多</a>
             </div>
         </div>
 
@@ -133,6 +133,7 @@ export default {
     background-color: #FDFAF3;
     /* position: relative; */
 }
+
 .start-image {
     display: block;
     width: 750upx;

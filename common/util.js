@@ -225,7 +225,7 @@ function phone(number) {
 function jump(url) {
     if (url) {
         console.log(url)
-        if (url.indexOf('index1') != -1 || url.indexOf('user') != -1 || url.indexOf('open') != -1 || url.indexOf('store') != -1 || url.indexOf('cart') != -1) {
+        if (url.indexOf('index') != -1 || url.indexOf('user') != -1 || url.indexOf('open') != -1 || url.indexOf('store') != -1 || url.indexOf('cart') != -1) {
             uni.switchTab({
                 url: url
             })
