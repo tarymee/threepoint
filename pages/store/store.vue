@@ -57,15 +57,7 @@ export default {
             duration: 300,
             sliderArr: [
                 // {
-                //     img: '/static/img/home/slider.jpg',
-                //     url: '/pages/product/product'
-                // },
-                // {
-                //     img: '/static/img/home/slider.jpg',
-                //     url: '/pages/product/product'
-                // },
-                // {
-                //     img: '/static/img/home/slider.jpg',
+                //     img: 'http://dummyimage.com/200x150',
                 //     url: '/pages/product/product'
                 // }
             ],

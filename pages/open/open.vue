@@ -13,10 +13,6 @@
 
     <div class="con">
         <image :src="img" mode="aspectFill" style="height: 8138upx"></image>
-        <!-- <image src="/static/img/open/art1.jpg" mode="aspectFill" style="height: 860upx"></image>
-        <image src="/static/img/open/art2.jpg" mode="aspectFill" style="height: 630upx"></image>
-        <image src="/static/img/open/art3.jpg" mode="aspectFill" style="height: 1030upx"></image>
-        <image src="/static/img/open/art4.jpg" mode="aspectFill" style="height: 882upx"></image> -->
     </div>
 
 </div>
@@ -31,21 +27,7 @@ export default {
             img: '',
             storeArr: [
                 // {
-                //     img: '/static/img/open/item1.jpg',
-                //     title: '三分联盟专卖店（工厂直供）',
-                //     discountPrice: '386',
-                //     marketPrice: '19999',
-                //     phone: '13666666666'
-                // },
-                // {
-                //     img: '/static/img/open/item2.jpg',
-                //     title: '三分联盟专卖店（工厂直供）',
-                //     discountPrice: '386',
-                //     marketPrice: '19999',
-                //     phone: '13666666666'
-                // },
-                // {
-                //     img: '/static/img/open/item3.jpg',
+                //     img: 'http://dummyimage.com/200x150',
                 //     title: '三分联盟专卖店（工厂直供）',
                 //     discountPrice: '386',
                 //     marketPrice: '19999',
