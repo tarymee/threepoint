@@ -137,6 +137,30 @@
             "style": {
                 "navigationBarTitleText": "用户反馈"
             }
+        },
+        {
+            "path": "pages/mystore/mystore",
+            "style": {
+                "navigationBarTitleText": "我的店铺"
+            }
+        },
+        {
+            "path": "pages/mycustomer/mycustomer",
+            "style": {
+                "navigationBarTitleText": "我的客户"
+            }
+        },
+        {
+            "path": "pages/mycommission/mycommission",
+            "style": {
+                "navigationBarTitleText": "我的佣金"
+            }
+        },
+        {
+            "path": "pages/mywithdrawal/mywithdrawal",
+            "style": {
+                "navigationBarTitleText": "我的提现"
+            }
         }
     ],
     "globalStyle": {
@@ -280,6 +304,26 @@
                 "name": "product",
                 "path": "pages/product/product",
                 "query": "id=146&title=青花瓷89CM&price=16&cover=https://pic.36krcnd.com/201903/25021423/n0x2x3v809xijacy!heading"
+            },
+            {
+                "name": "我的店铺",
+                "path": "pages/mystore/mystore",
+                "query": ""
+            },
+            {
+                "name": "我的客户",
+                "path": "pages/mycustomer/mycustomer",
+                "query": ""
+            },
+            {
+                "name": "我的佣金",
+                "path": "pages/mycommission/mycommission",
+                "query": ""
+            },
+            {
+                "name": "我的提现",
+                "path": "pages/mywithdrawal/mywithdrawal",
+                "query": ""
             }
         ]
     }
