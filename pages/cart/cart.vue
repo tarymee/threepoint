@@ -14,7 +14,7 @@
                     </view>
                     <!-- 商品信息 -->
                     <view class="pro" @tap="jump(`/pages/product/product?id=${item.id}&title=${item.name}&price=${item.price}&cover=${item.img}`)">
-                        <image :src="item.img" class="pro__img"></image>
+                        <image :src="item.img" lazy-load class="pro__img"></image>
                         <view class="pro__info">
                             <view class="pro__info-tit">{{item.name}}</view>
                             <view class="pro__info-spec"><div class="pro__info-spec-tip" v-if="item.specTip">{{item.specTip}}</div></view>

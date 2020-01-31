@@ -2,11 +2,11 @@
     <div>
         <!-- <rich-text :nodes="htmlString"></rich-text> -->
         <div class="con">
-            <image src="/static/img/about/01.jpg" mode="aspectFill" style="height: 788upx"></image>
-            <image src="/static/img/about/02.jpg" mode="aspectFill" style="height: 1476upx"></image>
-            <image src="/static/img/about/03.jpg" mode="aspectFill" style="height: 854upx"></image>
-            <image src="/static/img/about/04.jpg" mode="aspectFill" style="height: 2264upx"></image>
-            <image src="/static/img/about/05.jpg" mode="aspectFill" style="height: 300upx"></image>
+            <image src="/static/img/about/01.jpg" lazy-load mode="aspectFill" style="height: 788upx"></image>
+            <image src="/static/img/about/02.jpg" lazy-load mode="aspectFill" style="height: 1476upx"></image>
+            <image src="/static/img/about/03.jpg" lazy-load mode="aspectFill" style="height: 854upx"></image>
+            <image src="/static/img/about/04.jpg" lazy-load mode="aspectFill" style="height: 2264upx"></image>
+            <image src="/static/img/about/05.jpg" lazy-load mode="aspectFill" style="height: 300upx"></image>
         </div>
     </div>
 </template>

@@ -1,7 +1,7 @@
 <template>
 <div>
     <a class="store" @click="applystore(item)" v-for="(item, index) in storeArr" :key="index">
-        <image :src="item.img" mode="aspectFill"></image>
+        <image :src="item.img" lazy-load mode="aspectFill"></image>
         <div class="store__tit">{{item.title}}</div>
         <div class="store__price">
             <div class="store__price-price1">优选价: </div>
@@ -12,7 +12,7 @@
     </a>
 
     <div class="con">
-        <image :src="img" mode="aspectFill" style="height: 8138upx"></image>
+        <image :src="img" lazy-load mode="aspectFill" style="height: 8138upx"></image>
     </div>
 
 </div>

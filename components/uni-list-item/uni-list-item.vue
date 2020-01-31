@@ -2,7 +2,7 @@
 	<view class="uni-list-item" :class="[disabled === true || disabled === 'true' ? 'uni-list-item--disabled' : '']" :hover-class="disabled === true || disabled === 'true' || showSwitch === true || showSwitch === 'true' ? '' : 'uni-list-item--hover'" @click="onClick">
 		<view class="uni-list-item__container">
 			<view class="uni-list-item__icon" v-if="thumb">
-				<image class="uni-list-item__icon-img" :src="thumb"></image>
+				<image class="uni-list-item__icon-img" lazy-load :src="thumb"></image>
 			</view>
 			<view class="uni-list-item__icon" v-else-if="showExtraIcon === true || showExtraIcon === 'true'">
 				<uni-icon :color="extraIcon.color" :size="extraIcon.size" :type="extraIcon.type"></uni-icon>

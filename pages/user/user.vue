@@ -43,7 +43,6 @@
                 <uni-list-item title="我的客户" @click="jump('/pages/mycustomer/mycustomer')"></uni-list-item>
                 <uni-list-item title="我的店铺" @click="jump('/pages/mystore/mystore')"></uni-list-item>
                 <uni-list-item title="我的佣金" @click="jump('/pages/mycommission/mycommission')"></uni-list-item>
-                <uni-list-item title="我的提现" @click="jump('/pages/mywithdrawal/mywithdrawal')"></uni-list-item>
                 <div class="service">
                     <uni-list-item title="联系客服"></uni-list-item>
                     <button open-type="contact">客服</button>
@@ -137,6 +136,27 @@
                             that.user.logo = userInfo.avatarUrl
                             that.user.name = userInfo.nickName
                         }
+                    },
+                    fail(res) {
+                        console.error(res)
+                    }
+                })
+
+                u.request({
+                    url: u.api.qrcode,
+                    // url: 'http://json/weappuser/qrcode/8',
+                    method: 'POST',
+                    header: {
+                        'content-type': 'application/x-www-form-urlencoded'
+                        // 'content-type': 'application/json'
+                    },
+                    data: {},
+                    isVerifyLogin: true,
+                    isShowLoading: false,
+                    isShowError: false,
+                    success(res) {
+                        console.log(res)
+                        
                     },
                     fail(res) {
                         console.error(res)

@@ -17,7 +17,7 @@
         <div class="confirm-tit">订单商品</div>
         <!-- 商品信息 -->
         <div class="pro" v-for="(item, index) in confirmArr" :key="index">
-            <image :src="item.img" class="pro__img"></image>
+            <image :src="item.img" lazy-load class="pro__img"></image>
             <div class="pro__info">
                 <div class="pro__info-tit">{{item.name}}</div>
                 <div class="pro__info-spec">

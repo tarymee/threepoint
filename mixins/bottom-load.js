@@ -229,52 +229,6 @@ const bottomLoad = {
                             // // bottomLoad_pagetotal = Number(res.pagetotal)
                             // bottomLoad_pagetotal = 3
                         } else {
-                            // res = {
-                            //     data: [
-                            //         {
-                            //             logo: 'https://cbu01.alicdn.com/img/ibank/2018/466/073/9464370664_1899654620.220x220.jpg',
-                            //             title: '青花瓷功夫茶杯',
-                            //             marketPrice: '386',
-                            //             url: '/pages/product/product?id=5188314&title=青花瓷89CM&price=16&cover=https://pic.36krcnd.com/201903/25021423/n0x2x3v809xijacy!heading'
-                            //         },
-                            //         {
-                            //             logo: 'https://cbu01.alicdn.com/img/ibank/2018/466/073/9464370664_1899654620.220x220.jpg',
-                            //             title: '青花瓷功夫茶杯',
-                            //             marketPrice: '386',
-                            //             url: '/pages/product/product?id=5188314&title=青花瓷89CM&price=16&cover=https://pic.36krcnd.com/201903/25021423/n0x2x3v809xijacy!heading'
-                            //         },
-                            //         {
-                            //             logo: 'https://cbu01.alicdn.com/img/ibank/2018/466/073/9464370664_1899654620.220x220.jpg',
-                            //             title: '青花瓷功夫茶杯',
-                            //             marketPrice: '386',
-                            //             url: '/pages/product/product?id=5188314&title=青花瓷89CM&price=16&cover=https://pic.36krcnd.com/201903/25021423/n0x2x3v809xijacy!heading'
-                            //         },
-                            //         {
-                            //             logo: 'https://cbu01.alicdn.com/img/ibank/2018/466/073/9464370664_1899654620.220x220.jpg',
-                            //             title: '青花瓷功夫茶杯',
-                            //             marketPrice: '386',
-                            //             url: '/pages/product/product?id=5188314&title=青花瓷89CM&price=16&cover=https://pic.36krcnd.com/201903/25021423/n0x2x3v809xijacy!heading'
-                            //         },
-                            //         {
-                            //             logo: 'https://cbu01.alicdn.com/img/ibank/2018/466/073/9464370664_1899654620.220x220.jpg',
-                            //             title: '青花瓷功夫茶杯',
-                            //             marketPrice: '386',
-                            //             url: '/pages/product/product?id=5188314&title=青花瓷89CM&price=16&cover=https://pic.36krcnd.com/201903/25021423/n0x2x3v809xijacy!heading'
-                            //         },
-                            //         {
-                            //             logo: 'https://cbu01.alicdn.com/img/ibank/2018/466/073/9464370664_1899654620.220x220.jpg',
-                            //             title: '青花瓷功夫茶杯',
-                            //             marketPrice: '386',
-                            //             url: '/pages/product/product?id=5188314&title=青花瓷89CM&price=16&cover=https://pic.36krcnd.com/201903/25021423/n0x2x3v809xijacy!heading'
-                            //         },
-                            //         {
-                            //             logo: 'https://cbu01.alicdn.com/img/ibank/2018/466/073/9464370664_1899654620.220x220.jpg',
-                            //             title: '青花瓷功夫茶杯',
-                            //             marketPrice: '386',
-                            //             url: '/pages/product/product?id=5188314&title=青花瓷89CM&price=16&cover=https://pic.36krcnd.com/201903/25021423/n0x2x3v809xijacy!heading'
-                            //         }
-                            //     ]
-                            // }
                             if (Array.isArray(res.data) && res.data.length) {
                                 that.bottomLoad_data = that.bottomLoad_data.concat(res.data)
                             }

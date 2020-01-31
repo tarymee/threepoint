@@ -37,19 +37,24 @@ export default {
             uni.login({
                 success(result) {
                     console.log(result)
+                    let postData = {
+                        code: result.code,
+                        user_info: userInfo.rawData,
+                        encrypted_data: userInfo.encryptedData,
+                        iv: userInfo.iv,
+                        signature: userInfo.signature
+                    }
+                    let scene = uni.getStorageSync('scene')
+                    if (scene) {
+                        postData.scene = scene
+                    }
                     uni.request({
                         url: u.api.wxlogin,
                         header: {
                             'content-type': 'application/x-www-form-urlencoded',
                         },
                         method: 'post',
-                        data: {
-                            code: result.code,
-                            user_info: userInfo.rawData,
-                            encrypted_data: userInfo.encryptedData,
-                            iv: userInfo.iv,
-                            signature: userInfo.signature
-                        },
+                        data: postData,
                         success: function (res) {
                             uni.hideLoading()
                             if (res.data.code === 1) {

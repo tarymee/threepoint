@@ -49,8 +49,15 @@ const api = {
     test: `${host}/api/test`,
     // index: `${host}/api/shop/index/1`,
     open: `${host}/api/applyinfo/list/1`,
+    qrcode: `${host}/json/weappuser/qrcode/${site}`,
+    mycustomer: `${host}/api/user/list/${site}`,
+    profit: `${host}/api/user/profit/index`,
+    profitlog: `${host}/api/user/profit/log`,
+    profitincome: `${host}/api/user/profit/income`,
+    profitsave: `${host}/api/user/profit/save`,
     host
 }
+
 // console.log(api)
 
 function checkLogin(success, fail, isAutoJumpToLogin = true) {
@@ -121,6 +128,11 @@ function request(config) {
                 mask: true
             })
         }
+
+        // 就算不需要校验登录 token也一起传过去 后台有可能有用 比如统计用户某个接口请求次数等
+        let token = uni.getStorageSync('token')
+        data.token = token ? token : ''
+
         uni.request({
             url: url,
             method: method || 'GET',
@@ -708,7 +720,45 @@ const cancel = function(order_id) {
 
 
 
-
+/**
+ * 格式化日期
+ * @param  {Data}    date   日期构造函数
+ * @param  {string}  fmt    格式字符串
+ * @return {string}         返回指定格式的日期
+ * dateFormat(new Date(), 'yyyy-MM-dd HH:mm:ss.SSS 星期w 第q季度')
+ * ==>
+ * 2018-04-19 18:43:24.829 星期四 第2季度
+ */
+const dateFormat = function (date, fmt) {
+    fmt = fmt || 'yyyy-MM-dd HH:mm:ss'
+    if (!date) {
+        console.error('date未定义')
+        return false
+    }
+    var o = {
+        'y': date.getFullYear(), // 年份，注意必须用getFullYear
+        'M': date.getMonth() + 1, // 月份，注意是从0-11
+        'd': date.getDate(), // 日期
+        'q': Math.floor((date.getMonth() + 3) / 3), // 季度
+        'w': ['日', '一', '二', '三', '四', '五', '六'][date.getDay()], // 星期，注意是0-6
+        'H': date.getHours(), // 24小时制
+        'h': date.getHours() % 12 === 0 ? 12 : date.getHours() % 12, // 12小时制
+        'm': date.getMinutes(), // 分钟
+        's': date.getSeconds(), // 秒
+        'S': date.getMilliseconds() // 毫秒
+    }
+    for (var i in o) {
+        fmt = fmt.replace(new RegExp(i + '+', 'g'), function (m) {
+            var val = o[i] + ''
+            if (i === 'w') return val
+            // 补0
+            for (var j = 0, len = val.length; j < m.length - len; j++) val = '0' + val
+            // 截取
+            return m.length === 1 ? val : val.substring(val.length - m.length)
+        })
+    }
+    return fmt
+}
 
 
 
@@ -728,7 +778,8 @@ module.exports = {
     math,
     cancel,
     throttle,
-    debounce
+    debounce,
+    dateFormat
     // alert,
     // uploadImage,
     // compressImage: compressImage

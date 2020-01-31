@@ -161,6 +161,12 @@
             "style": {
                 "navigationBarTitleText": "我的提现"
             }
+        },
+        {
+            "path": "pages/mywithdrawallist/mywithdrawallist",
+            "style": {
+                "navigationBarTitleText": "提现明细"
+            }
         }
     ],
     "globalStyle": {
@@ -323,6 +329,11 @@
             {
                 "name": "我的提现",
                 "path": "pages/mywithdrawal/mywithdrawal",
+                "query": ""
+            },
+            {
+                "name": "提现明细",
+                "path": "pages/mywithdrawallist/mywithdrawallist",
                 "query": ""
             }
         ]

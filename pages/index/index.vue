@@ -92,8 +92,13 @@ export default {
         }
         return obj
     },
-    onLoad() {
-        console.log('start onLoad')
+    onLoad(e) {
+        console.log('index onLoad')
+        // 记录通过二维码打开传递的分销信息
+        console.log(e)
+        if (e.scene) {
+            uni.setStorageSync('scene', e.scene)
+        }
         var that = this
         u.request({
             url: u.api.weapp,

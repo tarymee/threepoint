@@ -1,12 +1,12 @@
 <template>
     <div>
-        <div class="cus">
-            <div class="cus-item" v-for="(item, index) in bottomLoad_data" :key="index">
-                <image class="cus-item-img" :src="item.avatarUrl" mode="aspectFill"></image>
-                <div class="cus-item-con">
-                    <div class="cus-item-name">{{item.nickName}}</div>
-                    <div class="cus-item-time">加入时间：{{item.updateTime}}</div>
+        <div class="withdrawal">
+            <div class="withdrawal-item" v-for="(item, index) in bottomLoad_data" :key="index">
+                <div class="withdrawal-item-con">
+                    <div class="withdrawal-item-name">{{item.yuan}}</div>
+                    <div class="withdrawal-item-time">{{item.createTime}}</div>
                 </div>
+                <div class="withdrawal-item-st">{{item.status == 0 ? '未审核' : '已审核'}}</div>
             </div>
         </div>
         <tip :text="bottomLoad_tip" :none-icon="noneIcon"></tip>
@@ -23,7 +23,7 @@ export default {
     mixins: [bottomLoad],
     data() {
         return {
-            bottomLoad_api: u.api.mycustomer,
+            bottomLoad_api: u.api.profitlog,
             bottomLoad_params: {}
         }
     },
@@ -47,28 +47,27 @@ export default {
 }
 </script>
 <style scoped>
-.cus-item {
+.withdrawal-item {
     padding: 10px 15px;
     overflow: hidden;
     border-bottom: 1upx solid #eee;
 }
-.cus-item-img {
+.withdrawal-item-con {
     float: left;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin-right: 15px;
 }
-.cus-item-con {
-    overflow: visible;
-}
-.cus-item-name {
+.withdrawal-item-name {
     line-height: 25px;
     font-size: 14px;
 }
-.cus-item-time {
+.withdrawal-item-time {
     line-height: 15px;
     color: #999;
     font-size: 12px;
+}
+.withdrawal-item-st {
+    float: right;
+    line-height: 40px;
+    font-size: 14px;
+    color: #f60;
 }
 </style>
