@@ -1,12 +1,21 @@
 <template>
-    <swiper v-if="storeArr.length > 0" class="swiper" :indicator-dots="indicatorDots" vertical :interval="interval" :duration="duration">
-        <swiper-item class="swiper__item" v-for="(item, index) in storeArr" :key="index">
-            <image class="swiper__img" lazy-load :src="item.img" mode="aspectFit"  @click="applystore(item)" v-if="index != storeArr.length - 1"></image>
-            <scroll-view scroll-y scroll-with-animation v-if="index == storeArr.length - 1">
-                <image class="swiper__scroll" lazy-load :src="item.img" mode="widthFix"></image>
-            </scroll-view>
-        </swiper-item>
-    </swiper>
+<div>
+    <a class="store" @click="applystore(item)" v-for="(item, index) in storeArr" :key="index">
+        <image :src="item.img" mode="aspectFill"></image>
+        <div class="store__tit">{{item.title}}</div>
+        <div class="store__price">
+            <div class="store__price-price1">优选价: </div>
+            <div class="store__price-price2">￥</div>
+            <div class="store__price-price3">{{item.discountPrice}}</div>
+        </div>
+        <div class="store__del">原价: ￥{{item.marketPrice}}</div>
+    </a>
+
+    <div class="con">
+        <image :src="img" mode="aspectFill" style="height: 8138upx"></image>
+    </div>
+
+</div>
 </template>
 
 <script>
@@ -15,24 +24,14 @@ export default {
     components: {},
     data() {
         return {
-            indicatorDots: false,
-            interval: 5000,
-            duration: 300,
+            img: '',
             storeArr: [
                 // {
-                //     img: '/static/img/open/o1.jpg'
-                // },
-                // {
-                //     img: '/static/img/open/o2.jpg'
-                // },
-                // {
-                //     img: '/static/img/open/o3.jpg'
-                // },
-                // {
-                //     img: '/static/img/open/o4.jpg'
-                // },
-                // {
-                //     img: '/static/img/open/o5.jpg'
+                //     img: 'http://dummyimage.com/200x150',
+                //     title: '三分联盟专卖店（工厂直供）',
+                //     discountPrice: '386',
+                //     marketPrice: '19999',
+                //     phone: '13666666666'
                 // }
             ]
         }
@@ -75,11 +74,8 @@ export default {
                         title: 'title',
                         phone: 'phone',
                     })
-                    that.storeArr.push({
-                        img: res.logo
-                    })
 
-                    // that.img = res.logo
+                    that.img = res.logo
 
                 }
             })
@@ -97,27 +93,50 @@ export default {
 </script>
 
 <style scoped>
-/* 焦点图 */
-.swiper {
+.con image {
+    width: 750upx;
+}
+.store {
+    margin: 15px;
+}
+.store image {
+    display: block;
+    width: 100%;
+    height: 185px;
+    border-radius: 5px;
     overflow: hidden;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0px;
-    left: 0px;
 }
-.swiper__item {
-    background: url('~@/static/img/loading.gif') center center no-repeat;
+.store__tit {
+    color: #333;
+    font-size: 15px;
+    line-height: 30px;
 }
-.swiper__img {
-    width: 100%;
-    height: 100%;
+.store__price {
+    line-height: 20px;
+    vertical-align: top;
 }
-.swiper scroll-view {
-    width: 100%;
-    height: 100%;
+.store__price-price1 {
+    display: inline-block;
+    font-size: 13px;
+    color: #333;
+    vertical-align: top;
 }
-.swiper__scroll {
-    width: 100%;
+.store__price-price2 {
+    display: inline-block;
+    font-size: 12px;
+    color: #d1a178;
+    vertical-align: top;
 }
+.store__price-price3 {
+    display: inline-block;
+    font-size: 20px;
+    color: #d1a178;
+    vertical-align: top;
+}
+.store__del {
+    color: #999;
+    font-size: 11px;
+    text-decoration: line-through;
+}
+
 </style>

@@ -84,6 +84,14 @@ export default {
             u.jump(url)
         }
     },
+    onShareAppMessage() {
+        let that = this
+        let obj = {
+            title: '三分联盟商城',
+            path: `/pages/index/index`
+        }
+        return obj
+    },
     onLoad() {
         console.log('start onLoad')
         var that = this
