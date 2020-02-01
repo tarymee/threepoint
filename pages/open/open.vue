@@ -51,9 +51,8 @@ export default {
             })
         },
         applystore(item) {
-            uni.navigateTo({
-                url: `/pages/applystore/applystore?title=${item.title}&price=${item.discountPrice}&storeid=${item.id}`
-            })
+            let that = this
+            that.jump(`/pages/applystore/applystore?title=${item.title}&price=${item.discountPrice}&storeid=${item.id}`)
         },
         load() {
             var that = this

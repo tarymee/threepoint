@@ -89,7 +89,7 @@ export default {
         },
         repay(order_id, order_pay_price) {
             console.log('repay', order_id, order_pay_price)
-            u.repay(order_id, order_pay_price)
+            u.orderRepay(order_id, order_pay_price)
         },
         receipt(order_id) {
             console.log('receipt', order_id)
@@ -100,9 +100,7 @@ export default {
             u.cancel(order_id)
         },
         express(order_id) {
-            uni.navigateTo({
-                url: '/pages/express/express?id=' + order_id
-            })
+            that.jump('/pages/express/express?id=' + order_id)
         }
     },
     onLoad(event) {

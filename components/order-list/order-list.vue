@@ -66,7 +66,7 @@ export default {
     methods: {
         repay(order_id, order_pay_price) {
             console.log('repay', order_id, order_pay_price)
-            u.repay(order_id, order_pay_price)
+            u.orderRepay(order_id, order_pay_price)
         },
         receipt(order_id) {
             console.log('receipt', order_id)

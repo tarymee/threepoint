@@ -55,6 +55,8 @@ const api = {
     profitlog: `${host}/api/user/profit/log`,
     profitincome: `${host}/api/user/profit/income`,
     profitsave: `${host}/api/user/profit/save`,
+    moneyincome: `${host}/api/user/money/income`,
+    moneysave: `${host}/api/user/money/save`,
     host
 }
 
@@ -74,9 +76,7 @@ function checkLogin(success, fail, isAutoJumpToLogin = true) {
         fail && fail()
         if (isAutoJumpToLogin) {
             console.error('用户未授权登录 跳登录页面')
-            uni.navigateTo({
-                url: '/pages/login/login'
-            })
+            jump('/pages/login/login')
         }
     }
 
@@ -235,6 +235,36 @@ function dataTransform(source, matchup, isreverse) {
 }
 
 
+
+function jump(url) {
+    if (url) {
+        console.log(url)
+        if (url.indexOf('pages/index/index') != -1 || url.indexOf('pages/user/user') != -1 || url.indexOf('pages/open/open') != -1 || url.indexOf('pages/store/store') != -1 || url.indexOf('pages/cart/cart') != -1) {
+            uni.switchTab({
+                url: url
+            })
+        } else {
+            uni.navigateTo({
+                url: url
+            })
+        }
+    } else {
+        console.log('没有url')
+    }
+}
+
+
+
+function back() {
+    let that = this
+    let pages = getCurrentPages()
+    // console.log('页面栈', pages)
+    if (pages.length > 1) {
+        uni.navigateBack()
+    } else {
+        that.jump('/pages/index/index')
+    }
+}
 /**
  * 处理js浮点数精度问题
  * console.log(math.add(0.1, 0.2))
@@ -552,56 +582,13 @@ const debounce = function (func, wait, immediate) {
     }
 }
 
-const repay = function(order_id, order_pay_price) {
-    console.log('repay', order_id, order_pay_price)
 
-    request({
-        url: api.orderrepay,
-        data: {
-            order_id: order_id
-        },
-        isVerifyLogin: true,
-        isShowLoading: true,
-        isShowError: true,
-        success(res) {
-            console.log(res)
-            if (res.data) {
-                // 发起微信支付
-                wx.requestPayment({
-                    timeStamp: res.data.payment.timeStamp,
-                    nonceStr: res.data.payment.nonceStr,
-                    package: 'prepay_id=' + res.data.payment.prepay_id,
-                    signType: 'MD5',
-                    paySign: res.data.payment.paySign,
-                    success: function (paymentRes) {
-                        console.log(paymentRes)
-                        // 跳转到成功下单页
-                        uni.navigateTo({
-                            url: '/pages/success/success?order_id=' + res.data.order_id + '&price=' + order_pay_price
-                        })
-                    },
-                    fail: function () {
-                        uni.showToast({
-                            title: '订单未支付',
-                            mask: true,
-                            duration: 3000,
-                            success: function () {
-                                // 跳转到未付款订单
-                                uni.redirectTo({
-                                    url: '/pages/order/order?type=payment',
-                                })
-                            }
-                        })
-                    }
-                })
-            }
-        }
-    })
-}
-
-
-// 发起微信支付
-const pay = function (payment, order_id, order_pay_price) {
+// 微信支付
+const wechatPay = function ({
+    success = null,
+    fail = null,
+    payment = null
+} = {}) {
     wx.requestPayment({
         timeStamp: payment.timeStamp,
         nonceStr: payment.nonceStr,
@@ -610,10 +597,22 @@ const pay = function (payment, order_id, order_pay_price) {
         paySign: payment.paySign,
         success: function (paymentRes) {
             console.log(paymentRes)
+            success && success(paymentRes)
+        },
+        fail: function (err) {
+            console.error(err)
+            fail && fail(err)
+        }
+    })
+}
+
+// 订单支付
+const orderPay = function (payment, order_id, order_pay_price) {
+    wechatPay({
+        payment: payment,
+        success: function (paymentRes) {
             // 跳转到成功下单页
-            uni.navigateTo({
-                url: '/pages/success/success?order_id=' + order_id + '&price=' + order_pay_price
-            })
+            jump(`/pages/success/success?order_id=${order_id}&price=${order_pay_price}`)
         },
         fail: function () {
             uni.showToast({
@@ -627,6 +626,27 @@ const pay = function (payment, order_id, order_pay_price) {
                     })
                 }
             })
+        }
+    })
+}
+
+// 重新支付订单
+const orderRepay = function (order_id, order_pay_price) {
+    request({
+        url: api.orderrepay,
+        data: {
+            order_id: order_id
+        },
+        isVerifyLogin: true,
+        isShowLoading: true,
+        isShowError: true,
+        success(res) {
+            // console.log(res)
+            if (res.data) {
+                let payment = res.data.payment
+                // 发起微信支付
+                orderPay(res.data.payment, order_id, order_pay_price)
+            }
         }
     })
 }
@@ -730,9 +750,12 @@ module.exports = {
     api,
     checkLogin,
     request,
+    jump,
+    back,
     dataTransform,
-    repay,
-    pay,
+    wechatPay,
+    orderPay,
+    orderRepay,
     receipt,
     math,
     cancel,

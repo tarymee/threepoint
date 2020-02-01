@@ -31,15 +31,7 @@ export default {
         console.log(that.grid)
     },
     methods: {
-        jump(url) {
-            if (url) {
-                uni.navigateTo({
-                    url: url
-                })
-            } else {
-                console.log('没有url')
-            }
-        }
+
     }
 }
 </script>

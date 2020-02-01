@@ -242,9 +242,7 @@ export default {
                             console.log(res)
                             if (res.code == 1) {
                                 console.log('跳去订单确认页')
-                                uni.navigateTo({
-                                    url: '/pages/confirm/confirm?cartid=' + JSON.stringify(cartidArr) + '&confirmData=' + encodeURIComponent(JSON.stringify(res.data))
-                                })
+                                that.jump('/pages/confirm/confirm?cartid=' + JSON.stringify(cartidArr) + '&confirmData=' + encodeURIComponent(JSON.stringify(res.data)))
                             } else {
                                 console.error('提交订单失败')
                             }

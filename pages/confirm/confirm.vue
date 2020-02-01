@@ -86,8 +86,7 @@ export default {
                     success(res) {
                         console.log(res)
                         if (res.code == 1) {
-                            // 发起微信支付
-                            u.pay(res.data.payment, res.data.order_id, that.order_pay_price)
+                            u.orderPay(res.data.payment, res.data.order_id, that.order_pay_price)
                         }
                     }
                 })
@@ -102,22 +101,17 @@ export default {
                     success(res) {
                         console.log(res)
                         if (res.code == 1) {
-                            // 发起微信支付
-                            u.pay(res.data.payment, res.data.order_id, that.order_pay_price)
+                            u.orderPay(res.data.payment, res.data.order_id, that.order_pay_price)
                         }
                     }
                 })
             }
         },
         selectAddress() {
-            uni.navigateTo({
-                url: '/pages/address/address?from=confirm'
-            })
+            this.jump('/pages/address/address?from=confirm')
         },
         addAddress() {
-            uni.navigateTo({
-                url: '/pages/addressdetail/addressdetail?from=confirm'
-            })
+            this.jump('/pages/addressdetail/addressdetail?from=confirm')
         }
     },
     // 监听选择地址回调

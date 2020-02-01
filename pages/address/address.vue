@@ -67,9 +67,7 @@ export default {
                     }
                 })
             } else if (value.text === '编辑') {
-                uni.navigateTo({
-                    url: '/pages/addressdetail/addressdetail?address_id=' + address_id
-                })
+                that.jump('/pages/addressdetail/addressdetail?address_id=' + address_id)
             } else if (value.text === '设为默认') {
                 u.request({
                     url: u.api.addressdefault,
@@ -141,9 +139,7 @@ export default {
             })
         },
         add() {
-            uni.navigateTo({
-                url: '/pages/addressdetail/addressdetail'
-            })
+            this.jump('/pages/addressdetail/addressdetail')
         }
     },
     // 监听新增地址回调

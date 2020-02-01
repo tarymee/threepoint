@@ -167,6 +167,18 @@
             "style": {
                 "navigationBarTitleText": "提现明细"
             }
+        },
+        {
+            "path": "pages/mymoney/mymoney",
+            "style": {
+                "navigationBarTitleText": "我的余额"
+            }
+        },
+        {
+            "path": "pages/mymoneyadd/mymoneyadd",
+            "style": {
+                "navigationBarTitleText": "充值"
+            }
         }
     ],
     "globalStyle": {
@@ -224,6 +236,11 @@
             {
                 "name": "index",
                 "path": "pages/index/index",
+                "query": ""
+            },
+            {
+                "name": "index1",
+                "path": "pages/index1/index1",
                 "query": ""
             },
             {
@@ -334,6 +351,16 @@
             {
                 "name": "提现明细",
                 "path": "pages/mywithdrawallist/mywithdrawallist",
+                "query": ""
+            },
+            {
+                "name": "我的余额",
+                "path": "pages/mymoney/mymoney",
+                "query": ""
+            },
+            {
+                "name": "充值",
+                "path": "pages/mymoneyadd/mymoneyadd",
                 "query": ""
             }
         ]

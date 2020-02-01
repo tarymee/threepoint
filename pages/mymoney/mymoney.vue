@@ -2,10 +2,10 @@
     <div class="">
         <div class="commiss">
             <div class="commiss-big">
-                <div class="commiss-tit">总计收益</div>
-                <div class="commiss-amount" style="font-size: 25px;">{{total}}元</div>
+                <div class="commiss-tit">我的余额</div>
+                <div class="commiss-amount" style="font-size: 25px;">{{moneyYan}}元</div>
             </div>
-            <div class="commiss-con">
+            <!-- <div class="commiss-con">
                 <div class="commiss-item" style="margin-right: 5px">
                     <div class="commiss-tit">已提现收益</div>
                     <div class="commiss-amount" style="font-size: 20px;">{{hasmoney}}元</div>
@@ -14,11 +14,11 @@
                     <div class="commiss-tit">可提现余额</div>
                     <div class="commiss-amount" style="font-size: 20px;">{{left}}元</div>
                 </div>
-            </div>
+            </div> -->
         </div>
         <uni-list>
-            <uni-list-item title="提现" thumb="/static/img/icon-w1.jpg" @click="jump(`/pages/mywithdrawal/mywithdrawal`)"></uni-list-item>
-            <uni-list-item title="提现明细" thumb="/static/img/icon-w2.jpg" @click="jump('/pages/mywithdrawallist/mywithdrawallist')"></uni-list-item>
+            <uni-list-item title="充值" thumb="/static/img/icon-w1.jpg" @click="jump(`/pages/mymoneyadd/mymoneyadd`)"></uni-list-item>
+            <!-- <uni-list-item title="提现明细" thumb="/static/img/icon-w2.jpg" @click="jump('/pages/mywithdrawallist/mywithdrawallist')"></uni-list-item> -->
         </uni-list>
     </div>
 </template>
@@ -35,23 +35,18 @@ export default {
     },
     data() {
         return {
-            total: '0',
-            hasmoney: '0',
-            left: '0',
+            moneyYan: '0',
         }
     },
     methods: {
         load() {
             var that = this
             u.request({
-                url: u.api.profit,
+                url: u.api.moneyincome,
                 data: {},
                 isVerifyLogin: true,
                 success(res) {
-                    console.log(res)
-                    that.total = res.data.incomeMoneyYan
-                    that.hasmoney = res.data.hasMoneyYan
-                    that.left = res.data.profitMoneyYan
+                    that.moneyYan = res.data.moneyYan
                 }
             })
         }

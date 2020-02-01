@@ -9,8 +9,8 @@
                     <div class="avt__bd-level">{{user.level}}</div>
                 </div>
                 <div class="avt__bd-r">
-                    <div class="avt__bd-money">余额：{{user.moneyYan}}元</div>
-                    <div class="avt__bd-money">收益：{{user.profitMoneyYan}}元</div>
+                    <div class="avt__bd-money" @tap="jump('/pages/mymoney/mymoney')">我的余额：{{user.moneyYan}}元</div>
+                    <div class="avt__bd-pmoney">我的收益：{{user.profitMoneyYan}}元</div>
                 </div>
             </div>
         </div>
@@ -49,7 +49,7 @@
                 <uni-list-item title="绑定手机" @click="bindphone()" show-badge="true" :badge-text="user.isbindphone ? user.phone : '未绑定'" badge-type="default" badge-inverted="true"></uni-list-item>
                 <uni-list-item title="我的客户" @click="jump('/pages/mycustomer/mycustomer')"></uni-list-item>
                 <uni-list-item title="我的店铺" @click="jump('/pages/mystore/mystore')"></uni-list-item>
-                <uni-list-item title="我的佣金" @click="jump('/pages/mycommission/mycommission')"></uni-list-item>
+                <uni-list-item title="我的佣金" show-badge="true" :badge-text="user.profitMoneyYan" badge-type="default" badge-inverted="true" @click="jump('/pages/mycommission/mycommission')"></uni-list-item>
                 <div class="service">
                     <uni-list-item title="联系客服"></uni-list-item>
                     <button open-type="contact">客服</button>
@@ -193,6 +193,7 @@
     .avt__bd-con {
         overflow: hidden;
         float: left;
+        margin-right: 30px;
     }
     .avt__bd-name {
         line-height: 30px;
@@ -200,18 +201,20 @@
         font-size: 16px;
     }
     .avt__bd-level {
-        overflow: hidden;
         line-height: 15px;
         color: #ffffff;
         font-size: 12px;
     }
     .avt__bd-r {
         overflow: hidden;
-        float: right;
-        margin-top: 10px;
+        float: left;
     }
     .avt__bd-money {
-        overflow: hidden;
+        line-height: 30px;
+        color: #ffffff;
+        font-size: 12px;
+    }
+    .avt__bd-pmoney {
         line-height: 15px;
         color: #ffffff;
         font-size: 12px;
