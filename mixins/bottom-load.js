@@ -53,11 +53,6 @@ const bottomLoad = {
                 }
                 u.request({
                     url: that.bottomLoad_api,
-                    method: 'POST',
-                    header: {
-                        'content-type': 'application/x-www-form-urlencoded'
-                        // 'content-type': 'application/json'
-                    },
                     data: postData,
                     isVerifyLogin: isVerifyLogin,
                     success(res) {

@@ -69,9 +69,6 @@ export default {
             this.reason = this.returntypeObj[this.reasonindex].key
             console.log(this.reason)
         },
-        back() {
-            uni.navigateBack()
-        },
         save() {
             let that = this
             console.log(that.apply)
@@ -85,10 +82,6 @@ export default {
             }
             u.request({
                 url: u.api.apply,
-                method: 'POST',
-                header: {
-                    'content-type': 'application/x-www-form-urlencoded'
-                },
                 data: {
                     order_id: that.order_id,
                     reason: that.reason,
@@ -105,7 +98,7 @@ export default {
                             content: '请及时退货',
                             showCancel: false,
                             success: function () {
-                                uni.navigateBack()
+                                that.back()
                             }
                         })
                     }
@@ -127,10 +120,6 @@ export default {
 
         u.request({
             url: u.api.orderdetail,
-            method: 'POST',
-            header: {
-                'content-type': 'application/x-www-form-urlencoded'
-            },
             data: {
                 order_id: that.order_id
             },

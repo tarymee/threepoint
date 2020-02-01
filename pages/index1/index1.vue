@@ -291,7 +291,9 @@ export default {
             })
         },
         phone(number) {
-            u.phone(number)
+            uni.makePhoneCall({
+                phoneNumber: number
+            })
         },
         handleContact(e) {
             console.log(e)
@@ -309,9 +311,6 @@ export default {
                     }
                 }
             })
-        },
-        jump(url) {
-            u.jump(url)
         },
         reloadCate(id) {
             let that = this
@@ -345,7 +344,6 @@ export default {
         var that = this
         u.request({
             url: u.api.index,
-            method: 'POST',
             data: {},
             isVerifyLogin: false,
             success(res) {

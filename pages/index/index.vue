@@ -80,9 +80,7 @@ export default {
         }
     },
     methods: {
-        jump(url) {
-            u.jump(url)
-        }
+
     },
     onShareAppMessage() {
         let that = this
@@ -102,7 +100,6 @@ export default {
         var that = this
         u.request({
             url: u.api.weapp,
-            method: 'POST',
             data: {},
             isVerifyLogin: false,
             success(res) {

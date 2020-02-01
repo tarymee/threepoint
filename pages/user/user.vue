@@ -41,7 +41,7 @@
                 <uni-list-item title="收货地址" @click="jump('/pages/address/address')"></uni-list-item>
                 <uni-list-item title="绑定手机" @click="bindphone()" show-badge="true" :badge-text="user.isbindphone ? user.phone : '未绑定'" badge-type="default" badge-inverted="true"></uni-list-item>
                 <uni-list-item title="我的客户" @click="jump('/pages/mycustomer/mycustomer')"></uni-list-item>
-                <uni-list-item title="我的店铺" @click="jump('/pages/mystore/mystore')"></uni-list-item>
+                <uni-list-item title="我的客户11" @click="jump('/pages/mystore/mystore')"></uni-list-item>
                 <uni-list-item title="我的佣金" @click="jump('/pages/mycommission/mycommission')"></uni-list-item>
                 <div class="service">
                     <uni-list-item title="联系客服"></uni-list-item>
@@ -84,15 +84,12 @@
             test() {
                 console.log('test')
             },
-            jump(url) {
-                u.jump(url)
-            },
             loginout() {
                 uni.removeStorageSync('code')
                 uni.removeStorageSync('token')
                 uni.removeStorageSync('userid')
                 uni.removeStorageSync('userInfo')
-                u.jump('/pages/index/index')
+                this.jump('/pages/index/index')
             },
             bindphone() {
                 let that = this
@@ -103,7 +100,7 @@
                         icon: 'none'
                     })
                 } else {
-                    u.jump('/pages/bindphone/bindphone')
+                    this.jump('/pages/bindphone/bindphone')
                 }
             }
         },
@@ -114,11 +111,6 @@
             u.checkLogin(function (token, userid, userInfo) {
                 u.request({
                     url: u.api.user,
-                    method: 'POST',
-                    header: {
-                        'content-type': 'application/x-www-form-urlencoded'
-                        // 'content-type': 'application/json'
-                    },
                     data: {},
                     isVerifyLogin: true,
                     isShowLoading: false,
@@ -144,12 +136,6 @@
 
                 u.request({
                     url: u.api.qrcode,
-                    // url: 'http://json/weappuser/qrcode/8',
-                    method: 'POST',
-                    header: {
-                        'content-type': 'application/x-www-form-urlencoded'
-                        // 'content-type': 'application/json'
-                    },
                     data: {},
                     isVerifyLogin: true,
                     isShowLoading: false,

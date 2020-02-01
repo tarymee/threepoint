@@ -128,10 +128,6 @@ export default {
         updateDelPro(id) {
             u.request({
                 url: u.api.cartdel,
-                method: 'POST',
-                header: {
-                    'content-type': 'application/x-www-form-urlencoded'
-                },
                 data: {
                     goods_id: id
                 },
@@ -174,10 +170,6 @@ export default {
         updateCount(id, count) {
             u.request({
                 url: u.api.cartchangenum,
-                method: 'POST',
-                header: {
-                    'content-type': 'application/x-www-form-urlencoded'
-                },
                 data: {
                     id: id,
                     count: count
@@ -229,9 +221,6 @@ export default {
         discard() {
             //丢弃
         },
-        jump(url) {
-            u.jump(url)
-        },
         // 跳转确认订单页面
         toConfirm() {
             let that = this
@@ -249,10 +238,6 @@ export default {
                 u.checkLogin(function () {
                     u.request({
                         url: u.api.cartsave,
-                        method: 'POST',
-                        header: {
-                            'content-type': 'application/x-www-form-urlencoded'
-                        },
                         data: {
                             cartid: JSON.stringify(cartidArr)
                         },
@@ -289,10 +274,6 @@ export default {
 
         u.request({
             url: u.api.cartlist,
-            method: 'POST',
-            header: {
-                'content-type': 'application/x-www-form-urlencoded'
-            },
             data: {},
             isVerifyLogin: true,
             isShowLoading: false,

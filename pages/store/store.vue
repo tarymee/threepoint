@@ -93,9 +93,6 @@ export default {
             that.region = e.target.value
             that.load(1)
         },
-        jump(url) {
-            u.jump(url)
-        },
         showAddress(info) {
             wx.openLocation({
                 // latitude: 23.13171,
@@ -120,23 +117,10 @@ export default {
 
             u.request({
                 url: u.api.sitelist,
-                method: 'POST',
-                header: {
-                    // 'content-type': 'application/x-www-form-urlencoded'
-                    'content-type': 'application/json'
-                },
                 data: postData,
                 isVerifyLogin: false,
                 success(res) {
                     console.log(res)
-                    // uni.showModal({
-                    //     title: '测试弹窗',
-                    //     content: JSON.stringify(res.data),
-                    //     showCancel: false,
-                    //     success: function () {
-                    //         // uni.navigateBack()
-                    //     }
-                    // })
                     if (res.code == 1 && res.data && res.data.length) {
                         that.storeArr = res.data.map((item, i) => {
                             return {

@@ -113,10 +113,6 @@ export default {
 
         u.request({
             url: u.api.orderdetail,
-            method: 'POST',
-            header: {
-                'content-type': 'application/x-www-form-urlencoded'
-            },
             data: {
                 order_id: that.order_id
             },

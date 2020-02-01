@@ -73,7 +73,6 @@ export default {
         }
         u.request({
           url: that.api,
-          method: 'POST',
           data: postData,
           isVerifyLogin: false,
           success(res) {

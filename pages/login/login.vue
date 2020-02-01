@@ -8,7 +8,7 @@
         <view class="auth__title">三分联盟 申请以下权限</view>
         <view class="auth__subtitle">获得你的公开信息（昵称、头像等）</view>
         <div class="auth__btnwrap">
-            <button type="" open-type="getUserInfo" @getuserinfo="toIndex" class="auth__btnwrap-btn1">暂不登录</button>
+            <button type="" open-type="getUserInfo" @getuserinfo="back" class="auth__btnwrap-btn1">暂不登录</button>
             <button type="primary" open-type="getUserInfo" @getuserinfo="authorLogin" class="auth__btnwrap-btn2">授权登录</button>
         </div>
     </view>
@@ -24,6 +24,7 @@ export default {
     },
     methods: {
         authorLogin(e) {
+            let that = this
             if (e.detail.errMsg !== 'getUserInfo:ok') {
                 return false
             }
@@ -48,16 +49,14 @@ export default {
                     if (scene) {
                         postData.scene = scene
                     }
-                    uni.request({
+                    u.request({
                         url: u.api.wxlogin,
-                        header: {
-                            'content-type': 'application/x-www-form-urlencoded',
-                        },
-                        method: 'post',
                         data: postData,
+                        isVerifyLogin: false,
+                        isShowLoading: false,
                         success: function (res) {
                             uni.hideLoading()
-                            if (res.data.code === 1) {
+                            if (res.code === 1) {
                                 console.log(res)
                                 uni.showToast({
                                     title: '授权登录成功',
@@ -66,11 +65,11 @@ export default {
                                     success: function () {
                                         // 保存用户信息
                                         uni.setStorageSync('code', result.code)
-                                        uni.setStorageSync('token', res.data.data.token)
-                                        uni.setStorageSync('userid', res.data.data.user_id)
+                                        uni.setStorageSync('token', res.data.token)
+                                        uni.setStorageSync('userid', res.data.user_id)
                                         uni.setStorageSync('userInfo', userInfo.userInfo)
                                         // 返回
-                                        uni.navigateBack()
+                                        that.back()
                                     }
                                 })
                             } else {
@@ -89,9 +88,6 @@ export default {
                     })
                 }
             })
-        },
-        toIndex() {
-            u.jump('/pages/index/index')
         }
     },
     onLoad() {

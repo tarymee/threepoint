@@ -41,17 +41,10 @@ export default {
         }
     },
     methods: {
-        jump(url) {
-            u.jump(url)
-        },
         load() {
             var that = this
             u.request({
                 url: u.api.profit,
-                method: 'POST',
-                header: {
-                    'content-type': 'application/x-www-form-urlencoded'
-                },
                 data: {},
                 isVerifyLogin: true,
                 success(res) {

@@ -93,9 +93,6 @@ export default {
             console.log(e)
             this.apply.payType = e.target.value
         },
-        back() {
-            uni.navigateBack()
-        },
         save() {
             let that = this
             console.log(that.apply)
@@ -133,10 +130,6 @@ export default {
             }
             u.request({
                 url: u.api.apply,
-                method: 'POST',
-                header: {
-                    'content-type': 'application/x-www-form-urlencoded'
-                },
                 data: {
                     name: that.apply.name,
                     phone: that.apply.phone,
@@ -167,7 +160,7 @@ export default {
                                         content: '我们将会联系您 一同筹划开店事宜',
                                         showCancel: false,
                                         success: function () {
-                                            uni.navigateBack()
+                                            that.back()
                                         }
                                     })
                                 },
@@ -188,7 +181,7 @@ export default {
                                 content: '我们将会联系您 一同筹划开店事宜',
                                 showCancel: false,
                                 success: function () {
-                                    uni.navigateBack()
+                                    that.back()
                                 }
                             })
                         }
@@ -211,10 +204,6 @@ export default {
 
         u.request({
             url: u.api.applyuser,
-            method: 'POST',
-            header: {
-                'content-type': 'application/x-www-form-urlencoded'
-            },
             data: {
                 applyInfoId: that.apply.applyInfoId
             },

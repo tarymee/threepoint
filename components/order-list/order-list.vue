@@ -64,9 +64,6 @@ export default {
         let that = this
     },
     methods: {
-        jump(url) {
-            u.jump(url)
-        },
         repay(order_id, order_pay_price) {
             console.log('repay', order_id, order_pay_price)
             u.repay(order_id, order_pay_price)
@@ -80,10 +77,10 @@ export default {
             u.cancel(order_id)
         },
         orderreturn(order_id) {
-            u.jump('/pages/orderreturn/orderreturn?id=' + order_id)
+            this.jump('/pages/orderreturn/orderreturn?id=' + order_id)
         },
         express(order_id) {
-            u.jump('/pages/express/express?id=' + order_id)
+            this.jump('/pages/express/express?id=' + order_id)
         }
     }
 }

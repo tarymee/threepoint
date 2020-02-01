@@ -30,7 +30,6 @@ export default {
             }
             u.request({
                 url: u.api.feedback,
-                method: 'POST',
                 data: {
                     suggestion: that.suggestion
                 },
@@ -41,7 +40,7 @@ export default {
                         content: '提交成功',
                         showCancel: false,
                         success: function () {
-                            uni.navigateBack()
+                            that.back()
                         }
                     })
                 },

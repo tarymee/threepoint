@@ -55,10 +55,6 @@ export default {
             if (value.text === '删除') {
                 u.request({
                     url: u.api.addressdel,
-                    method: 'POST',
-                    header: {
-                        'content-type': 'application/x-www-form-urlencoded'
-                    },
                     data: {
                         address_id: address_id
                     },
@@ -80,10 +76,6 @@ export default {
             } else if (value.text === '设为默认') {
                 u.request({
                     url: u.api.addressdefault,
-                    method: 'POST',
-                    header: {
-                        'content-type': 'application/x-www-form-urlencoded'
-                    },
                     data: {
                         address_id: address_id
                     },
@@ -114,7 +106,7 @@ export default {
             console.log(item)
             if (that.from === 'confirm') {
                 uni.setStorageSync('confirmAddress', item)
-                uni.navigateBack()
+                that.back()
             }
         },
         // 请求地址
@@ -122,10 +114,6 @@ export default {
             let that = this
             u.request({
                 url: u.api.addresslist,
-                method: 'POST',
-                header: {
-                    'content-type': 'application/x-www-form-urlencoded'
-                },
                 data: {},
                 isVerifyLogin: true,
                 success(res) {

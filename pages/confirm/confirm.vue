@@ -78,10 +78,6 @@ export default {
             if (that.type == 'buynow') {
                 u.request({
                     url: u.api.orderbuynow,
-                    method: 'POST',
-                    header: {
-                        'content-type': 'application/x-www-form-urlencoded'
-                    },
                     data: {
                         address_id: that.address.address_id,
                         ...that.buynowData
@@ -101,10 +97,6 @@ export default {
             } else {
                 u.request({
                     url: u.api.ordercart,
-                    method: 'POST',
-                    header: {
-                        'content-type': 'application/x-www-form-urlencoded'
-                    },
                     data: {
                         address_id: that.address.address_id,
                         cartid: that.cartid
@@ -190,10 +182,6 @@ export default {
         // 请求默认地址
         u.request({
             url: u.api.addresslist,
-            method: 'POST',
-            header: {
-                'content-type': 'application/x-www-form-urlencoded'
-            },
             data: {},
             isVerifyLogin: true,
             success(res) {

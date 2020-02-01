@@ -16,10 +16,6 @@ export default {
             var that = this
             u.request({
                 url: u.api.applylist,
-                method: 'POST',
-                header: {
-                    'content-type': 'application/x-www-form-urlencoded'
-                },
                 data: {},
                 isVerifyLogin: true,
                 success(res) {

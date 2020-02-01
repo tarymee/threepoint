@@ -105,24 +105,35 @@ function checkLogin(success, fail, isAutoJumpToLogin = true) {
 }
 
 // 封装uni.request方法
-// 添加 isShowLoading isVerifyLogin isShowError 字段
-function request(config) {
-    let {
-        url,
-        method,
-        data,
-        header,
-        dataType,
-        responseType,
-        success,
-        fail,
-        complete,
-        isShowLoading = true,
-        isVerifyLogin = true,
-        isShowError = true
-    } = config
+function request({
+    url = '',
+    method = 'POST',
+    data = {},
+    header = {
+        'content-type': 'application/x-www-form-urlencoded'
+        // 'content-type': 'application/json'
+    },
+    dataType = 'json',
+    responseType = 'text',
+    success = null,
+    fail = null,
+    complete = null,
+    isShowLoading = true,
+    isVerifyLogin = true,
+    isShowError = true
+} = {}) {
 
-    function post() {
+    if (isVerifyLogin) {
+        // console.log('有校验登录 发起请求')
+        checkLogin(function () {
+            ajax()
+        })
+    } else {
+        // console.log('没校验登录 发起请求')
+        ajax()
+    }
+
+    function ajax() {
         if (isShowLoading) {
             uni.showLoading({
                 mask: true
@@ -135,20 +146,21 @@ function request(config) {
 
         uni.request({
             url: url,
-            method: method || 'GET',
-            header: header || {},
-            // header: {
-            //     'content-type': 'application/x-www-form-urlencoded',
-            // },
-            dataType: dataType || 'json',
-            responseType: responseType || 'text',
+            method: method,
+            header: header,
+            dataType: dataType,
+            responseType: responseType,
             data: data,
             success(res) {
-                // console.log('接口请求成功')
+                console.log({
+                    url: url,
+                    request: data,
+                    response: res.data,
+                })
                 success && success(res.data)
             },
             fail(res) {
-                console.error('接口请求失败')
+                // console.error('接口请求失败')
                 if (isShowError) {
                     uni.showModal({
                         title: '提示',
@@ -156,6 +168,11 @@ function request(config) {
                         showCancel: false
                     })
                 }
+                console.error({
+                    url: url,
+                    request: data,
+                    response: res,
+                })
                 fail && fail(res)
             },
             complete(res) {
@@ -165,17 +182,6 @@ function request(config) {
                 complete && complete(res)
             }
         })
-    }
-
-    if (isVerifyLogin) {
-        // console.log('有校验登录 发起请求')
-        checkLogin(function (token) {
-            data.token = token
-            post()
-        })
-    } else {
-        // console.log('没校验登录 发起请求')
-        post()
     }
 }
 
@@ -225,29 +231,6 @@ function dataTransform(source, matchup, isreverse) {
         return transformArr[0]
     } else {
         return transformArr
-    }
-}
-
-function phone(number) {
-    uni.makePhoneCall({
-        phoneNumber: number
-    })
-}
-
-function jump(url) {
-    if (url) {
-        console.log(url)
-        if (url.indexOf('index') != -1 || url.indexOf('user') != -1 || url.indexOf('open') != -1 || url.indexOf('store') != -1 || url.indexOf('cart') != -1) {
-            uni.switchTab({
-                url: url
-            })
-        } else {
-            uni.navigateTo({
-                url: url
-            })
-        }
-    } else {
-        console.log('没有url')
     }
 }
 
@@ -574,10 +557,6 @@ const repay = function(order_id, order_pay_price) {
 
     request({
         url: api.orderrepay,
-        method: 'POST',
-        header: {
-            'content-type': 'application/x-www-form-urlencoded'
-        },
         data: {
             order_id: order_id
         },
@@ -662,10 +641,6 @@ const receipt = function(order_id) {
 
     request({
         url: api.orderreceipt,
-        method: 'POST',
-        header: {
-            'content-type': 'application/x-www-form-urlencoded'
-        },
         data: {
             order_id: order_id
         },
@@ -692,10 +667,6 @@ const cancel = function(order_id) {
     console.log('cancel', order_id)
     request({
         url: api.ordercancel,
-        method: 'POST',
-        header: {
-            'content-type': 'application/x-www-form-urlencoded'
-        },
         data: {
             order_id: order_id
         },
@@ -766,10 +737,7 @@ const dateFormat = function (date, fmt) {
 
 module.exports = {
     api,
-    phone,
-    jump,
     checkLogin,
-    // authorLogin,
     request,
     dataTransform,
     repay,
@@ -780,7 +748,4 @@ module.exports = {
     throttle,
     debounce,
     dateFormat
-    // alert,
-    // uploadImage,
-    // compressImage: compressImage
 }

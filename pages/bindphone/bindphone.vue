@@ -22,6 +22,7 @@ export default {
     },
     methods: {
         authorPhone(e) {
+            let that = this
             console.log(e)
             uni.login({
                 success(result1) {
@@ -31,11 +32,6 @@ export default {
                             console.log(result)
                             u.request({
                                 url: u.api.phonebind,
-                                method: 'POST',
-                                header: {
-                                    'content-type': 'application/x-www-form-urlencoded'
-                                    // 'content-type': 'application/json'
-                                },
                                 data: {
                                     encryptedData: e.detail.encryptedData,
                                     errMsg: e.detail.errMsg,
@@ -52,8 +48,7 @@ export default {
                                             mask: true,
                                             duration: 5000,
                                             success: function () {
-                                                // 返回
-                                                uni.navigateBack()
+                                                that.back()
                                             }
                                         })
                                     }

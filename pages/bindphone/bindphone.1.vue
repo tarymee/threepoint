@@ -42,7 +42,6 @@ export default {
             }
             u.request({
                 url: u.api.bindphone,
-                method: 'POST',
                 data: {
                     phone: that.phone,
                     verification: that.verification
@@ -54,7 +53,7 @@ export default {
                         content: '绑定成功',
                         showCancel: false,
                         success: function () {
-                            uni.navigateBack()
+                            that.back()
                         }
                     })
                 },

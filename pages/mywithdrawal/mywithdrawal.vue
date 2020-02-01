@@ -75,7 +75,6 @@ export default {
             }
             u.request({
                 url: u.api.profitsave,
-                method: 'POST',
                 data: {
                     money: that.getmoney
                 },
@@ -88,7 +87,7 @@ export default {
                             content: '提现金额已进入后台审核',
                             showCancel: false,
                             success: function () {
-                                uni.navigateBack()
+                                that.back()
                             }
                         })
                     } else {
@@ -97,7 +96,7 @@ export default {
                             content: '请重新提现',
                             showCancel: false,
                             success: function () {
-                                // uni.navigateBack()
+                                // that.back()
                             }
                         })
                     }
@@ -109,7 +108,7 @@ export default {
                         content: '请重新提现',
                         showCancel: false,
                         success: function () {
-                            // uni.navigateBack()
+                            // that.back()
                         }
                     })
                 }
@@ -119,10 +118,6 @@ export default {
             var that = this
             u.request({
                 url: u.api.profitincome,
-                method: 'POST',
-                header: {
-                    'content-type': 'application/x-www-form-urlencoded'
-                },
                 data: {},
                 isVerifyLogin: true,
                 success(res) {

@@ -188,9 +188,6 @@ export default {
         handleContact(e) {
             console.log(e)
         },
-        jump(url) {
-            u.jump(url)
-        },
         togglePopup(popupType) {
             this.popupType = popupType
         },
@@ -322,10 +319,6 @@ export default {
                     u.checkLogin(function () {
                         u.request({
                             url: u.api.cartadd,
-                            method: 'POST',
-                            header: {
-                                'content-type': 'application/x-www-form-urlencoded'
-                            },
                             data: postData,
                             isVerifyLogin: true,
                             success(res) {
@@ -431,7 +424,6 @@ export default {
         u.request({
             url: u.api.goods + that.id,
             // url: u.api.goods + '27',
-            method: 'POST',
             data: {},
             isVerifyLogin: false,
             success(res) {
@@ -546,10 +538,6 @@ export default {
         u.checkLogin(function (token, userid, userInfo) {
             u.request({
                 url: u.api.cartlist,
-                method: 'POST',
-                header: {
-                    'content-type': 'application/x-www-form-urlencoded'
-                },
                 data: {},
                 isVerifyLogin: true,
                 isShowLoading: false,

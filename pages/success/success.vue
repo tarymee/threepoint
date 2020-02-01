@@ -21,9 +21,7 @@ export default {
         }
     },
     methods: {
-        jump(url) {
-            u.jump(url)
-        }
+
     },
     onLoad(event) {
         console.log("success onLoad")

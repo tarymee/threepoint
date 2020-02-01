@@ -55,10 +55,6 @@ export default {
             let that = this
             u.request({
                 url: u.api.addressdetail,
-                method: 'POST',
-                header: {
-                    'content-type': 'application/x-www-form-urlencoded'
-                },
                 data: {
                     address_id: that.address.address_id
                 },
@@ -116,10 +112,6 @@ export default {
             }
             u.request({
                 url: u.api.addresssave,
-                method: 'POST',
-                header: {
-                    'content-type': 'application/x-www-form-urlencoded'
-                },
                 data: {
                     address_id: that.address.address_id,
                     name: that.address.name,
@@ -147,7 +139,7 @@ export default {
                                 if (that.from === 'confirm') {
                                     uni.setStorageSync('confirmAddress', res.data)
                                 }
-                                uni.navigateBack()
+                                that.back()
                             }
                         })
                     }
