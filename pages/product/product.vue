@@ -336,9 +336,6 @@ export default {
                                         icon: 'none'
                                     })
                                 }
-                            },
-                            fail(res) {
-                                console.error(res)
                             }
                         })
                     })
@@ -370,9 +367,6 @@ export default {
                                         showCancel: false
                                     })
                                 }
-                            },
-                            fail(res) {
-                                console.error(res)
                             }
                         })
 
@@ -454,9 +448,6 @@ export default {
                     that.specArr = dealSpecArr
                     that.htmlString = goodData.remark.replace(/<img/g, "<img width=\"100%;\" style=\"max-width:100%;height:auto\"")
                 }
-            },
-            fail(res) {
-                console.error(res)
             }
         })
 
@@ -547,9 +538,6 @@ export default {
                     if (res && res.code == 1 && res.data && res.data.length) {
                         that.cartCount = res.data.length
                     }
-                },
-                fail(res) {
-                    console.error(res)
                 }
             })
         }, null, false)

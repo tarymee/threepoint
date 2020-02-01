@@ -9,7 +9,7 @@
         <view class="auth__subtitle">获得你的公开信息（昵称、头像等）</view>
         <div class="auth__btnwrap">
             <button type="" open-type="getUserInfo" @getuserinfo="back" class="auth__btnwrap-btn1">暂不登录</button>
-            <button type="primary" open-type="getUserInfo" @getuserinfo="authorLogin" class="auth__btnwrap-btn2">授权登录</button>
+            <button type="primary" open-type="getUserInfo" lang="zh_CN" @getuserinfo="authorLogin" class="auth__btnwrap-btn2">授权登录</button>
         </div>
     </view>
 </template>
@@ -30,6 +30,8 @@ export default {
             }
             let userInfo = e.detail
             console.log(userInfo)
+
+            // return false
 
             uni.showLoading({
                 title: '正在授权登录...',

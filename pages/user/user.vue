@@ -4,7 +4,14 @@
         <div class="avt">
             <div class="avt__bd">
                 <image class="avt__bd-img" :src="user.logo" mode="aspectFill"></image>
-                <div class="avt__bd-name">{{user.name}}</div>
+                <div class="avt__bd-con">
+                    <div class="avt__bd-name">{{user.name}}</div>
+                    <div class="avt__bd-level">{{user.level}}</div>
+                </div>
+                <div class="avt__bd-r">
+                    <div class="avt__bd-money">余额：{{user.moneyYan}}元</div>
+                    <div class="avt__bd-money">收益：{{user.profitMoneyYan}}元</div>
+                </div>
             </div>
         </div>
         <div class="user">
@@ -41,7 +48,7 @@
                 <uni-list-item title="收货地址" @click="jump('/pages/address/address')"></uni-list-item>
                 <uni-list-item title="绑定手机" @click="bindphone()" show-badge="true" :badge-text="user.isbindphone ? user.phone : '未绑定'" badge-type="default" badge-inverted="true"></uni-list-item>
                 <uni-list-item title="我的客户" @click="jump('/pages/mycustomer/mycustomer')"></uni-list-item>
-                <uni-list-item title="我的客户11" @click="jump('/pages/mystore/mystore')"></uni-list-item>
+                <uni-list-item title="我的店铺" @click="jump('/pages/mystore/mystore')"></uni-list-item>
                 <uni-list-item title="我的佣金" @click="jump('/pages/mycommission/mycommission')"></uni-list-item>
                 <div class="service">
                     <uni-list-item title="联系客服"></uni-list-item>
@@ -73,6 +80,9 @@
                     logo: '/static/img/avatar.png',
                     name: '三分联盟',
                     phone: '',
+                    level: '0',
+                    profitMoneyYan: '0',
+                    moneyYan: '0',
                     isbindphone: false
                 }
             }
@@ -123,31 +133,18 @@
                             that.user.name = res.nickName
                             that.user.phone = res.phone
                             that.user.isbindphone = res.isbindphone
+                            that.user.level = res.level
+                            that.user.profitMoneyYan = res.profitMoneyYan
+                            that.user.moneyYan = res.moneyYan
                             // that.user.isbindphone = true
                         } else {
                             that.user.logo = userInfo.avatarUrl
                             that.user.name = userInfo.nickName
                         }
-                    },
-                    fail(res) {
-                        console.error(res)
                     }
                 })
 
-                u.request({
-                    url: u.api.qrcode,
-                    data: {},
-                    isVerifyLogin: true,
-                    isShowLoading: false,
-                    isShowError: false,
-                    success(res) {
-                        console.log(res)
-                        
-                    },
-                    fail(res) {
-                        console.error(res)
-                    }
-                })
+                
             })
 
 
@@ -193,11 +190,31 @@
         border-radius: 50%;
         overflow: hidden;
     }
-    .avt__bd-name {
+    .avt__bd-con {
         overflow: hidden;
-        line-height: 50px;
+        float: left;
+    }
+    .avt__bd-name {
+        line-height: 30px;
         color: #ffffff;
         font-size: 16px;
+    }
+    .avt__bd-level {
+        overflow: hidden;
+        line-height: 15px;
+        color: #ffffff;
+        font-size: 12px;
+    }
+    .avt__bd-r {
+        overflow: hidden;
+        float: right;
+        margin-top: 10px;
+    }
+    .avt__bd-money {
+        overflow: hidden;
+        line-height: 15px;
+        color: #ffffff;
+        font-size: 12px;
     }
 
     /* 状态 */

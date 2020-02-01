@@ -43,9 +43,6 @@ export default {
                             that.back()
                         }
                     })
-                },
-                fail(res) {
-                    console.error(res)
                 }
             })
         }

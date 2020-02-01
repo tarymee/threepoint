@@ -595,9 +595,6 @@ const repay = function(order_id, order_pay_price) {
                     }
                 })
             }
-        },
-        fail(res) {
-            console.error(res)
         }
     })
 }
@@ -655,9 +652,6 @@ const receipt = function(order_id) {
                 })
             } else {
             }
-        },
-        fail(res) {
-            console.error(res)
         }
     })
 }
@@ -681,9 +675,6 @@ const cancel = function(order_id) {
                 })
             } else {
             }
-        },
-        fail(res) {
-            console.error(res)
         }
     })
 

@@ -136,9 +136,6 @@ export default {
                 isShowError: false,
                 success(res) {
                     console.log(res)
-                },
-                fail(res) {
-                    console.error(res)
                 }
             })
         },
@@ -179,9 +176,6 @@ export default {
                 isShowError: false,
                 success(res) {
                     console.log(res)
-                },
-                fail(res) {
-                    console.error(res)
                 }
             })
         },
@@ -254,9 +248,6 @@ export default {
                             } else {
                                 console.error('提交订单失败')
                             }
-                        },
-                        fail(res) {
-                            console.error(res)
                         }
                     })
                 })
@@ -292,9 +283,6 @@ export default {
                     console.log(that.proArr)
                     that.sum()
                 }
-            },
-            fail(res) {
-                console.error(res)
             }
         })
         return false

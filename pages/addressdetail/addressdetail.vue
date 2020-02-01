@@ -76,9 +76,6 @@ export default {
                     if (res && res.code == 1 && res.data) {
                         that.address = res.data
                     }
-                },
-                fail(res) {
-                    console.error(res)
                 }
             })
         },
@@ -144,9 +141,6 @@ export default {
                         })
                     }
 
-                },
-                fail(res) {
-                    console.error(res)
                 }
             })
         }

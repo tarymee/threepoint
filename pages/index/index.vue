@@ -122,9 +122,6 @@ export default {
                     })
                 })
                 console.log(that.navList)
-            },
-            fail(res) {
-                console.error(res)
             }
         })
     },
@@ -246,7 +243,7 @@ export default {
 
 /* 新品推荐 */
 .pro1 {
-    margin: 15px 0 15px 15px;
+    margin: 15px 15px 15px 15px;
 }
 .pro1 scroll-view {
     white-space: nowrap;

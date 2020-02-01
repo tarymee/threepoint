@@ -103,9 +103,6 @@ export default {
                         })
                     }
 
-                },
-                fail(res) {
-                    console.error(res)
                 }
             })
         }
@@ -161,9 +158,6 @@ export default {
                     })
                     that.order = order
                 }
-            },
-            fail(res) {
-                console.error(res)
             }
         })
 

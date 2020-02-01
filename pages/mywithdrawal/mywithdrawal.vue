@@ -1,11 +1,19 @@
 <template>
 
     <div class="tt-form">
-        <div class="wh">
+        <!-- <div class="wh">
             <div class="wh-l">提现到</div>
             <div class="wh-r">
                 <uni-icon color="#3baf33" class="" size="20" type="weixin" />
                 <span style="margin-left: 5px">微信钱包</span>
+            </div>
+        </div> -->
+        <div class="tt-form__item">
+            <div class="tt-form__item-l">提现到</div>
+            <div class="tt-form__item-r">
+                <picker @change="bindPickerChange" v-model="type" :range="pattypeArr2" range-key="{{'name'}}">
+                    <view class="tt-form__item-r-text">{{pattypeArr2[type].name}}</view>
+                </picker>
             </div>
         </div>
         <div class="tt-form__item" style="border-bottom: none;">
@@ -44,11 +52,26 @@ export default {
     },
     data() {
         return {
+            pattypeArr2: [
+                {
+                    id: 1,
+                    name: '微信钱包'
+                },
+                {
+                    id: 2,
+                    name: '我的余额'
+                }
+            ],
+            type: '0',
             getmoney: '',
             leftmoney: '0'
         }
     },
     methods: {
+        bindPickerChange(e) {
+            console.log(e)
+            this.type = e.target.value
+        },
         allget() {
             this.getmoney = this.leftmoney
         },
@@ -76,7 +99,8 @@ export default {
             u.request({
                 url: u.api.profitsave,
                 data: {
-                    money: that.getmoney
+                    money: that.getmoney,
+                    type: that.pattypeArr2[that.type].id
                 },
                 isVerifyLogin: true,
                 success(res) {
@@ -100,17 +124,6 @@ export default {
                             }
                         })
                     }
-                },
-                fail(res) {
-                    console.error(res)
-                    uni.showModal({
-                        title: '操作失败',
-                        content: '请重新提现',
-                        showCancel: false,
-                        success: function () {
-                            // that.back()
-                        }
-                    })
                 }
             })
         },

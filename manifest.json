@@ -58,6 +58,7 @@
         "appid" : "wxcd466d3df6df7712",
         "setting" : {
             "urlCheck" : false,
+            "checkSiteMap": false,
             "es6" : true,
             "postcss" : true
         },

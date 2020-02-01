@@ -64,9 +64,6 @@ export default {
                         if (res && res.code == 1) {
                             that.load()
                         }
-                    },
-                    fail(res) {
-                        console.error(res)
                     }
                 })
             } else if (value.text === '编辑') {
@@ -85,9 +82,6 @@ export default {
                         if (res && res.code == 1) {
                             that.load()
                         }
-                    },
-                    fail(res) {
-                        console.error(res)
                     }
                 })
             }
@@ -143,9 +137,6 @@ export default {
                     if (res && res.code == 1 && res.data && res.data.length) {
                         that.addressArr = res.data
                     }
-                },
-                fail(res) {
-                    console.error(res)
                 }
             })
         },

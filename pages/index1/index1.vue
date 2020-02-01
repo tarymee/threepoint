@@ -510,10 +510,6 @@ export default {
                     id: 'id',
                 })
                 that.reloadCate(that.cate1Arr[0].id)
-            },
-            fail(res) {
-                console.error('错误')
-                console.error(res)
             }
         })
 

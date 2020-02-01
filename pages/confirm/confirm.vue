@@ -89,9 +89,6 @@ export default {
                             // 发起微信支付
                             u.pay(res.data.payment, res.data.order_id, that.order_pay_price)
                         }
-                    },
-                    fail(res) {
-                        console.error(res)
                     }
                 })
             } else {
@@ -108,9 +105,6 @@ export default {
                             // 发起微信支付
                             u.pay(res.data.payment, res.data.order_id, that.order_pay_price)
                         }
-                    },
-                    fail(res) {
-                        console.error(res)
                     }
                 })
             }
@@ -223,9 +217,6 @@ export default {
                 //     })
                 //     that.address = res[defaultIndex]
                 // }
-            },
-            fail(res) {
-                console.error(res)
             }
         })
 

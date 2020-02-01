@@ -210,9 +210,6 @@ export default {
                         ]
                     }
                 }
-            },
-            fail(res) {
-                console.error(res)
             }
         })
 
