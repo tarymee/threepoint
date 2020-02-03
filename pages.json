@@ -179,6 +179,12 @@
             "style": {
                 "navigationBarTitleText": "充值"
             }
+        },
+        {
+            "path": "pages/search/search",
+            "style": {
+                "navigationBarTitleText": "搜索"
+            }
         }
     ],
     "globalStyle": {
@@ -361,6 +367,11 @@
             {
                 "name": "充值",
                 "path": "pages/mymoneyadd/mymoneyadd",
+                "query": ""
+            },
+            {
+                "name": "搜索",
+                "path": "pages/search/search",
                 "query": ""
             }
         ]

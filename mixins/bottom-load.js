@@ -10,7 +10,7 @@ const bottomLoad = {
             bottomLoad_api: '',
             bottomLoad_pagesize: 10,
             bottomLoad_params: {},
-            bottomLoad_tip: '加载中...',
+            bottomLoad_tip: '暂无数据',
             bottomLoad_data: []
         }
     },
@@ -81,14 +81,21 @@ const bottomLoad = {
                                         detail: []
                                     }
                                     item.goods.forEach((item2, i) => {
-                                        order.detail.push({
+                                        let detailData = {
                                             goods_id: item2.goods_id,
                                             img: item2.image.file_path,
                                             count: item2.total_num,
                                             price: item2.goods_price,
-                                            specTip: item2.goods_attr,
+                                            specTip: '',
                                             name: item2.goods_name
-                                        })
+                                        }
+                                        if (item2.sid1Name && item2.sid1Name !== 'null') {
+                                            detailData.specTip = '规格：' + item2.sid1Name
+                                        }
+                                        if (item2.sid2Name && item2.sid2Name !== 'null') {
+                                            detailData.specTip = detailData.specTip + '，' + item2.sid2Name
+                                        }
+                                        order.detail.push(detailData)
                                     })
                                     list2.push(order)
                                 })

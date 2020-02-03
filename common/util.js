@@ -10,6 +10,7 @@ const api = {
     weapp: `${host}/api/weapp/home/${site}`,
     user: `${host}/api/user/index/${site}`,
     goods: `${host}/api/goods/view/`,
+    search: `${host}/api/goods/search/${site}`,
     list: `${host}/api/goods/list/${site}`,
     index: `${host}/api/shop/index/${site}`,
     category: `${host}/api/category/list/${site}`,
@@ -262,7 +263,7 @@ function back() {
     if (pages.length > 1) {
         uni.navigateBack()
     } else {
-        that.jump('/pages/index/index')
+        jump('/pages/index/index')
     }
 }
 /**

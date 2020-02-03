@@ -271,13 +271,30 @@ export default {
                 console.log(res)
                 if (res && res.code == 1 && res.data) {
                     // that.proArr = res.data
-
-                    that.proArr = u.dataTransform(res.data, {
+                    let proArr
+                    proArr = u.dataTransform(res.data, {
                         goodsId: 'id',
                         id: 'cartid',
                         goodsPrice: 'price',
                         price: 'totalprice',
                     })
+
+                    proArr.forEach((item, i) => {
+                        item.specTip = ''
+                        if (item.spec && item.spec.length) {
+                            let arr = []
+                            item.spec.forEach((item2, i) => {
+                                for (var x in item2) {
+                                    if (item2[x] !== 'null') {
+                                        arr.push(item2[x])
+                                    }
+                                }
+                            })
+                            item.specTip = '规格：' + arr.join('，')
+                        }
+                    })
+
+                    that.proArr = proArr
                     console.log(that.proArr)
                     that.sum()
                 }
@@ -473,7 +490,7 @@ export default {
 .pro__info-tit{
     font-size: 14px;
     line-height: 18px;
-    max-height: 36px;
+    height: 36px;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;

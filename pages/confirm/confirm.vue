@@ -154,9 +154,17 @@ export default {
                 item.goods_id = item.goods_id
                 item.name = item.goods_name
                 item.img = item.image[0].file_path
-                item.specTip = item.goods_sku.goods_attr
                 item.price = item.goods_price
                 item.count = item.total_num
+
+                item.specTip = ''
+                if (item.sid1Name && item.sid1Name !== 'null') {
+                    item.specTip = '规格：' + item.sid1Name
+                }
+                if (item.sid2Name && item.sid2Name !== 'null') {
+                    item.specTip = item.specTip + '，' + item.sid2Name
+                }
+
             })
             that.confirmArr = confirmData.goods_list
         }
@@ -339,7 +347,7 @@ export default {
 .pro__info-tit {
     font-size: 14px;
     line-height: 18px;
-    max-height: 36px;
+    height: 36px;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;

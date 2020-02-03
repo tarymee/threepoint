@@ -1,6 +1,13 @@
 <template>
 
     <div class="tt-form">
+        <div class="wh">
+            <div class="wh-l">充值到</div>
+            <div class="wh-r">
+                <uni-icon color="#f00" class="" size="20" type="email" />
+                <span style="margin-left: 5px">我的余额</span>
+            </div>
+        </div>
         <div class="tt-form__item" style="border-bottom: none;">
             <div class="tt-form__item-l" style="width: 20px">￥</div>
             <div class="tt-form__item-r"><input type="number" v-model="money" placeholder="请输入充值金额" /></div>

@@ -11,7 +11,7 @@
         <div class="tt-form__item">
             <div class="tt-form__item-l">提现到</div>
             <div class="tt-form__item-r">
-                <picker @change="bindPickerChange" v-model="type" :range="pattypeArr2" range-key="{{'name'}}">
+                <picker @change="bindPickerChange" v-model="type" :range="pattypeArr2" range-key="name">
                     <view class="tt-form__item-r-text">{{pattypeArr2[type].name}}</view>
                 </picker>
             </div>

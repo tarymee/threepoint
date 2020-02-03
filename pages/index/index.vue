@@ -1,5 +1,33 @@
 <template>
     <div class="start">
+        <div class="search">
+            <a class="search-input" @tap="jump(`/pages/search/search`)">
+                <uni-icon color="#999999" class="" size="18" type="search" />
+                搜索产品
+            </a>
+        </div>
+        <div class="search-space"></div>
+        <div class="site">
+            <div class="site__store" @click="showAddress(site)">
+                <image :src="site.img" mode="aspectFill" class="site__store-img"></image>
+                <div class="site__store-info">
+                    <div class="site__store-info-tit">{{site.title}}</div>
+                    <div class="site__store-info-address">{{site.address}}</div>
+                </div>
+            </div>
+            <div class="site__r">
+                <div class="site__r-item" style="border-right: 1px solid #e9e9e9">
+                    <image src="/static/img/home/icon2.png" mode="aspectFill" class="site__r-item-img"></image>
+                    <div class="site__r-item-tit">客服</div>
+                    <button open-type="contact" @contact="handleContact">客服</button>
+                </div>
+                <div class="site__r-item" @click="phone(site.phone)">
+                    <image src="/static/img/home/icon1.png" mode="aspectFill" class="site__r-item-img"></image>
+                    <div class="site__r-item-tit">电话</div>
+                </div>
+            </div>
+        </div>
+
         <image class="start-image" :src="aaa.backLogo.logo" mode="aspectFill"></image>
         <!-- <image class="start-image" src="/static/img/index.jpg" mode="aspectFill"></image> -->
 
@@ -71,11 +99,20 @@
 
 <script>
 import u from '@/common/util'
+import uniIcon from '@/components/uni-icon/uni-icon.vue'
 export default {
-    components: {},
+    components: {
+        uniIcon
+    },
     data() {
         return {
             aaa: {},
+            site: {
+                title: '⊠⊠⊠⊠',
+                img: '',
+                address: '⊠⊠⊠⊠⊠⊠⊠⊠⊠⊠⊠⊠',
+                phone: '000-000-000-000',
+            },
             navList: [],
         }
     },
@@ -104,6 +141,14 @@ export default {
             isVerifyLogin: false,
             success(res) {
                 console.log(res)
+
+                that.site = u.dataTransform(res.site, {
+                    logo: 'img',
+                    remark: 'address',
+                    title: 'title',
+                    phone: 'phone',
+                })
+
                 that.aaa = res
                 that.navList = res.navList
                 // that.navList[0].goods.push({})
@@ -132,6 +177,117 @@ export default {
 </script>
 
 <style scoped>
+.search {
+    background-color: #ededed;
+    padding: 20upx;
+    width: 710upx;
+    height: 50upx;
+    line-height: 50upx;
+    overflow: hidden;
+    vertical-align: top;
+    font-size: 14px;
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    z-index: 1;
+}
+.search image {
+    width: 30upx;
+    height: 50upx;
+    vertical-align: top;
+}
+.search-input {
+    overflow: hidden;
+    border-radius: 3px;
+    background-color: #fff;
+    color: #ccc;
+    padding: 0 10upx;
+}
+.search-space {
+    height: 90upx;
+}
+
+
+/* 门店 */
+.site {
+    overflow: hidden;
+    margin: 30upx;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.site__store {
+    display: flex;
+    align-items: center;
+}
+.site__store-img {
+    flex: none;
+    display: block;
+    width: 100upx;
+    height: 100upx;
+    overflow: hidden;
+    border-radius: 50%;
+    margin-right: 20upx;
+    background-color: #eee;
+}
+.site__store-info {
+    
+}
+.site__store-info-tit {
+    line-height: 50upx;
+    font-size: 16px;
+    color: #333;
+    height: 50upx;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+.site__store-info-address {
+    line-height: 40upx;
+    font-size: 12px;
+    color: #999;
+    height: 40upx;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+.site__r {
+    display: flex;
+    flex: none;
+}
+.site__r-item {
+    width: 90upx;
+    text-align: center;
+    position: relative;
+}
+.site__r-item button {
+    opacity: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+.site__r-item-img {
+    display: block;
+    width: 50upx;
+    height: 50upx;
+    margin: 0px auto;
+}
+.site__r-item-tit {
+    font-size: 12px;
+    line-height: 40upx;
+    color: #999;
+}
+
+
+
+
 .start {
     display: block;
     width: 750upx;
@@ -149,7 +305,7 @@ export default {
 .top {
     width: 700upx;
     position: absolute;
-    top: 65upx;
+    top: 315upx;
     left: 40upx;
     text-align: center;
 }
@@ -167,7 +323,7 @@ export default {
 .pro {
     position: absolute;
     width: 750upx;
-    top: 300upx;
+    top: 550upx;
     text-align: center;
     overflow: hidden;
 }
@@ -196,7 +352,7 @@ export default {
 .nav {
     position: absolute;
     width: 750upx;
-    top: 930upx;
+    top: 1180upx;
     text-align: center;
 }
 .nav-item {
@@ -214,7 +370,7 @@ export default {
 .bot {
     position: absolute;
     width: 750upx;
-    top: 950upx;
+    top: 1200upx;
     text-align: center;
 }
 .bot-item {

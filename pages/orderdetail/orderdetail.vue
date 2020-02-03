@@ -147,14 +147,21 @@ export default {
                         detail: []
                     }
                     res.goods.forEach((item, i) => {
-                        order.detail.push({
+                        let detailData = {
                             goods_id: item.goods_id,
                             img: item.image.file_path,
                             count: item.total_num,
                             price: item.goods_price,
-                            specTip: item.goods_attr,
+                            specTip: '',
                             name: item.goods_name
-                        })
+                        }
+                        if (item.sid1Name && item.sid1Name !== 'null') {
+                            detailData.specTip = '规格：' + item.sid1Name
+                        }
+                        if (item.sid2Name && item.sid2Name !== 'null') {
+                            detailData.specTip = detailData.specTip + '，' + item.sid2Name
+                        }
+                        order.detail.push(detailData)
                     })
 
 
