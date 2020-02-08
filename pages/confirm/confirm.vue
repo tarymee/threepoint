@@ -41,6 +41,17 @@
             </div>
         </div>
 
+        <div class="tt-form">
+            <div class="tt-form__item">
+                <div class="tt-form__item-l">支付方式</div>
+                <div class="tt-form__item-r">
+                    <picker @change="bindPickerChange" v-model="payType" :range="pattypeArr">
+                        <view class="tt-form__item-r-text">{{pattypeArr[payType]}}</view>
+                    </picker>
+                </div>
+            </div>
+        </div>
+
         <div class="" style="height: 50px;"></div>
         <div class="confirm-tf">
             <div class="confirm-tf__sum">实付金额: <span class="confirm-tf__sum-money">￥{{order_pay_price}}</span></div>
@@ -60,6 +71,8 @@ export default {
             // 下单类型
             // 立即购买 type = buynow
             // 购物车下单 type = ''
+            pattypeArr: ['微信支付', '余额支付'],
+            payType: '0',
             type: '',
             buynowData: null,
             confirmArr: [],
@@ -71,6 +84,10 @@ export default {
         }
     },
     methods: {
+        bindPickerChange(e) {
+            console.log(e)
+            this.payType = e.target.value
+        },
         // 提交订单 付款
         pay() {
             let that = this
@@ -86,7 +103,13 @@ export default {
                     success(res) {
                         console.log(res)
                         if (res.code == 1) {
-                            u.orderPay(res.data.payment, res.data.order_id, that.order_pay_price)
+                            if (that.payType === '0') {
+                                // 微信支付
+                                u.orderPay(res.data.payment, res.data.order_id, that.order_pay_price)
+                            } else {
+                                // 余额支付
+                                that.leftMoneyPay(res.data.order_id, that.order_pay_price)
+                            }
                         }
                     }
                 })
@@ -101,11 +124,43 @@ export default {
                     success(res) {
                         console.log(res)
                         if (res.code == 1) {
-                            u.orderPay(res.data.payment, res.data.order_id, that.order_pay_price)
+                            if (that.payType === '0') {
+                                // 微信支付
+                                u.orderPay(res.data.payment, res.data.order_id, that.order_pay_price)
+                            } else {
+                                // 余额支付
+                                that.leftMoneyPay(res.data.order_id, that.order_pay_price)
+                            }
                         }
                     }
                 })
             }
+        },
+        leftMoneyPay(order_id, order_pay_price) {
+            let that = this
+            u.request({
+                url: u.api.paytype,
+                data: {
+                    orderId: order_id,
+                    type: 1
+                },
+                isVerifyLogin: true,
+                success(res) {
+                    if (res.code == 1) {
+                        that.jump(`/pages/success/success?order_id=${order_id}&price=${order_pay_price}`)
+                    } else {
+                        uni.showModal({
+                            title: '操作失败',
+                            content: res.msg,
+                            showCancel: false,
+                            success: function () {
+                                // that.back()
+                                that.jump(`/pages/order/order?type=payment`)
+                            }
+                        })
+                    }
+                }
+            })
         },
         selectAddress() {
             this.jump('/pages/address/address?from=confirm')

@@ -104,7 +104,7 @@ export default {
                 },
                 isVerifyLogin: true,
                 success(res) {
-                    if (res.code === 0) {
+                    if (res.code === 1) {
                         uni.showModal({
                             title: '操作成功',
                             // content: '提现金额已存入您的微信钱包',

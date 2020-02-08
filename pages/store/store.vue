@@ -32,7 +32,7 @@
         </div>
         <div class="store__address">
             <div class="store__address-l">{{item.address}}</div>
-            <div class="store__address-r">{{item.type}}</div>
+            <div class="store__address-r">{{item.km}}km</div>
         </div>
     </a>
     <div class="" v-if="!storeArr.length">
@@ -125,7 +125,7 @@ export default {
                         that.storeArr = res.data.map((item, i) => {
                             return {
                                 title: item.title,
-                                type: item.name,
+                                km: item.km,
                                 // 如果是直营店要显示手机号，如果是加盟点不显示手机号
                                 // type 1直营2加盟
                                 phone: item.type == 1 ? item.phone : null,
@@ -175,13 +175,13 @@ export default {
         wx.getLocation({
             type: 'gcj02',
             success (res) {
-                console.log(res)
+                // console.log(res)
                 that.latitude = res.latitude
                 that.longitude = res.longitude
                 that.load(0)
             }
         })
-        that.load(0)
+        // that.load(0)
     }
 }
 </script>

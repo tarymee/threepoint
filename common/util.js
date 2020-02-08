@@ -58,6 +58,7 @@ const api = {
     profitsave: `${host}/api/user/profit/save`,
     moneyincome: `${host}/api/user/money/income`,
     moneysave: `${host}/api/user/money/save`,
+    paytype: `${host}/api/order/payType`,
     host
 }
 
@@ -618,6 +619,7 @@ const orderPay = function (payment, order_id, order_pay_price) {
         fail: function () {
             uni.showToast({
                 title: '订单未支付',
+                icon: 'none',
                 mask: true,
                 duration: 3000,
                 success: function () {
