@@ -23,6 +23,10 @@ export default {
         }
     },
     methods: {
+        back() {
+            // console.log(111)
+            u.back()
+        },
         authorLogin(e) {
             let that = this
             if (e.detail.errMsg !== 'getUserInfo:ok') {

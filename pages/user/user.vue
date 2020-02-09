@@ -54,6 +54,7 @@
                     <uni-list-item title="联系客服"></uni-list-item>
                     <button open-type="contact">客服</button>
                 </div>
+                <uni-list-item title="操作指南" @click="jump('/pages/dolist/dolist')"></uni-list-item>
                 <uni-list-item title="用户反馈" @click="jump('/pages/feedback/feedback')"></uni-list-item>
                 <uni-list-item title="关于" @click="jump('/pages/about/about')"></uni-list-item>
                 <uni-list-item title="退出登录" @click="loginout()"></uni-list-item>

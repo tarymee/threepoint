@@ -19,7 +19,7 @@
                     <view class="tt-form__item-r-text" v-if="region.length">{{region[0]}} {{region[1]}} {{region[2]}}</view>
                     <view class="tt-form__item-r-text" v-else>门店所在地区</view>
                 </picker>
-                <view class="store__po2-r">请选择</view>
+                <view class="store__po2-r" @tap="reset()">查看所有</view>
             </div>
         </div>
 
@@ -104,6 +104,11 @@ export default {
                 scale: 18
             })
         },
+        reset() {
+            let that = this
+            that.region = []
+            that.load(0)
+        },
         // type0=经纬度 type1=地区
         load(type) {
             let that = this
@@ -112,7 +117,10 @@ export default {
                 postData.latitude = that.latitude
                 postData.longitude = that.longitude
             } else {
-                postData.region = JSON.stringify(that.region)
+                postData.latitude = that.latitude
+                postData.longitude = that.longitude
+                // postData.region = JSON.stringify(that.region)
+                postData.region = that.region.join('/')
             }
 
             u.request({

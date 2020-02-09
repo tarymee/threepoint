@@ -59,6 +59,8 @@ const api = {
     moneyincome: `${host}/api/user/money/income`,
     moneysave: `${host}/api/user/money/save`,
     paytype: `${host}/api/order/payType`,
+    dolist: `${host}/api/article/list/248`,
+    dolistdetail: `${host}/api/article/view/`,
     host
 }
 
