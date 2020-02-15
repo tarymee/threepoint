@@ -21,7 +21,10 @@
 
 
 
-
+.status_bar {
+    height: var(--status-bar-height);
+    width: 100%;
+}
 
 
 .contain--gray {

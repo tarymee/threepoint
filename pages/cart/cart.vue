@@ -87,8 +87,16 @@ export default {
     },
     computed: {},
     methods: {
+        login() {
+
+        },
         edit() {
-            this.isEdit = !this.isEdit
+            let that = this
+            u.checkLogin({
+                success: function () {
+                    that.isEdit = !that.isEdit
+                }
+            })
         },
         // 滑动删除商品
         delPro(index) {
@@ -148,10 +156,14 @@ export default {
         // 全选
         allSelect() {
             let that = this
-            that.proArr.forEach((item, i) => {
-                item.select = !that.isAllSel
+            u.checkLogin({
+                success: function () {
+                    that.proArr.forEach((item, i) => {
+                        item.select = !that.isAllSel
+                    })
+                    that.sum()
+                }
             })
-            that.sum()
         },
         // 减少数量
         subCount(index) {
@@ -218,136 +230,101 @@ export default {
         // 跳转确认订单页面
         toConfirm() {
             let that = this
-            let confirmArr = []
-            let cartidArr = []
-            that.proArr.forEach((item, i) => {
-                if (item.select) {
-                    confirmArr.push(item)
-                    cartidArr.push(item.cartid)
-                }
-            })
-            console.log(confirmArr)
-            console.log(cartidArr)
-            if (cartidArr.length) {
-                u.checkLogin(function () {
-                    u.request({
-                        url: u.api.cartsave,
-                        data: {
-                            cartid: JSON.stringify(cartidArr)
-                        },
-                        isVerifyLogin: true,
-                        isShowLoading: true,
-                        isShowError: true,
-                        success(res) {
-                            console.log(res)
-                            if (res.code == 1) {
-                                console.log('跳去订单确认页')
-                                that.jump('/pages/confirm/confirm?cartid=' + JSON.stringify(cartidArr) + '&confirmData=' + encodeURIComponent(JSON.stringify(res.data)))
-                            } else {
-                                console.error('提交订单失败')
-                            }
+            u.checkLogin({
+                success: function () {
+                    let confirmArr = []
+                    let cartidArr = []
+                    that.proArr.forEach((item, i) => {
+                        if (item.select) {
+                            confirmArr.push(item)
+                            cartidArr.push(item.cartid)
                         }
                     })
-                })
-            } else {
-                uni.showToast({
-                    title: '请先选择产品',
-                    mask: true,
-                    icon: 'none',
-                })
-            }
+                    console.log(confirmArr)
+                    console.log(cartidArr)
+                    if (cartidArr.length) {
+                        u.request({
+                            url: u.api.cartsave,
+                            data: {
+                                cartid: JSON.stringify(cartidArr)
+                            },
+                            isVerifyLogin: true,
+                            isShowLoading: true,
+                            isShowError: true,
+                            success(res) {
+                                console.log(res)
+                                if (res.code == 1) {
+                                    console.log('跳去订单确认页')
+                                    that.jump('/pages/confirm/confirm?cartid=' + JSON.stringify(cartidArr) + '&confirmData=' + encodeURIComponent(JSON.stringify(res.data)))
+                                } else {
+                                    console.error('提交订单失败')
+                                }
+                            }
+                        })
+                    } else {
+                        uni.showToast({
+                            title: '请先选择产品',
+                            mask: true,
+                            icon: 'none',
+                        })
+                    }
+                }
+            })
         }
     },
     onShow() {
         let that = this
+        u.checkLogin({
+            isAutoJumpToLogin: false,
+            success: function () {
+                u.request({
+                    url: u.api.cartlist,
+                    data: {},
+                    isVerifyLogin: true,
+                    isShowLoading: false,
+                    isShowError: false,
+                    success(res) {
+                        console.log(res)
+                        if (res && res.code == 1 && res.data) {
+                            // that.proArr = res.data
+                            let proArr
+                            proArr = u.dataTransform(res.data, {
+                                goodsId: 'id',
+                                id: 'cartid',
+                                goodsPrice: 'price',
+                                price: 'totalprice',
+                            })
 
-        u.request({
-            url: u.api.cartlist,
-            data: {},
-            isVerifyLogin: true,
-            isShowLoading: false,
-            isShowError: false,
-            success(res) {
-                console.log(res)
-                if (res && res.code == 1 && res.data) {
-                    // that.proArr = res.data
-                    let proArr
-                    proArr = u.dataTransform(res.data, {
-                        goodsId: 'id',
-                        id: 'cartid',
-                        goodsPrice: 'price',
-                        price: 'totalprice',
-                    })
-
-                    proArr.forEach((item, i) => {
-                        item.specTip = ''
-                        if (item.spec && item.spec.length) {
-                            let arr = []
-                            item.spec.forEach((item2, i) => {
-                                for (var x in item2) {
-                                    if (item2[x] !== 'null') {
-                                        arr.push(item2[x])
-                                    }
+                            proArr.forEach((item, i) => {
+                                item.specTip = ''
+                                if (item.spec && item.spec.length) {
+                                    let arr = []
+                                    item.spec.forEach((item2, i) => {
+                                        for (var x in item2) {
+                                            if (item2[x] !== 'null') {
+                                                arr.push(item2[x])
+                                            }
+                                        }
+                                    })
+                                    item.specTip = '规格：' + arr.join('，')
                                 }
                             })
-                            item.specTip = '规格：' + arr.join('，')
-                        }
-                    })
 
-                    that.proArr = proArr
-                    console.log(that.proArr)
-                    that.sum()
-                }
+                            that.proArr = proArr
+                            console.log(that.proArr)
+                            that.sum()
+                        }
+                    }
+                })
+            },
+            fail() {
+                that.sumPrice = '0.00'
+                that.selProCount = 0
+                that.isAllSel = false
+                that.isEdit = false
+                that.proArr = []
             }
         })
-        return false
-
-        let res = {
-            data: [
-                {
-                    id: '15646',
-                    cartid: '554',
-                    img: 'https://cbu01.alicdn.com/img/ibank/2018/466/073/9464370664_1899654620.220x220.jpg',
-                    name: '青花瓷 89*99 CM',
-                    spec: [
-                        {
-                            id: '123656',
-                            title: '尺码',
-                            selid: '165465',
-                            seltitle: 'S码',
-                        },
-                        {
-                            id: '12386',
-                            title: '颜色',
-                            selid: '44',
-                            seltitle: '红色',
-                        }
-                    ],
-                    specTip: '规格 S码 黑色',
-                    price: 10.5,
-                    totalprice: 10.5,
-                    count: 1
-                },
-                {
-                    id: '249816',
-                    cartid: '7232',
-                    img: 'https://cbu01.alicdn.com/img/ibank/2018/466/073/9464370664_1899654620.220x220.jpg',
-                    name: '清朝陶瓷碗 89*99 CM',
-                    spec: {
-                        '112233': '111',
-                        '334455': '345',
-                    },
-                    specTip: '规格 S码 黑色',
-                    price: 20.5,
-                    totalprice: 20.5,
-                    count: 1
-                }
-            ]
-        }
-        if (res && res.data) {
-            that.proArr = res.data
-            that.sum()
-        }
     }
 }
 </script>

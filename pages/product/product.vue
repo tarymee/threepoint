@@ -316,61 +316,65 @@ export default {
                 let postData = that.dealData()
                 console.log('postData', postData)
                 if (that.isAddCart) {
-                    u.checkLogin(function () {
-                        u.request({
-                            url: u.api.cartadd,
-                            data: postData,
-                            isVerifyLogin: true,
-                            success(res) {
-                                console.log(res)
-                                if (res.code == 1) {
-                                    uni.showToast({
-                                        title: '添加成功 在购物车等亲',
-                                        icon: 'none'
-                                    })
-                                    that.cartCount++
-                                    that.togglePopup('')
-                                } else {
-                                    uni.showToast({
-                                        title: res.msg,
-                                        icon: 'none'
-                                    })
+                    u.checkLogin({
+                        success: function () {
+                            u.request({
+                                url: u.api.cartadd,
+                                data: postData,
+                                isVerifyLogin: true,
+                                success(res) {
+                                    console.log(res)
+                                    if (res.code == 1) {
+                                        uni.showToast({
+                                            title: '添加成功 在购物车等亲',
+                                            icon: 'none'
+                                        })
+                                        that.cartCount++
+                                        that.togglePopup('')
+                                    } else {
+                                        uni.showToast({
+                                            title: res.msg,
+                                            icon: 'none'
+                                        })
+                                    }
                                 }
-                            }
-                        })
+                            })
+                        }
                     })
                 } else {
                     // 立即购买
-                    u.checkLogin(function () {
-                        u.request({
-                            url: u.api.orderbuynow,
-                            method: 'GET',
-                            header: {
-                                'content-type': 'application/x-www-form-urlencoded'
-                            },
-                            data: postData,
-                            isVerifyLogin: true,
-                            isShowLoading: true,
-                            isShowError: true,
-                            success(res) {
-                                console.log(res)
-                                if (res && res.code == 1) {
-                                    console.log('跳去订单确认页')
-                                    that.jump('/pages/confirm/confirm?confirmData=' + encodeURIComponent(JSON.stringify(res.data)) + '&type=buynow&buynowData=' + encodeURIComponent(JSON.stringify(postData)))
-                                } else {
-                                    console.error('提交订单失败')
-                                    uni.showModal({
-                                        title: '提示',
-                                        content: '提交订单失败',
-                                        showCancel: false
-                                    })
+                    u.checkLogin({
+                        success: function () {
+                            u.request({
+                                url: u.api.orderbuynow,
+                                method: 'GET',
+                                header: {
+                                    'content-type': 'application/x-www-form-urlencoded'
+                                },
+                                data: postData,
+                                isVerifyLogin: true,
+                                isShowLoading: true,
+                                isShowError: true,
+                                success(res) {
+                                    console.log(res)
+                                    if (res && res.code == 1) {
+                                        console.log('跳去订单确认页')
+                                        that.jump('/pages/confirm/confirm?confirmData=' + encodeURIComponent(JSON.stringify(res.data)) + '&type=buynow&buynowData=' + encodeURIComponent(JSON.stringify(postData)))
+                                    } else {
+                                        console.error('提交订单失败')
+                                        uni.showModal({
+                                            title: '提示',
+                                            content: '提交订单失败',
+                                            showCancel: false
+                                        })
+                                    }
                                 }
-                            }
-                        })
+                            })
 
-                        // let confirmArr = [postData]
-                        // let proPrice = u.math.multimul(confirmArr[0].price, confirmArr[0].count)
-                        // that.jump('/pages/confirm/confirm?confirmArr=' + encodeURIComponent(JSON.stringify(confirmArr)) + '&proPrice=' + proPrice)
+                            // let confirmArr = [postData]
+                            // let proPrice = u.math.multimul(confirmArr[0].price, confirmArr[0].count)
+                            // that.jump('/pages/confirm/confirm?confirmArr=' + encodeURIComponent(JSON.stringify(confirmArr)) + '&proPrice=' + proPrice)
+                        }
                     })
                 }
             } else {
@@ -522,21 +526,24 @@ export default {
     },
     onShow() {
         let that = this
-        u.checkLogin(function (token, userid, userInfo) {
-            u.request({
-                url: u.api.cartlist,
-                data: {},
-                isVerifyLogin: true,
-                isShowLoading: false,
-                isShowError: false,
-                success(res) {
-                    console.log(res)
-                    if (res && res.code == 1 && res.data && res.data.length) {
-                        that.cartCount = res.data.length
+        u.checkLogin({
+            isAutoJumpToLogin: false,
+            success: function () {
+                u.request({
+                    url: u.api.cartlist,
+                    data: {},
+                    isVerifyLogin: true,
+                    isShowLoading: false,
+                    isShowError: false,
+                    success(res) {
+                        console.log(res)
+                        if (res && res.code == 1 && res.data && res.data.length) {
+                            that.cartCount = res.data.length
+                        }
                     }
-                }
-            })
-        }, null, false)
+                })
+            }
+        })
     }
 }
 </script>

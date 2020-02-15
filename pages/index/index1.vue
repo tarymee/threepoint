@@ -1,15 +1,12 @@
 <template>
-    <div class="" style="background-color: #FDFAF3;min-height: 100vh;overflow: scroll;">
-        <view class="bartop" :style="{'height':navbarInfo.navHeight + 'px','background':bgColor}">
-            <div class="bartop-statusbar" :style="{'height':navbarInfo.statusBarHeight + 'px'}"></div>
-            <a class="search-input" :style="{'width':navbarInfo.capsuleWidth + navbarInfo.titleWidth - 35 + 'px','marginTop': navbarInfo.capsuleTop - navbarInfo.statusBarHeight + 'px'}" @tap="jump(`/pages/search/search`)">
-                <div class="search-input-l"></div>
+    <div class="start">
+        <div class="search">
+            <a class="search-input" @tap="jump(`/pages/search/search`)">
                 搜索您喜欢的产品
-                <div class="search-input-r"><uni-icon color="#fff" class="" size="18" type="search" /></div>
+                <uni-icon color="#999999" class="" size="18" type="search" style="float:right" />
             </a>
-        </view>
-        <view :style="{'height':navbarInfo.navHeight + 'px'}"></view>
-
+        </div>
+        <div class="search-space"></div>
         <div class="site">
             <div class="site__store" @click="showAddress(site)">
                 <image :src="site.img" mode="aspectFill" class="site__store-img"></image>
@@ -31,26 +28,23 @@
             </div>
         </div>
 
-        <div class="start">
-            <image class="start-image" :src="aaa.backLogo.logo" mode="aspectFill"></image>
-            <!-- <image class="start-image" src="/static/img/index.jpg" mode="aspectFill"></image> -->
+        <image class="start-image" :src="aaa.backLogo.logo" mode="aspectFill"></image>
+        <!-- <image class="start-image" src="/static/img/index.jpg" mode="aspectFill"></image> -->
 
-            <div class="top">
-                <div class="top-item" @click="jump(item.url)" v-for="(item, index) in aaa.header" :key="index"><image :src="item.logo" mode="aspectFill" lazy-load></image></div>
-            </div>
-
-            <div class="pro">
-                <div class="pro-item1" @click="jump(aaa.body[0].url)"><image :src="aaa.body[0].logo" lazy-load mode="aspectFill"></image></div>
-                <div class="pro-item1" @click="jump(aaa.body[1].url)"><image :src="aaa.body[1].logo" lazy-load mode="aspectFill"></image></div>
-                <div class="pro-item" @click="jump(aaa.body[2].url)"><image :src="aaa.body[2].logo" lazy-load mode="aspectFill"></image></div>
-                <div class="pro-item" @click="jump(aaa.body[3].url)"><image :src="aaa.body[3].logo" lazy-load mode="aspectFill"></image></div>
-            </div>
-
-            <div class="nav">
-                <div class="nav-item" @click="jump(item.url)" v-for="(item, index) in aaa.footer" :key="index"><image :src="item.logo" lazy-load mode="aspectFill"></image></div>
-            </div>
+        <div class="top">
+            <div class="top-item" @click="jump(item.url)" v-for="(item, index) in aaa.header" :key="index"><image :src="item.logo" mode="aspectFill" lazy-load></image></div>
         </div>
 
+        <div class="pro">
+            <div class="pro-item1" @click="jump(aaa.body[0].url)"><image :src="aaa.body[0].logo" lazy-load mode="aspectFill"></image></div>
+            <div class="pro-item1" @click="jump(aaa.body[1].url)"><image :src="aaa.body[1].logo" lazy-load mode="aspectFill"></image></div>
+            <div class="pro-item" @click="jump(aaa.body[2].url)"><image :src="aaa.body[2].logo" lazy-load mode="aspectFill"></image></div>
+            <div class="pro-item" @click="jump(aaa.body[3].url)"><image :src="aaa.body[3].logo" lazy-load mode="aspectFill"></image></div>
+        </div>
+
+        <div class="nav">
+            <div class="nav-item" @click="jump(item.url)" v-for="(item, index) in aaa.footer" :key="index"><image :src="item.logo" lazy-load mode="aspectFill"></image></div>
+        </div>
 
         <div class="" v-for="(item, index) in navList" :key="index">
             <div class="propic" @click="jump(item.wh.url)">
@@ -112,7 +106,6 @@ export default {
     },
     data() {
         return {
-            navbarInfo: {},
             aaa: {},
             site: {
                 title: '⊠⊠⊠⊠',
@@ -135,34 +128,23 @@ export default {
     },
     onShareAppMessage() {
         let that = this
-        let token = uni.getStorageSync('token')
         let obj = {
             title: '三分联盟商城',
-            path: `/pages/index/index?scene=${token}`
+            path: `/pages/index/index`
         }
         return obj
     },
     onLoad(e) {
         console.log('index onLoad')
-        var that = this
-
         // 记录通过二维码打开传递的分销信息
         console.log(e)
         if (e.scene) {
             uni.setStorageSync('scene', e.scene)
         }
-
-        that.navbarInfo = u.getNavbarInfo()
-        console.log(that.navbarInfo)
-
-        let postData = {}
-        let scene = uni.getStorageSync('scene')
-        if (scene) {
-            postData.scene = scene
-        }
+        var that = this
         u.request({
             url: u.api.weapp,
-            data: postData,
+            data: {},
             isVerifyLogin: false,
             success(res) {
                 console.log(res)
@@ -197,61 +179,33 @@ export default {
     },
     onShow() {
         console.log('start onShow')
-
     }
 }
 </script>
 
 <style scoped>
-.bartop {
-    position: fixed;
-    height: 64px;
-    width: 100%;
-    top: 0;
-    z-index: 9999999;
-    background-color: #fff;
-}
-.bartop-statusbar {
-    width: 100%;
-    height: 20px;
-    /* background: #05a; */
-}
-
-.search-input {
-    font-size: 14px;
-    display: block;
-    margin-top: 5px;
-    margin-left: 30rpx;
-    width: 500upx;
-    height: 30px;
-    line-height: 30px;
-    overflow: hidden;
-    border-radius: 15px;
-    background-color: #fff;
-    border: 1px solid #800019;
-    text-align: center;
-    color: #777;
-    overflow: hidden;
-}
-.search-input-l {
-    float: left;
-    width: 30px;
-    height: 30px;
-    border: 5px solid #800019;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    border-radius: 15px;
-    margin-left: -1px;
-}
-.search-input-r {
-    float: right;
-    width: 30px;
-    height: 30px;
+.search {
     background-color: #800019;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    border-radius: 15px;
-    margin-right: -1px;
+    padding: 20upx;
+    width: 710upx;
+    height: 50upx;
+    line-height: 50upx;
+    overflow: hidden;
+    vertical-align: top;
+    font-size: 14px;
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    z-index: 1;
+}
+.search-input {
+    overflow: hidden;
+    height: 50upxpx;
+    border-radius: 25upx;
+    background-color: #fff;
+    color: #777;
+    font-size: 14px;
+    padding: 0 20upx;
 }
 .search-space {
     height: 90upx;
@@ -341,8 +295,10 @@ export default {
 .start {
     display: block;
     width: 750upx;
+    min-height: 100vh;
+    overflow: scroll;
     background-color: #FDFAF3;
-    position: relative;
+    /* position: relative; */
 }
 
 .start-image {
@@ -353,7 +309,7 @@ export default {
 .top {
     width: 700upx;
     position: absolute;
-    top: 65upx;
+    top: 315upx;
     left: 40upx;
     text-align: center;
 }
@@ -371,7 +327,7 @@ export default {
 .pro {
     position: absolute;
     width: 750upx;
-    top: 300upx;
+    top: 550upx;
     text-align: center;
     overflow: hidden;
 }
@@ -400,14 +356,14 @@ export default {
 .nav {
     position: absolute;
     width: 750upx;
-    top: 930upx;
+    top: 1180upx;
     text-align: center;
 }
 .nav-item {
     display: inline-block;
     width: 125upx;
     height: 225upx;
-    margin: 0 10upx;
+    margin: 0 5upx;
 }
 .nav-item image {
     display: block;
@@ -436,12 +392,12 @@ export default {
 
 
 .propic {
-    margin: 15upx 15px;
+    margin: 15upx 0upx;
     overflow: hidden;
 }
 .propic image{
     display: block;
-    width: 100%;
+    width: 750upx;
 }
 
 /* 新品推荐 */

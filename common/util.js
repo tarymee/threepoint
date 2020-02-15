@@ -66,7 +66,11 @@ const api = {
 
 // console.log(api)
 
-function checkLogin(success, fail, isAutoJumpToLogin = true) {
+function checkLogin({
+    success = null,
+    fail = null,
+    isAutoJumpToLogin = true,
+} = {}) {
     // uni.setStorageSync('token', '11111')
     // uni.setStorageSync('token', '')
     let token = uni.getStorageSync('token')
@@ -79,13 +83,20 @@ function checkLogin(success, fail, isAutoJumpToLogin = true) {
     let failFn = function () {
         fail && fail()
         if (isAutoJumpToLogin) {
-            console.error('用户未授权登录 跳登录页面')
-            jump('/pages/login/login')
+            // console.error('请先登录后再操作')
+            uni.showToast({
+                title: '请先登录后再操作',
+                icon: 'none',
+                duration: 1500,
+                success() {
+                    jump('/pages/login/login')
+                }
+            })
         }
     }
 
     if (token) {
-        console.log(token)
+        // console.log(token)
         uni.checkSession({
             success() {
                 // console.log('session_key 未过期，并且在本生命周期一直有效')
@@ -129,8 +140,10 @@ function request({
 
     if (isVerifyLogin) {
         // console.log('有校验登录 发起请求')
-        checkLogin(function () {
-            ajax()
+        checkLogin({
+            success: function () {
+                ajax()
+            }
         })
     } else {
         // console.log('没校验登录 发起请求')
@@ -186,6 +199,46 @@ function request({
                 complete && complete(res)
             }
         })
+    }
+}
+
+// 获取头部宽高信息
+const getNavbarInfo = function () {
+    let statusBarHeight = 20
+    let windowWidth = 375
+    let capsuleHeight = 32
+    let capsuleWidth = 87
+    let capsuleTop = 26
+    let capsuleLeft = 10
+    let titleWidth = 181
+    let titleHeight = 44
+    let navHeight = 64
+
+    let systemInfo = uni.getSystemInfoSync()
+    // console.log('设备信息', systemInfo)
+    statusBarHeight = systemInfo.statusBarHeight
+    windowWidth = systemInfo.windowWidth
+
+
+    let menuButtonInfo = uni.getMenuButtonBoundingClientRect()
+    // console.log('胶囊信息', menuButtonInfo)
+    capsuleHeight = menuButtonInfo.height
+    capsuleWidth = menuButtonInfo.width
+    capsuleTop = menuButtonInfo.top
+    capsuleLeft = windowWidth - menuButtonInfo.right
+    titleWidth = windowWidth - (capsuleLeft * 2 + capsuleWidth * 2)
+    // titleHeight = capsuleHeight + ((capsuleTop - statusBarHeight) * 2)
+    navHeight = statusBarHeight + titleHeight
+    return {
+        statusBarHeight,
+        windowWidth,
+        capsuleHeight,
+        capsuleWidth,
+        capsuleTop,
+        capsuleLeft,
+        titleWidth,
+        titleHeight,
+        navHeight
     }
 }
 
@@ -757,6 +810,7 @@ module.exports = {
     request,
     jump,
     back,
+    getNavbarInfo,
     dataTransform,
     wechatPay,
     orderPay,

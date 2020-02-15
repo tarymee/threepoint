@@ -142,8 +142,11 @@ export default {
     },
     onLoad(event) {
         let that = this
-        u.checkLogin()
-        that.load()
+        u.checkLogin({
+            success: function () {
+                that.load()
+            }
+        })
     }
 }
 </script>
