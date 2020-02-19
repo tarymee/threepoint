@@ -101,16 +101,17 @@ export default {
         // 滑动删除商品
         delPro(index) {
             let that = this
-            let delProId = that.proArr[index].id
-            let leftProArr = []
-            that.proArr.forEach((item, i) => {
-                if (i != index) {
-                    leftProArr.push(item)
-                }
+            let delProId = that.proArr[index].cartid
+            that.updateDelPro(delProId, function () {
+                let leftProArr = []
+                that.proArr.forEach((item, i) => {
+                    if (i != index) {
+                        leftProArr.push(item)
+                    }
+                })
+                that.proArr = leftProArr
+                that.sum()
             })
-            that.proArr = leftProArr
-            that.sum()
-            that.updateDelPro(delProId)
         },
         // 按钮删除商品
         delSelPros() {
@@ -122,28 +123,45 @@ export default {
                     if (!item.select) {
                         leftProArr.push(item)
                     } else {
-                        delProsIdArr.push(item.id)
+                        delProsIdArr.push(item.cartid)
                     }
                 })
-                that.proArr = leftProArr
-                that.sum()
-                that.updateDelPro(delProsIdArr.join(','))
+                that.updateDelPro(delProsIdArr.join(','), function () {
+                    that.proArr = leftProArr
+                    that.sum()
+                })
             } else {
                 that.isEdit = false
             }
         },
         // 提交删除购物车数据
-        updateDelPro(id) {
+        updateDelPro(cartids, callback) {
             u.request({
                 url: u.api.cartdel,
                 data: {
-                    goods_id: id
+                    ids: cartids
                 },
                 isVerifyLogin: true,
                 isShowLoading: false,
                 isShowError: false,
                 success(res) {
-                    console.log(res)
+                    if (res && res.code == 1) {
+                        uni.showToast({
+                            title: '操作成功',
+                            duration: 1500,
+                            success() {
+                                callback && callback()
+                            }
+                        })
+                    } else {
+                        uni.showToast({
+                            title: res.msg,
+                            icon: 'none',
+                            duration: 1500,
+                            success() {
+                            }
+                        })
+                    }
                 }
             })
         },
@@ -173,14 +191,14 @@ export default {
             }
             that.proArr[index].count--
             that.sum()
-            that.updateCount(that.proArr[index].id, that.proArr[index].count)
+            that.updateCount(that.proArr[index].cartid, that.proArr[index].count)
         },
         // 更新购物车商品数量
-        updateCount(id, count) {
+        updateCount(cartid, count) {
             u.request({
                 url: u.api.cartchangenum,
                 data: {
-                    id: id,
+                    id: cartid,
                     count: count
                 },
                 isVerifyLogin: true,
@@ -196,14 +214,14 @@ export default {
             let that = this
             that.proArr[index].count++
             that.sum()
-            that.updateCount(that.proArr[index].id, that.proArr[index].count)
+            that.updateCount(that.proArr[index].cartid, that.proArr[index].count)
         },
         // input改变数量
         changeCount(index) {
             console.log(index)
             let that = this
             that.sum()
-            that.updateCount(that.proArr[index].id, that.proArr[index].count)
+            that.updateCount(that.proArr[index].cartid, that.proArr[index].count)
         },
         // 合计
         sum() {

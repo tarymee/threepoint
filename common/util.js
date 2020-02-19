@@ -32,6 +32,7 @@ const api = {
     orderdetail: `${host}/api/myorder//detail/${site}`,
     orderlist: `${host}/api/myorder/list/${site}`,
     ordercancel: `${host}/api/myorder/cancel/${site}`,
+    orderback: `${host}/api/myorder/back/${site}`,
     orderreceipt: `${host}/api/myorder/receipt/${site}`,
     // 申请开店列表
     applylist: `${host}/api/applyinfo/list/${site}`,

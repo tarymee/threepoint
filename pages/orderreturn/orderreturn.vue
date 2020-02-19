@@ -22,7 +22,7 @@
             </div>
             <div class="tt-form__item">
                 <div class="tt-form__item-l">退款说明</div>
-                <div class="tt-form__item-r"><input type="text" v-model="text" placeholder="退款说明" /></div>
+                <div class="tt-form__item-r"><input type="text" v-model="desc" placeholder="退款说明" /></div>
             </div>
             <a class="tt-form__tf" @click="save">提交申请</a>
         </div>
@@ -37,26 +37,24 @@ export default {
     components: {},
     data() {
         return {
-            isapply: false,
             order_id: '',
             order_no: '',
-            order: null,
             reasonindex: '',
             reason: '',
             price: '',
-            text: '',
+            desc: '',
             returntypeArr: ['拍错/多拍/不想要', '协商一致退款', '其他'],
             returntypeObj: [
                 {
-                    key: '100',
+                    key: '拍错/多拍/不想要',
                     text: '拍错/多拍/不想要'
                 },
                 {
-                    key: '200',
+                    key: '协商一致退款',
                     text: '协商一致退款'
                 },
                 {
-                    key: '300',
+                    key: '其他',
                     text: '其他'
                 },
             ]
@@ -71,8 +69,6 @@ export default {
         },
         save() {
             let that = this
-            console.log(that.apply)
-
             if (!that.reason) {
                 uni.showToast({
                     title: '请先选择退款原因',
@@ -81,17 +77,16 @@ export default {
                 return false
             }
             u.request({
-                url: u.api.apply,
+                url: u.api.orderback,
                 data: {
                     order_id: that.order_id,
                     reason: that.reason,
                     price: that.price,
-                    text: that.text,
+                    desc: that.desc,
                 },
                 isVerifyLogin: true,
                 success(res) {
-                    console.log(res)
-                    res = res.data
+                    // console.log(res)
                     if (res && res.code == 1) {
                         uni.showModal({
                             title: '申请成功',
@@ -99,6 +94,15 @@ export default {
                             showCancel: false,
                             success: function () {
                                 that.back()
+                            }
+                        })
+                    } else {
+                        uni.showModal({
+                            title: '操作失败',
+                            content: res.msg,
+                            showCancel: false,
+                            success: function () {
+                                // that.back()
                             }
                         })
                     }
@@ -114,53 +118,6 @@ export default {
         that.order_id = event.order_id
         that.order_no = event.order_no
         that.price = event.price
-
-        u.request({
-            url: u.api.orderdetail,
-            data: {
-                order_id: that.order_id
-            },
-            isVerifyLogin: true,
-            isShowLoading: true,
-            isShowError: true,
-            success(res) {
-                console.log(res)
-                if (res && res.code == 1 && res.data && res.data.order) {
-                    res = res.data.order
-
-                    let order = {
-                        order_id: res.order_id,
-                        order_no: res.order_no,
-                        create_time: res.create_time,
-                        pay_time: res.pay_time,
-                        delivery_time: res.delivery_time,
-                        receipt_time: res.receipt_time,
-                        status: res.status,
-                        order_total_price: res.total_price,
-                        express_price: res.express_price,
-                        order_pay_price: res.pay_price,
-                        totalcount: res.goods.length,
-                        pay_status: res.pay_status,
-                        delivery_status: res.delivery_status,
-                        receipt_status: res.receipt_status,
-                        order_status: res.order_status,
-                        detail: []
-                    }
-                    res.goods.forEach((item, i) => {
-                        order.detail.push({
-                            goods_id: item.goods_id,
-                            img: item.image.file_path,
-                            count: item.total_num,
-                            price: item.goods_price,
-                            specTip: item.goods_attr,
-                            name: item.goods_name
-                        })
-                    })
-                    that.order = order
-                }
-            }
-        })
-
 
     }
 }
