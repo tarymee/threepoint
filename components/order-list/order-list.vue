@@ -32,7 +32,7 @@
 
                 <!-- <div class="order__status" v-if="item.pay_status.value===0 || (item.delivery_status.value===20 && item.receipt_status.value===10)"> -->
                 <div class="order__status">
-                    <div class="order__status-btn" @tap="orderreturn(item)">退款</div>
+                    <div class="order__status-btn" v-if="item.pay_status.value===1 && (item.status.value!=3 || item.status.value!=5)" @tap="orderreturn(item)">退款</div>
                     <div class="order__status-btn" v-if="item.pay_status.value===0" @tap="cancel(item.order_id)">取消订单</div>
                     <div class="order__status-btn order__status-btn--1" v-if="item.pay_status.value===0" @tap="repay(item.order_id, item.order_pay_price)">立即付款</div>
                     <div class="order__status-btn order__status-btn--1" v-if="item.delivery_status.value===20 && item.receipt_status.value===10" @tap="receipt(item.order_id)">确认收货</div>

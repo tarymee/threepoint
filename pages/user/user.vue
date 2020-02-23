@@ -127,6 +127,7 @@
                             uni.removeStorageSync('token')
                             uni.removeStorageSync('userid')
                             uni.removeStorageSync('userInfo')
+                            uni.removeStorageSync('scene')
                             // this.jump('/pages/index/index')
                             that.user.logo = '/static/img/avatar.png'
                             that.user.name = '登录/注册'
