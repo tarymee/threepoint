@@ -62,6 +62,9 @@ const api = {
     paytype: `${host}/api/order/payType`,
     dolist: `${host}/api/article/list/248`,
     dolistdetail: `${host}/api/article/view/`,
+    team: `${host}/api/user/team/${site}`,
+    teamorder: `${host}/api/user/teamorder/${site}`,
+    msghistory: `${host}/api/weapp/msg/history/${site}`,
     host
 }
 

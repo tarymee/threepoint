@@ -555,7 +555,7 @@ export default {
     /* 焦点图 */
     .proswiper {
         overflow: hidden;
-        height: 625upx;
+        height: 750upx;
     }
     .proswiper__item {
         background: url('~@/static/img/loading.gif') center center no-repeat;
@@ -665,6 +665,8 @@ export default {
         overflow: hidden;
         /* margin-bottom: 10px; */
         vertical-align: top;
+        overflow: auto;
+        max-height: 150px;
     }
     .product__selcon-item {
         /* display: inline-block; */

@@ -70,7 +70,7 @@ export default {
     data() {
         return {
             isapply: false,
-            pattypeArr: ['微信支付', '线下转账'],
+            pattypeArr: ['微信支付', '其他方式'],
             apply: {
                 name: '',
                 phone: '',

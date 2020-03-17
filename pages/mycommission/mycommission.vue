@@ -19,6 +19,7 @@
         <uni-list>
             <uni-list-item title="提现" thumb="/static/img/icon-w1.jpg" @click="jump(`/pages/mywithdrawal/mywithdrawal`)"></uni-list-item>
             <uni-list-item title="提现明细" thumb="/static/img/icon-w2.jpg" @click="jump('/pages/mywithdrawallist/mywithdrawallist')"></uni-list-item>
+            <uni-list-item title="我的团队" thumb="/static/img/icon-w2.jpg" @click="jump('/pages/mywithdrawalteam/mywithdrawalteam')"></uni-list-item>
         </uni-list>
     </div>
 </template>

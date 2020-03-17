@@ -170,6 +170,24 @@
             }
         },
         {
+            "path": "pages/mywithdrawalteam/mywithdrawalteam",
+            "style": {
+                "navigationBarTitleText": "我的团队"
+            }
+        },
+        {
+            "path": "pages/mywithdrawalorder/mywithdrawalorder",
+            "style": {
+                "navigationBarTitleText": "我的团队订单"
+            }
+        },
+        {
+            "path": "pages/mywithdrawamessage/mywithdrawamessage",
+            "style": {
+                "navigationBarTitleText": "聊天消息"
+            }
+        },
+        {
             "path": "pages/mymoney/mymoney",
             "style": {
                 "navigationBarTitleText": "我的余额"
@@ -345,7 +363,7 @@
             {
                 "name": "product",
                 "path": "pages/product/product",
-                "query": "id=146&title=青花瓷89CM&price=16&cover=https://pic.36krcnd.com/201903/25021423/n0x2x3v809xijacy!heading"
+                "query": "id=1212&title=青花瓷89CM&price=16&cover=https://pic.36krcnd.com/201903/25021423/n0x2x3v809xijacy!heading"
             },
             {
                 "name": "我的店铺",
@@ -371,6 +389,21 @@
                 "name": "提现明细",
                 "path": "pages/mywithdrawallist/mywithdrawallist",
                 "query": ""
+            },
+            {
+                "name": "我的团队",
+                "path": "pages/mywithdrawalteam/mywithdrawalteam",
+                "query": ""
+            },
+            {
+                "name": "我的团队订单",
+                "path": "pages/mywithdrawalorder/mywithdrawalorder",
+                "query": "usertoken=oFsP15U3AJG6GQ5gQN_GJY372m0U"
+            },
+            {
+                "name": "聊天消息",
+                "path": "pages/mywithdrawamessage/mywithdrawamessage",
+                "query": "usertoken=oFsP15U3AJG6GQ5gQN_GJY372m0U"
             },
             {
                 "name": "我的余额",
