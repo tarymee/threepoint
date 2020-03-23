@@ -1,9 +1,9 @@
 <template>
     <div class="meswrap">
         <div class="mes">
-            <div class="mes-item" :class="item.fromuser === mytoken ? 'mes-item-r' : ''" v-for="(item, index) in bottomLoad_data" :key="index">
+            <div class="mes-item" :class="item.fromuser === mytoken ? 'mes-item-r' : ''" v-for="(item, index) in bottomLoad_data" :key="index" v-if="item.text">
                 <image class="mes-item-img" :src="item.fromuserLogo" mode="aspectFill"></image>
-                <div class="mes-item-con">{{item.text}}{{item.text}}{{item.text}}{{item.text}}{{item.text}}{{item.text}}{{item.text}}{{item.text}}{{item.text}}{{item.text}}{{item.text}}{{item.text}}{{item.text}}{{item.text}}{{item.text}}</div>
+                <div class="mes-item-con">{{item.text}}</div>
             </div>
         </div>
         <tip :text="bottomLoad_tip"></tip>
@@ -70,6 +70,7 @@ export default {
     margin: 0 15px 0 0;
 }
 .mes-item-con {
+    float: left;
     overflow: hidden;
     line-height: 25px;
     font-size: 14px;
@@ -88,6 +89,7 @@ export default {
     margin-left: 15px;
 }
 .mes-item-r .mes-item-con {
+    float: right;
     background-color: #88ee57;
 }
 
