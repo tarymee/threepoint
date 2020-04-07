@@ -1,19 +1,19 @@
 <template>
     <div class="">
-        <view class="auth" v-if="isapply">
+        <view class="auth" v-if="applyCode === 1 || applyCode === 2">
             <view class="auth__th">
                 <view class="auth__th-avt">
                     <open-data class="" type="userAvatarUrl"></open-data>
                 </view>
             </view>
-            <view class="auth__title">尊敬的{{apply.name}} 您已成功申请开店</view>
+            <view class="auth__title">尊敬的{{apply.name}} 您已申请开店</view>
             <view class="auth__subtitle">申请店铺 {{apply.title}}</view>
-            <view class="auth__subtitle">支付金额 {{apply.price}}</view>
+            <view class="auth__subtitle"><span v-if="applyCode === 1">已</span v-if="applyCode === 2"><span>未</span>支付金额 {{apply.price}}</view>
             <view class="auth__subtitle">申请地址 {{apply.region[0]}} {{apply.region[1]}} {{apply.region[2]}} {{apply.detail}}</view>
             <view class="auth__title" style="margin: 10px 0 20px;">我们将会联系您 一同筹划开店事宜</view>
-            <button type="primary" @click="back">确认返回</button>
+            <button type="primary" @click="confirm">{{applyTitle}}</button>
         </view>
-        <div class="tt-form" v-if="!isapply">
+        <div class="tt-form" v-if="applyCode === 0">
             <div class="tt-form__tit">个人信息</div>
             <div class="tt-form__item">
                 <div class="tt-form__item-l">姓名</div>
@@ -69,7 +69,8 @@ export default {
     components: {},
     data() {
         return {
-            isapply: false,
+            applyCode: -1,
+            applyTitle: '',
             pattypeArr: ['微信支付', '其他方式'],
             apply: {
                 name: '',
@@ -146,35 +147,7 @@ export default {
                     res = res.data
                     if (res && res.code == 1) {
                         if (that.apply.payType == '0') {
-                            let payment = res.payment
-                            wx.requestPayment({
-                                timeStamp: payment.timeStamp,
-                                nonceStr: payment.nonceStr,
-                                package: 'prepay_id=' + payment.prepay_id,
-                                signType: 'MD5',
-                                paySign: payment.paySign,
-                                success: function (paymentRes) {
-                                    console.log(paymentRes)
-                                    uni.showModal({
-                                        title: '支付成功',
-                                        content: '我们将会联系您 一同筹划开店事宜',
-                                        showCancel: false,
-                                        success: function () {
-                                            that.back()
-                                        }
-                                    })
-                                },
-                                fail: function () {
-                                    uni.showToast({
-                                        title: '未支付',
-                                        mask: true,
-                                        duration: 3000,
-                                        success: function () {
-
-                                        }
-                                    })
-                                }
-                            })
+                            that.pay(res.payment)
                         } else {
                             uni.showModal({
                                 title: '申请成功',
@@ -186,9 +159,47 @@ export default {
                             })
                         }
                     }
-
                 }
             })
+        },
+        pay(payment) {
+            let that = this
+            wx.requestPayment({
+                timeStamp: payment.timeStamp,
+                nonceStr: payment.nonceStr,
+                package: 'prepay_id=' + payment.prepay_id,
+                signType: 'MD5',
+                paySign: payment.paySign,
+                success: function (paymentRes) {
+                    console.log(paymentRes)
+                    uni.showModal({
+                        title: '支付成功',
+                        content: '我们将会联系您 一同筹划开店事宜',
+                        showCancel: false,
+                        success: function () {
+                            that.back()
+                        }
+                    })
+                },
+                fail: function () {
+                    uni.showToast({
+                        title: '未支付',
+                        mask: true,
+                        duration: 3000,
+                        success: function () {
+
+                        }
+                    })
+                }
+            })
+        },
+        confirm() {
+            let that = this
+            if (that.applyCode == 1) {
+                that.back()
+            } else if (that.applyCode == 2) {
+                that.save()
+            }
         }
     },
     onLoad(event) {
@@ -207,8 +218,13 @@ export default {
             isVerifyLogin: true,
             success(res) {
                 console.log(res)
-                if (res.code == 1) {
-                    that.isapply = true
+                that.applyCode = res.code
+                if (res.code == 1 || res.code == 2) {
+                    if (res.code === 1) {
+                        that.applyTitle = '确认返回'
+                    } else if (res.code === 2) {
+                        that.applyTitle = '确认支付'
+                    }
                     that.apply.name = res.applyUser.name
                     that.apply.idcard = res.applyUser.idcard
                     that.apply.phone = res.applyUser.phone
@@ -218,8 +234,6 @@ export default {
                     that.apply.payType = res.applyUser.payType
                     that.apply.applyInfoId = res.applyUser.applyInfoId
                     that.apply.title = res.applyInfo.title
-                } else {
-                    that.isapply = false
                 }
             }
         })

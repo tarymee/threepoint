@@ -392,8 +392,8 @@ export default {
     onShareAppMessage() {
         let that = this
         let obj = {
-            title: this.title,
-            path: `/pages/product/product/?id=${that.id}&title=${that.title}&price=${that.price}`
+            title: this.title + '\n￥' + that.price,
+            path: `/pages/product/product?id=${that.id}&title=${that.title}&price=${that.price}`
         }
         console.log('分享')
         console.log(obj)

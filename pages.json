@@ -353,7 +353,7 @@
             {
                 "name": "applystore",
                 "path": "pages/applystore/applystore",
-                "query": "price=1999&title=三分联盟旗舰店&storeid=1"
+                "query": "price=3333&title=三分联盟旗舰店&storeid=8"
             },
             {
                 "name": "addressdetail",
@@ -363,7 +363,7 @@
             {
                 "name": "product",
                 "path": "pages/product/product",
-                "query": "id=1212&title=青花瓷89CM&price=16&cover=https://pic.36krcnd.com/201903/25021423/n0x2x3v809xijacy!heading"
+                "query": "id=1720"
             },
             {
                 "name": "我的店铺",
