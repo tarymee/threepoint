@@ -55,6 +55,8 @@
         <div class="info">
             <div class="info__txt">订单编号：{{order.order_no}}</div>
             <div class="info__txt">下单时间：{{order.create_time}}</div>
+            <div class="info__txt" v-if="order.express_company">物流名称：{{order.express_company}}</div>
+            <div class="info__txt" v-if="order.express_no">物流单号：{{order.express_no}}</div>
             <div class="info__txt" v-if="order.pay_time">付款时间：{{order.pay_time}}</div>
             <div class="info__txt" v-if="order.delivery_time">发货时间：{{order.delivery_time}}</div>
             <div class="info__txt" v-if="order.receipt_time">确认收货时间：{{order.receipt_time}}</div>
@@ -132,6 +134,8 @@ export default {
                         order_id: res.order_id,
                         order_no: res.order_no,
                         create_time: res.create_time,
+                        express_company: res.express_company,
+                        express_no: res.express_no,
                         pay_time: res.pay_time,
                         delivery_time: res.delivery_time,
                         receipt_time: res.receipt_time,
